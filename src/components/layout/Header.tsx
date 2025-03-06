@@ -7,31 +7,31 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-sky-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="font-bold text-xl text-indigo-600">
+              <Link href="/" className="font-bold text-xl text-sky-600">
                 SoloParaEva
               </Link>
             </div>
             <nav className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <Link
                 href="/productos"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="border-transparent text-sky-700 hover:border-sky-300 hover:text-sky-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Productos
               </Link>
               <Link
                 href="/nosotros"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="border-transparent text-sky-700 hover:border-sky-300 hover:text-sky-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Nosotros
               </Link>
               <Link
                 href="/contacto"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="border-transparent text-sky-700 hover:border-sky-300 hover:text-sky-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Contacto
               </Link>
@@ -40,7 +40,7 @@ export default function Header() {
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             <Link
               href="/carrito"
-              className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="p-1 rounded-full text-sky-500 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
             >
               <span className="sr-only">Ver carrito</span>
               <svg
@@ -63,7 +63,7 @@ export default function Header() {
           <div className="-mr-2 flex items-center sm:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              className="inline-flex items-center justify-center p-2 rounded-md text-sky-400 hover:text-sky-600 hover:bg-sky-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500"
             >
               <span className="sr-only">Abrir menú</span>
               <svg
@@ -106,25 +106,25 @@ export default function Header() {
         <div className="pt-2 pb-3 space-y-1">
           <Link
             href="/productos"
-            className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+            className="border-transparent text-sky-600 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
           >
             Productos
           </Link>
           <Link
             href="/nosotros"
-            className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+            className="border-transparent text-sky-600 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
           >
             Nosotros
           </Link>
           <Link
             href="/contacto"
-            className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+            className="border-transparent text-sky-600 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
           >
             Contacto
           </Link>
           <Link
             href="/carrito"
-            className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+            className="border-transparent text-sky-600 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
           >
             Carrito
           </Link>

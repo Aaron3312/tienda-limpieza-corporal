@@ -84,16 +84,18 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       <div className="relative bg-gray-50 mb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="relative flex flex-col md:flex-row">
-            {/* Image container */}
+            {/* Image container with fixed aspect ratio */}
             <div className="md:w-1/2 flex justify-center items-center mb-8 md:mb-0">
-              <div className="rounded-lg overflow-hidden shadow-lg w-full max-w-md h-auto">
-                <CustomImage
-                  src={product.image}
-                  alt={product.name}
-                  width={500}
-                  height={500}
-                  className="w-full h-full object-cover object-center transition-opacity duration-300 hover:opacity-95"
-                />
+              <div className="rounded-lg overflow-hidden shadow-lg w-full max-w-md relative">
+                <div className="aspect-w-1 aspect-h-1 w-full">
+                  <CustomImage
+                    src={product.image}
+                    alt={product.name}
+                    width={500}
+                    height={500}
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
               </div>
             </div>
             
