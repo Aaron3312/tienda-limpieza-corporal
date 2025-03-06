@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import CustomImage from '@/components/CustomImage';
-
 
 export default function NosotrosPage() {
   return (
@@ -14,6 +12,7 @@ export default function NosotrosPage() {
             alt="Productos naturales para el cuidado personal"
             fill
             className="w-full h-full object-cover object-center opacity-70"
+            unoptimized={true}
             priority
           />
           <div className="absolute inset-0 bg-indigo-700 mix-blend-multiply" />
@@ -52,6 +51,7 @@ export default function NosotrosPage() {
                 width={1000}
                 height={667}
                 className="w-full h-full object-center object-cover"
+                unoptimized={true}
               />
             </div>
           </div>
@@ -118,6 +118,7 @@ export default function NosotrosPage() {
                 width={1000}
                 height={667}
                 className="w-full h-full object-center object-cover"
+                unoptimized={true}
               />
             </div>
           </div>
