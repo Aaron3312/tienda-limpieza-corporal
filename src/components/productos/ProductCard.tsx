@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import CustomImage from '@/components/CustomImage'; // Importar el nuevo componente
 
 interface ProductCardProps {
   id: string;
@@ -13,7 +13,7 @@ export default function ProductCard({ id, name, price, image, description }: Pro
   return (
     <div className="group relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
-        <Image
+        <CustomImage
           src={image}
           alt={name}
           width={500}

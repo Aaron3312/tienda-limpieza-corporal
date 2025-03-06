@@ -2,9 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]  # Ajusta a tu rama principal (main o master)
+    branches: [ main ]
   
-  # Permite ejecutar este flujo de trabajo manualmente desde la pestaña Actions
   workflow_dispatch:
 
 permissions:
@@ -12,7 +11,6 @@ permissions:
   pages: write
   id-token: write
 
-# Permite una única implementación concurrente
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -41,6 +39,13 @@ jobs:
         env:
           NEXT_IGNORE_ESLINT: true
           NEXT_IGNORE_TYPESCRIPT_ERRORS: true
+      
+      # Asegurarse de que las imágenes estén en el directorio de salida
+      - name: Copy images directory
+        run: |
+          mkdir -p ./out/images
+          cp -r ./public/images/* ./out/images/
+          ls -la ./out/images
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
