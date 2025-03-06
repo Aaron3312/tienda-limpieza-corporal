@@ -2,13 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import RelatedProducts from '@/components/productos/RelatedProducts';
 
-// Estos datos deberían venir de una base de datos o API
+// Datos de productos (esto idealmente vendría de una base de datos o API)
 const productsData = [
   {
     id: 'jabon-natural-1',
     name: 'Jabón Natural de Lavanda',
     price: 8.99,
-    image: '../images/jabon0.jpeg',
+    image: '/images/jabon0.jpg',
     description: 'Jabón artesanal de lavanda con propiedades relajantes y calmantes para la piel.',
     longDescription: 'Este jabón está elaborado artesanalmente con ingredientes naturales y aceite esencial de lavanda. Ideal para relajar el cuerpo y la mente, proporciona una limpieza suave mientras calma la piel. La lavanda tiene propiedades antisépticas y antiinflamatorias que ayudan a tratar problemas cutáneos leves.',
     ingredients: ['Aceite de oliva', 'Aceite de coco', 'Manteca de karité', 'Aceite esencial de lavanda', 'Flores de lavanda'],
@@ -24,8 +24,55 @@ const productsData = [
     ingredients: ['Aceite de oliva', 'Aceite de coco', 'Miel orgánica', 'Avena molida', 'Manteca de cacao'],
     benefits: ['Hidratación profunda', 'Exfoliación suave', 'Reduce la irritación', 'Nutre pieles secas']
   },
-  // Podríamos añadir el resto de productos aquí
+  {
+    id: 'jabon-natural-3',
+    name: 'Jabón de Carbón Activado',
+    price: 9.99,
+    image: '/images/jabon2.jpg',
+    description: 'Jabón purificante con carbón activado, elimina toxinas e impurezas de la piel.',
+    longDescription: 'Este jabón de carbón activado es ideal para pieles grasas o con tendencia al acné. El carbón activado actúa como un imán para eliminar impurezas, toxinas y exceso de grasa de la piel, dejándola limpia y purificada.',
+    ingredients: ['Aceite de oliva', 'Aceite de coco', 'Carbón activado', 'Arcilla', 'Aceite esencial de árbol de té'],
+    benefits: ['Purifica la piel', 'Controla el exceso de grasa', 'Ayuda a combatir el acné', 'Elimina impurezas']
+  },
+  {
+    id: 'jabon-natural-4',
+    name: 'Jabón de Aloe Vera',
+    price: 8.49,
+    image: '/images/jabon3.jpg',
+    description: 'Jabón hidratante con aloe vera, perfecto para calmar y refrescar la piel.',
+    longDescription: 'Este jabón con aloe vera puro es ideal para hidratar y calmar todo tipo de pieles, especialmente las sensibles o irritadas. El aloe vera tiene propiedades calmantes, hidratantes y regeneradoras que ayudan a mantener la piel saludable.',
+    ingredients: ['Aceite de oliva', 'Aceite de coco', 'Gel de aloe vera', 'Vitamina E', 'Glicerina vegetal'],
+    benefits: ['Calma la piel irritada', 'Hidrata en profundidad', 'Refresca la piel', 'Ayuda en la regeneración celular']
+  },
+  {
+    id: 'jabon-natural-5',
+    name: 'Jabón de Eucalipto',
+    price: 8.99,
+    image: '/images/jabon4.jpg',
+    description: 'Jabón refrescante con aceite esencial de eucalipto, ideal para descongestionar.',
+    longDescription: 'Este jabón con aceite esencial de eucalipto proporciona una sensación refrescante y vigorizante. Ideal para usar por la mañana o después del ejercicio, ayuda a abrir los poros y descongestionar las vías respiratorias.',
+    ingredients: ['Aceite de oliva', 'Aceite de coco', 'Aceite esencial de eucalipto', 'Hojas de eucalipto', 'Arcilla verde'],
+    benefits: ['Efecto refrescante', 'Descongestionante', 'Limpieza profunda', 'Estimulante']
+  },
+  {
+    id: 'jabon-natural-6',
+    name: 'Jabón de Caléndula',
+    price: 7.99,
+    image: '/images/jabon5.jpg',
+    description: 'Jabón suave con caléndula, con propiedades antiinflamatorias y calmantes.',
+    longDescription: 'Este jabón con extracto de caléndula es especialmente suave y adecuado para pieles sensibles o con problemas como dermatitis o eczema. La caléndula tiene propiedades antiinflamatorias, calmantes y curativas.',
+    ingredients: ['Aceite de oliva', 'Aceite de coco', 'Extracto de caléndula', 'Pétalos de caléndula', 'Miel'],
+    benefits: ['Calma la piel irritada', 'Reduce la inflamación', 'Suaviza la piel', 'Ayuda en la cicatrización']
+  },
+  // Aquí agregar los productos de shampoo y cremas si tienes páginas de detalle para ellos
 ];
+
+// Esta función es necesaria para la exportación estática con rutas dinámicas
+export async function generateStaticParams() {
+  return productsData.map((product) => ({
+    id: product.id,
+  }));
+}
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   // En un caso real, aquí buscaríamos el producto en la base de datos
