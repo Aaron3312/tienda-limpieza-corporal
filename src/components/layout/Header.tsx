@@ -1,10 +1,28 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Este useEffect garantiza que el componente solo se renderice completamente
+  // en el cliente, evitando diferencias entre el renderizado del servidor y el cliente
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Si no está montado, renderiza un placeholder con la misma altura
+  if (!isMounted) {
+    return (
+      <header className="bg-sky-50 shadow-md h-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16"></div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="bg-sky-50 shadow-md">
