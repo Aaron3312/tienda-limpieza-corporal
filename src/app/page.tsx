@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import CustomImage from '@/components/CustomImage';
 
 export default function Home() {
   // Productos destacados
@@ -9,7 +9,7 @@ export default function Home() {
       nombre: 'Jabón de Lavanda y Romero',
       descripcion: 'Relaja tu piel y mente con nuestra combinación aromática de hierbas.',
       precio: '$7.99',
-      imagen: '/images/jabon1.jpeg',
+      imagen: '/images/jabon0.jpeg',
       categoria: 'jabones'
     },
     {
@@ -17,7 +17,7 @@ export default function Home() {
       nombre: 'Jabón Exfoliante de Café',
       descripcion: 'Elimina células muertas y renueva tu piel con antioxidantes naturales.',
       precio: '$8.50',
-      imagen: '/images/jabon2.jpeg',
+      imagen: '/images/jabon1.jpeg',
       categoria: 'jabones'
     },
     {
@@ -25,7 +25,7 @@ export default function Home() {
       nombre: 'Champú de Coco y Argán',
       descripcion: 'Hidratación profunda para cabello seco y maltratado.',
       precio: '$12.99',
-      imagen: '/images/jabon3.jpeg',
+      imagen: '/images/jabon2.jpeg',
       categoria: 'shampoo'
     },
     {
@@ -33,7 +33,7 @@ export default function Home() {
       nombre: 'Crema Corporal de Karité',
       descripcion: 'Nutrición intensiva para piel extra seca.',
       precio: '$15.99',
-      imagen: '/images/jabon4.jpeg',
+      imagen: '/images/jabon5.jpeg',
       categoria: 'cremas'
     }
   ];
@@ -43,13 +43,12 @@ export default function Home() {
       {/* Hero Section */}
       <div className="relative bg-indigo-800 h-96 sm:h-screen">
         <div className="absolute inset-0">
-          <Image
+          <CustomImage
             src="/images/lavandaFondo.jpeg"
             alt="Jabones artesanales Solo Para Eva"
-            fill
+            width={1920}
+            height={1080}
             className="w-full h-full object-cover object-center opacity-80"
-            unoptimized={true}
-            priority
           />
           <div className="absolute inset-0 bg-indigo-700 mix-blend-multiply opacity-60" />
         </div>
@@ -139,13 +138,12 @@ export default function Home() {
             {productosDestacados.map((producto) => (
               <div key={producto.id} className="group relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div className="w-full h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-t-lg overflow-hidden group-hover:opacity-90 transition-opacity duration-300">
-                  <Image
+                  <CustomImage
                     src={producto.imagen}
                     alt={producto.nombre}
                     width={500}
                     height={500}
                     className="w-full h-full object-center object-cover"
-                    unoptimized={true}
                   />
                 </div>
                 <div className="p-5">
@@ -195,13 +193,12 @@ export default function Home() {
               </p>
               <div className="mt-4 flex items-center">
                 <div className="flex-shrink-0">
-                  <Image 
+                  <CustomImage 
                     className="h-10 w-10 rounded-full" 
                     src="/images/testimonial-1.jpg" 
                     alt="Cliente" 
                     width={40} 
                     height={40}
-                    unoptimized={true}
                   />
                 </div>
                 <div className="ml-3">
@@ -216,13 +213,12 @@ export default function Home() {
               </p>
               <div className="mt-4 flex items-center">
                 <div className="flex-shrink-0">
-                  <Image 
+                  <CustomImage 
                     className="h-10 w-10 rounded-full" 
                     src="/images/testimonial-2.jpg" 
                     alt="Cliente" 
                     width={40} 
                     height={40}
-                    unoptimized={true}
                   />
                 </div>
                 <div className="ml-3">
