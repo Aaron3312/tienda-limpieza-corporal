@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import CustomImage from '@/components/CustomImage';
 
 export default function NosotrosPage() {
   return (
@@ -7,13 +7,12 @@ export default function NosotrosPage() {
       {/* Encabezado con imagen */}
       <div className="relative bg-indigo-800 h-80">
         <div className="absolute inset-0">
-          <Image
+          <CustomImage
             src="/images/banner-nosotros.jpeg"
             alt="Productos naturales para el cuidado personal"
-            fill
+            width={1920}
+            height={1080}
             className="w-full h-full object-cover object-center opacity-70"
-            unoptimized={true}
-            priority
           />
           <div className="absolute inset-0 bg-indigo-700 mix-blend-multiply" />
         </div>
@@ -45,13 +44,12 @@ export default function NosotrosPage() {
 
           <div className="mt-8 lg:mt-0">
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
-              <Image
+              <CustomImage
                 src="/images/nosotros-1.jpeg"
                 alt="Elaboración artesanal de jabones"
                 width={1000}
                 height={667}
                 className="w-full h-full object-center object-cover"
-                unoptimized={true}
               />
             </div>
           </div>
@@ -112,13 +110,12 @@ export default function NosotrosPage() {
           
           <div className="mt-8 lg:mt-0 lg:order-1">
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
-              <Image
+              <CustomImage
                 src="/images/nosotros-2.jpeg"
                 alt="Ingredientes naturales para productos de belleza"
                 width={1000}
                 height={667}
                 className="w-full h-full object-center object-cover"
-                unoptimized={true}
               />
             </div>
           </div>
