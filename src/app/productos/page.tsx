@@ -1,88 +1,72 @@
-import ProductCard from '@/components/productos/ProductCard';
+import Link from 'next/link';
+import Image from 'next/image';
 
-// Datos de ejemplo para los productos
-const products = [
-  {
-    id: 'jabon-natural-1',
-    name: 'Jabón Natural de Lavanda',
-    price: 8.99,
-    image: '/images/jabon0.jpeg',
-    description: 'Jabón artesanal de lavanda con propiedades relajantes y calmantes para la piel.'
-  },
-  {
-    id: 'jabon-natural-2',
-    name: 'Jabón de Avena y Miel',
-    price: 7.99,
-    image: '/images/jabon1.jpeg',
-    description: 'Jabón nutritivo con avena y miel, ideal para pieles sensibles y secas.'
-  },
-  {
-    id: 'jabon-natural-3',
-    name: 'Jabón de Carbón Activado',
-    price: 9.99,
-    image: '/images/jabon2.jpeg',
-    description: 'Jabón purificante con carbón activado, elimina toxinas e impurezas de la piel.'
-  },
-  {
-    id: 'jabon-natural-4',
-    name: 'Jabón de Aloe Vera',
-    price: 8.49,
-    image: '/images/jabon3.jpeg',
-    description: 'Jabón hidratante con aloe vera, perfecto para calmar y refrescar la piel.'
-  },
-  {
-    id: 'jabon-natural-5',
-    name: 'Jabón de Eucalipto',
-    price: 8.99,
-    image: '/images/jabon4.jpeg',
-    description: 'Jabón refrescante con aceite esencial de eucalipto, ideal para descongestionar.'
-  },
-  {
-    id: 'jabon-natural-6',
-    name: 'Jabón de Caléndula',
-    price: 7.99,
-    image: '/images/jabon5.jpeg',
-    description: 'Jabón suave con caléndula, con propiedades antiinflamatorias y calmantes.'
-  }
-];
-
-export default function ProductsPage() {
+export default function Home() {
   return (
-    <div className="bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Nuestros Productos
-          </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
-            Descubre nuestra línea de productos naturales para el cuidado de tu piel
-          </p>
-        </div>
-
-        {/* Filtros */}
-        <div className="mt-8 flex justify-center space-x-4">
-          <button className="px-4 py-2 bg-indigo-600 text-white rounded-md">Todos</button>
-          <button className="px-4 py-2 bg-white text-gray-700 rounded-md">Jabones</button>
-          <button className="px-4 py-2 bg-white text-gray-700 rounded-md">Shampoo</button>
-          <button className="px-4 py-2 bg-white text-gray-700 rounded-md">Cremas</button>
-        </div>
-
-        {/* Listado de productos */}
-        <div className="mt-10">
-          <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={product.price}
-                image={product.image}
-                description={product.description}
-              />
-            ))}
-          </div>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-between text-sm lg:flex">
+        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
+          <Link
+            href="/productos"
+            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
+          >
+            Explorar Productos
+          </Link>
         </div>
       </div>
-    </div>
+
+      <div className="relative flex place-items-center">
+        <h1 className="text-6xl font-bold text-center">
+          Productos de Limpieza Corporal
+        </h1>
+      </div>
+
+      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-3 lg:text-left">
+        <Link
+          href="/productos/categorias/jabones"
+          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+        >
+          <h2 className="mb-3 text-2xl font-semibold">
+            Jabones{' '}
+            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+              →
+            </span>
+          </h2>
+          <p className="m-0 max-w-[30ch] text-sm opacity-50">
+            Descubre nuestra línea de jabones naturales.
+          </p>
+        </Link>
+
+        <Link
+          href="/productos/categorias/shampoo"
+          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+        >
+          <h2 className="mb-3 text-2xl font-semibold">
+            Shampoo{' '}
+            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+              -&gt;
+            </span>
+          </h2>
+          <p className="m-0 max-w-[30ch] text-sm opacity-50">
+            Potencia el brillo y la salud de tu cabello.
+          </p>
+        </Link>
+
+        <Link
+          href="/productos/categorias/cremas"
+          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+        >
+          <h2 className="mb-3 text-2xl font-semibold">
+            Cremas{' '}
+            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+              -&gt;
+            </span>
+          </h2>
+          <p className="m-0 max-w-[30ch] text-sm opacity-50">
+            Hidratación profunda para todo tipo de piel.
+          </p>
+        </Link>
+      </div>
+    </main>
   );
 }
