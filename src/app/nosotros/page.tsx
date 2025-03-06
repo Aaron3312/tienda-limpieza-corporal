@@ -8,7 +8,7 @@ export default function NosotrosPage() {
       <div className="relative bg-indigo-800 h-80">
         <div className="absolute inset-0">
           <Image
-            src="/images/banner-nosotros.jpg"
+            src="/images/banner-nosotros.jpeg"
             alt="Productos naturales para el cuidado personal"
             fill
             className="w-full h-full object-cover object-center opacity-70"
@@ -45,7 +45,7 @@ export default function NosotrosPage() {
           <div className="mt-8 lg:mt-0">
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
               <Image
-                src="/images/nosotros-1.jpg"
+                src="/images/nosotros-1.jpeg"
                 alt="Elaboración artesanal de jabones"
                 width={1000}
                 height={667}
@@ -111,7 +111,7 @@ export default function NosotrosPage() {
           <div className="mt-8 lg:mt-0 lg:order-1">
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
               <Image
-                src="/images/nosotros-2.jpg"
+                src="/images/nosotros-2.jpeg"
                 alt="Ingredientes naturales para productos de belleza"
                 width={1000}
                 height={667}

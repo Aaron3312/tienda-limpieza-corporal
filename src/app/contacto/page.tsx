@@ -55,7 +55,7 @@ export default function ContactoPage() {
       <div className="relative bg-indigo-800 h-64">
         <div className="absolute inset-0">
           <Image
-            src="/images/contacto-banner.jpg"
+            src="/images/contacto-banner.jpeg"
             alt="Contáctanos"
             fill
             className="w-full h-full object-cover object-center opacity-70"
