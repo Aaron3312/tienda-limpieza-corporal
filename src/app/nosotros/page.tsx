@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import CustomImage from '@/components/CustomImage';
+
 
 export default function NosotrosPage() {
   return (

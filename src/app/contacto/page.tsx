@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import CustomImage from '@/components/CustomImage';
+
 
 export default function ContactoPage() {
   const router = useRouter();
