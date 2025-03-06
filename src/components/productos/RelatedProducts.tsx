@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import CustomImage from '@/components/CustomImage'; // Importar el nuevo componente
 
 interface Product {
   id: string;
@@ -19,19 +20,19 @@ export default function RelatedProducts({ currentProductId }: RelatedProductsPro
       id: 'jabon-natural-3',
       name: 'Jabón de Carbón Activado',
       price: 9.99,
-      image: '/images/jabon2.jpg',
+      image: '/images/jabon2.jpeg',
     },
     {
       id: 'jabon-natural-4',
       name: 'Jabón de Aloe Vera',
       price: 8.49,
-      image: '/images/jabon3.jpg',
+      image: '/images/jabon3.jpeg',
     },
     {
       id: 'jabon-natural-5',
       name: 'Jabón de Eucalipto',
       price: 8.99,
-      image: '/images/jabon4.jpg',
+      image: '/images/jabon4.jpeg',
     },
   ].filter(product => product.id !== currentProductId).slice(0, 3);
 
@@ -45,11 +46,11 @@ export default function RelatedProducts({ currentProductId }: RelatedProductsPro
           {relatedProducts.map((product) => (
             <div key={product.id} className="group relative">
               <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                <Image
+                <CustomImage
                   src={product.image}
                   alt={product.name}
-                  width={300}
-                  height={300}
+                  width={500}
+                  height={500}
                   className="w-full h-full object-center object-cover lg:w-full lg:h-full"
                 />
               </div>

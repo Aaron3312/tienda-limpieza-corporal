@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import RelatedProducts from '@/components/productos/RelatedProducts';
+import CustomImage from '@/components/CustomImage';
 
 // Datos de productos (esto idealmente vendría de una base de datos o API)
 const productsData = [
@@ -80,66 +80,49 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   return (
     <div className="bg-white">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="lg:grid lg:grid-cols-2 lg:gap-x-8">
-          {/* Imagen del producto */}
-          <div className="lg:max-w-lg lg:self-end">
-            <div className="rounded-lg overflow-hidden">
-              <Image
-                src={product.image}
-                alt={product.name}
-                width={600}
-                height={600}
-                className="w-full h-full object-center object-cover"
-              />
+      {/* Hero section with product image */}
+      <div className="relative bg-gray-50 mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="relative flex flex-col md:flex-row">
+            {/* Image container */}
+            <div className="md:w-1/2 flex justify-center items-center mb-8 md:mb-0">
+              <div className="rounded-lg overflow-hidden shadow-lg w-full max-w-md h-auto">
+                <CustomImage
+                  src={product.image}
+                  alt={product.name}
+                  width={500}
+                  height={500}
+                  className="w-full h-full object-cover object-center transition-opacity duration-300 hover:opacity-95"
+                />
+              </div>
             </div>
-          </div>
-
-          {/* Información del producto */}
-          <div className="mt-10 lg:mt-0 lg:col-start-2">
-            <Link href="/productos" className="text-indigo-600 hover:text-indigo-500 mb-4 inline-block">
-              ← Volver a productos
-            </Link>
             
-            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">{product.name}</h1>
-            <div className="mt-3">
-              <h2 className="sr-only">Precio del producto</h2>
-              <p className="text-3xl text-gray-900">${product.price.toFixed(2)}</p>
-            </div>
-
-            <div className="mt-6">
-              <h3 className="sr-only">Descripción</h3>
-              <p className="text-base text-gray-700">{product.longDescription}</p>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-lg font-medium text-gray-900">Ingredientes</h3>
-              <ul className="mt-2 space-y-2">
-                {product.ingredients.map((ingredient, index) => (
-                  <li key={index} className="flex items-center">
-                    <span className="h-2 w-2 bg-indigo-500 rounded-full mr-2"></span>
-                    <span className="text-gray-600">{ingredient}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-lg font-medium text-gray-900">Beneficios</h3>
-              <ul className="mt-2 space-y-2">
-                {product.benefits.map((benefit, index) => (
-                  <li key={index} className="flex items-center">
-                    <span className="h-2 w-2 bg-green-500 rounded-full mr-2"></span>
-                    <span className="text-gray-600">{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="mt-10">
+            {/* Product info */}
+            <div className="md:w-1/2 md:pl-8">
+              <Link 
+                href="/productos" 
+                className="text-indigo-600 hover:text-indigo-500 mb-4 inline-flex items-center"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Volver a productos
+              </Link>
+              
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-4">{product.name}</h1>
+              
+              <div className="mb-4 flex items-center">
+                <p className="text-3xl font-bold text-indigo-700">${product.price.toFixed(2)}</p>
+                <span className="ml-3 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">En stock</span>
+              </div>
+              
+              <div className="mb-8">
+                <p className="text-base text-gray-700 leading-relaxed">{product.longDescription}</p>
+              </div>
+              
               <button
                 type="button"
-                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md transition-colors duration-200"
               >
                 Añadir al carrito
               </button>
@@ -147,9 +130,45 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </div>
         </div>
       </div>
+
+      {/* Product details */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Ingredients */}
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Ingredientes</h3>
+            <ul className="space-y-3">
+              {product.ingredients.map((ingredient, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="h-2 w-2 bg-indigo-500 rounded-full mr-3"></span>
+                  <span className="text-gray-700">{ingredient}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Benefits */}
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Beneficios</h3>
+            <ul className="space-y-3">
+              {product.benefits.map((benefit, index) => (
+                <li key={index} className="flex items-center">
+                  <span className="h-2 w-2 bg-green-500 rounded-full mr-3"></span>
+                  <span className="text-gray-700">{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
       
       {/* Productos relacionados */}
-      <RelatedProducts currentProductId={params.id} />
+      <div className="bg-gray-50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8">Productos que podrían interesarte</h2>
+          <RelatedProducts currentProductId={params.id} />
+        </div>
+      </div>
     </div>
   );
 }

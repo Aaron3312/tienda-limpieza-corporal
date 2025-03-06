@@ -2,10 +2,10 @@ import Link from 'next/link';
 import CustomImage from '@/components/CustomImage';
 
 export default function Home() {
-  // Productos destacados
+  // Productos destacados - IDs actualizados para coincidir con el formato usado en productos detallados
   const productosDestacados = [
     {
-      id: 1,
+      id: 'jabon-natural-1',
       nombre: 'Jabón de Lavanda y Romero',
       descripcion: 'Relaja tu piel y mente con nuestra combinación aromática de hierbas.',
       precio: '$7.99',
@@ -13,7 +13,7 @@ export default function Home() {
       categoria: 'jabones'
     },
     {
-      id: 2,
+      id: 'jabon-natural-2',
       nombre: 'Jabón Exfoliante de Café',
       descripcion: 'Elimina células muertas y renueva tu piel con antioxidantes naturales.',
       precio: '$8.50',
@@ -21,7 +21,7 @@ export default function Home() {
       categoria: 'jabones'
     },
     {
-      id: 3,
+      id: 'jabon-natural-3',
       nombre: 'Champú de Coco y Argán',
       descripcion: 'Hidratación profunda para cabello seco y maltratado.',
       precio: '$12.99',
@@ -29,7 +29,7 @@ export default function Home() {
       categoria: 'shampoo'
     },
     {
-      id: 4,
+      id: 'jabon-natural-6',
       nombre: 'Crema Corporal de Karité',
       descripcion: 'Nutrición intensiva para piel extra seca.',
       precio: '$15.99',
@@ -157,7 +157,7 @@ export default function Home() {
                   <div className="mt-3 flex justify-between items-center">
                     <p className="text-lg font-medium text-indigo-600">{producto.precio}</p>
                     <div className="text-sm font-medium text-indigo-500">
-                      <Link href={`/productos/categorias/${producto.categoria}`}>
+                      <Link href={`/productos?categoria=${producto.categoria}`}>
                         Ver más
                       </Link>
                     </div>
@@ -178,6 +178,7 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Resto del código permanece igual */}
       {/* Testimonios */}
       <div className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -202,7 +203,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-900">María Rodríguez</p>
+                  <p className="text-sm font-medium text-gray-900">Mario Rodríguez</p>
                 </div>
               </div>
             </div>
