@@ -1,0 +1,255 @@
+{
+    "informacionTienda": {
+      "nombre": "Solo Para Eva",
+      "slogan": "Cosmética de Autor desde 2016",
+      "descripcion": "SoloparaEva es una pequeña empresa comprometida con colaborar desde el 2016 con el Bienestar y Salud de las mujeres mediante la oferta de servicios de spa y Cosmética de Autor. Compartir con las mujeres salud espiritual, emocional creando experiencias personalizadas mediante productos de higiene y belleza así como servicios terapéuticos de acuerdo a sus necesidades.",
+      "contacto": {
+        "telefono": "+52 33 3333 333333",
+        "email": "contacto@soloparaeva.com",
+        "instagram": "@soloparaeva",
+        "facebook": "SoloParaEva"
+      }
+    },
+    "colores": {
+      "primario": "#aad585",
+      "secundario": "#68dad6",
+      "terciario": "#f2bae0",
+      "cuaternario": "#cba3d7",
+      "texto": "#333333",
+      "fondo": "#ffffff",
+      "fondoSecundario": "#f9f9f9"
+    },
+    "categorias": [
+      {
+        "id": "cabello",
+        "nombre": "Productos para Cabello",
+        "descripcion": "Excelente opción para tratamiento de crecimiento y cuidado capilar",
+        "imagen": "/images/categoria-cabello.jpg"
+      },
+      {
+        "id": "corporal",
+        "nombre": "Productos Corporales",
+        "descripcion": "Jabones y tratamientos para el cuidado integral de tu piel",
+        "imagen": "/images/categoria-corporal.jpg"
+      },
+      {
+        "id": "facial",
+        "nombre": "Productos Faciales",
+        "descripcion": "Cremas, exfoliantes y tratamientos especializados para tu rostro",
+        "imagen": "/images/categoria-facial.jpg"
+      },
+      {
+        "id": "spa",
+        "nombre": "Productos SPA",
+        "descripcion": "Todo lo que necesitas para crear una experiencia de spa en casa",
+        "imagen": "/images/categoria-spa.jpg"
+      }
+    ],
+    "productos": [
+      {
+        "id": "jabon-capilar",
+        "nombre": "Jabón Capilar",
+        "categoria": "cabello",
+        "descripcion": "Excelente opción para tratamiento de crecimiento y cuidado capilar",
+        "variantes": [
+          {
+            "descripcion": "Sábila y romero",
+            "precio": 75.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Chile y té verde",
+            "precio": 75.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Manzanilla",
+            "precio": 75.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Presentación grande",
+            "precio": 170.00,
+            "unidad": "1 Kg"
+          }
+        ],
+        "imagen": "/images/jabon-capilar.jpg",
+        "destacado": true
+      },
+      {
+        "id": "shampo-solido",
+        "nombre": "Champú Sólido",
+        "categoria": "cabello",
+        "descripcion": "Elaborado con extractos, aceites, flores y plantas naturales, complejo anticaída y ceramidas. Duración hasta 60 lavadas.",
+        "variantes": [
+          {
+            "descripcion": "Cúrcuma",
+            "precio": 95.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Cacao",
+            "precio": 95.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Miel",
+            "precio": 95.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Frutos rojos",
+            "precio": 95.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Coco",
+            "precio": 95.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Romero",
+            "precio": 95.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Lavanda",
+            "precio": 95.00,
+            "unidad": "100 g"
+          }
+        ],
+        "imagen": "/images/shampo-solido.jpg",
+        "destacado": false
+      },
+      {
+        "id": "jabones-gourmet",
+        "nombre": "Jabones Gourmet",
+        "categoria": "corporal",
+        "descripcion": "Jabón artesanal con extractos y aceites naturales",
+        "variantes": [
+          {
+            "descripcion": "Cacao",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Cúrcuma con naranja",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Tepezcohuite",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Rosa mosqueta",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Aloe vera",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Naranja",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Canela",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Arroz",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Cempasúchil",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Romero",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Café",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Granada",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Manzanilla",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Caléndula",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Limón",
+            "precio": 35.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Avena",
+            "precio": 35.00,
+            "unidad": "100 g"
+          }
+        ],
+        "imagen": "/images/jabones-gourmet.jpg",
+        "destacado": true
+      },
+      {
+        "id": "jabones-exfoliantes",
+        "nombre": "Jabones Exfoliantes",
+        "categoria": "corporal",
+        "descripcion": "Jabones con ingredientes naturales exfoliantes para renovar tu piel",
+        "variantes": [
+          {
+            "descripcion": "Café",
+            "precio": 40.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Naranja",
+            "precio": 40.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Coco y nuez",
+            "precio": 40.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Avena",
+            "precio": 40.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Arroz",
+            "precio": 40.00,
+            "unidad": "100 g"
+          },
+          {
+            "descripcion": "Polvo diamante",
+            "precio": 40.00,
+            "unidad": "100 g"
+          }
+        ],
+        "imagen": "/images/jabones-exfoliantes.jpg",
+        "destacado": false
+      }
+    ]
+  }

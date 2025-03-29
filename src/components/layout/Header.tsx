@@ -56,27 +56,6 @@ export default function Header() {
             </nav>
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            <Link
-              href="/carrito"
-              className="p-1 rounded-full text-sky-500 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
-            >
-              <span className="sr-only">Ver carrito</span>
-              <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-            </Link>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button
