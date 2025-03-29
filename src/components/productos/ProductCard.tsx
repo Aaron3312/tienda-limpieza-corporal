@@ -44,11 +44,9 @@ export default function ProductCard({ product, index, isVisible, colores }) {
         {/* Superposición con botón */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
              style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}>
-          <Link href={`/productos/${product.id}`} legacyBehavior>
-            <a className="transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300 bg-white border border-transparent rounded-full py-3 px-6 flex items-center justify-center text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-md" 
+          <Link href={`/productos/${product.id}`} className="transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300 bg-white border border-transparent rounded-full py-3 px-6 flex items-center justify-center text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-md" 
                style={{ color: colores.texto }}>
-              Ver detalles
-            </a>
+            Ver detalles
           </Link>
         </div>
       </div>
@@ -56,11 +54,9 @@ export default function ProductCard({ product, index, isVisible, colores }) {
       <div className="p-6">
         <div className="mb-4">
           <h3 className="text-xl font-serif font-medium mb-2" style={{ color: colores.texto }}>
-            <Link href={`/productos/${product.id}`} legacyBehavior>
-              <a className="hover:underline transition-colors duration-300" 
+            <Link href={`/productos/${product.id}`} className="hover:underline transition-colors duration-300" 
                  style={{ color: colores.acento1 }}>
-                {product.nombre}
-              </a>
+              {product.nombre}
             </Link>
           </h3>
           <p className="text-sm line-clamp-2" style={{ color: colores.texto }}>
@@ -120,7 +116,10 @@ export default function ProductCard({ product, index, isVisible, colores }) {
             )}
           </div>
           
-
+          <Link href={`/productos/${product.id}`} className="text-sm px-3 py-1 rounded-md font-medium transition-colors hover:opacity-90"
+                style={{ backgroundColor: colores.primario, color: colores.textoOscuro }}>
+            Ver detalles
+          </Link>
         </div>
       </div>
     </motion.div>
