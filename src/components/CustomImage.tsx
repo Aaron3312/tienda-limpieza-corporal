@@ -14,7 +14,7 @@ interface CustomImageProps {
 
 export default function CustomImage({ src, alt, width, height, className }: CustomImageProps) {
   // Determinar la base path según el entorno
-  const basePath = process.env.NODE_ENV === 'production' ? '/tienda-limpieza-corporal' : '';
+  const basePath = process.env.NODE_ENV === 'production' ? '' : '';
   
   // Asegurarnos de que src comienza con / pero no con //
   const normalizedSrc = src.startsWith('/') ? src : `/${src}`;
