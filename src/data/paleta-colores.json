@@ -1,0 +1,178 @@
+{
+    "coloresBase": {
+      "verde": "#aad585",     
+      "turquesa": "#68dad6",  
+      "lavanda": "#cba3d7"   
+    },
+    "variacionesVerde": {
+      "verdeMasPalido": "#c8e3af",    
+      "verdeClaro": "#bfdea0",        
+      "verdeBase": "#aad585",         
+      "verdeMedio": "#91c46a",        
+      "verdeOscuro": "#7aab53",       
+      "verdeProfundo": "#62893f"      
+    },
+    "variacionesTurquesa": {
+      "turquesaMasPalido": "#a9ecea",  
+      "turquesaClaro": "#8ae3e0",      
+      "turquesaBase": "#68dad6",       
+      "turquesaMedio": "#4bc7c3",     
+      "turquesaOscuro": "#37a9a5",     
+      "turquesaProfundo": "#278a87"    
+    },
+    "variacionesRosa": {
+      "rosaMasPalido": "#f7d7ed",     
+      "rosaClaro": "#f4c8e6",         
+      "rosaBase": "#f2bae0",         
+      "rosaMedio": "#eb9fd3",      
+      "rosaOscuro": "#e383c5",      
+      "rosaProfundo": "#d75fb3"      
+    },
+    "variacionesLavanda": {
+      "lavandaMasPalido": "#dfc4e7", 
+      "lavandaClaro": "#d4b3e0",     
+      "lavandaBase": "#cba3d7",       
+      "lavandaMedio": "#bb8bcc",     
+      "lavandaOscuro": "#a970bc",    
+      "lavandaProfundo": "#915aa6"
+    },
+    "combinacionesComplementarias": {
+      "verdeLavanda": {
+        "principal": "#aad585",
+        "complementario": "#cba3d7"
+      },
+      "turquesaRosa": {
+        "principal": "#68dad6",
+        "complementario": "#f2bae0"
+      }
+    },
+    "combinacionesTriadicas": {
+      "triadica1": {
+        "color1": "#aad585",  
+        "color2": "#d585aa",  
+        "color3": "#85aad5"  
+      },
+      "triadica2": {
+        "color1": "#68dad6", 
+        "color2": "#da68d2",  
+        "color3": "#d6da68"  
+      }
+    },
+    "combinacionesNeutrales": {
+      "grisesParaVerde": {
+        "grisVerdoso1": "#e4eedb",
+        "grisVerdoso2": "#c5d5b7",
+        "grisVerdoso3": "#a7bb93",
+        "grisVerdoso4": "#889d76"
+      },
+      "grisesParaTurquesa": {
+        "grisTurquesa1": "#e1f5f4",
+        "grisTurquesa2": "#c1e8e7",
+        "grisTurquesa3": "#9fd4d3",
+        "grisTurquesa4": "#82c2c0"
+      },
+      "grisesParaRosa": {
+        "grisRosado1": "#f9efF5",
+        "grisRosado2": "#e9d7e5",
+        "grisRosado3": "#d6bed2",
+        "grisRosado4": "#c1a7bc"
+      },
+      "grisesParaLavanda": {
+        "grisLavanda1": "#ede5f1",
+        "grisLavanda2": "#d8cddf",
+        "grisLavanda3": "#c2b4cc",
+        "grisLavanda4": "#ab9cb6"
+      }
+    },
+    "combinacionesPastel": {
+      "pastelVerde": "#d6e9c1",
+      "pastelTurquesa": "#b4eeec",
+      "pastelRosa": "#f8dcef",
+      "pastelLavanda": "#e4d3ed",
+      "pastelAmarillo": "#f9f0c1",
+      "pastelNaranja": "#f9d9c1",
+      "pastelAzul": "#c1daf9"
+    },
+    "combinacionesVibrantes": {
+      "vibranteVerde": "#83c14a",
+      "vibranteTurquesa": "#00d0ca",
+      "vibranteRosa": "#ff8ad8",
+      "vibranteLavanda": "#b06ad2",
+      "vibranteAmarillo": "#ffd336",
+      "vibranteNaranja": "#ff9136",
+      "vibranteAzul": "#3687ff"
+    },
+    "temasUsuario": {
+      "primavera": {
+        "primario": "#aad585",    
+        "secundario": "#f2bae0",  
+        "acento1": "#68dad6",     
+        "acento2": "#f9f0c1",     
+        "fondo": "#fdfcf7",       
+        "textoOscuro": "#3a3a3a", 
+        "textoClaro": "#ffffff"   
+      },
+      "verano": {
+        "primario": "#68dad6",    
+        "secundario": "#aad585", 
+        "acento1": "#ff9136",     
+        "acento2": "#e383c5",     
+        "fondo": "#f5fcfc",       
+        "textoOscuro": "#2d4040", 
+        "textoClaro": "#ffffff"   
+      },
+      "otoño": {
+        "primario": "#bb8bcc",    
+        "secundario": "#f9d9c1",  
+        "acento1": "#91c46a",     
+        "acento2": "#d585aa",     
+        "fondo": "#fcf9f5",       
+        "textoOscuro": "#40303d", 
+        "textoClaro": "#ffffff"   
+      },
+      "invierno": {
+        "primario": "#a970bc",    
+        "secundario": "#37a9a5",  
+        "acento1": "#f4c8e6",     
+        "acento2": "#c1daf9",     
+        "fondo": "#f7f9fc",       
+        "textoOscuro": "#2d3040",
+        "textoClaro": "#ffffff"   
+      },
+      "fresco": {
+        "primario": "#68dad6",    
+        "secundario": "#aad585",  
+        "acento1": "#b06ad2",     
+        "acento2": "#e1f5f4",     
+        "textoOscuro": "#2d4040", 
+        "textoClaro": "#ffffff"   
+      },
+      "dulce": {
+        "primario": "#f2bae0",    
+        "secundario": "#cba3d7",  
+        "acento1": "#b4eeec",     
+        "acento2": "#f9f0c1",     
+        "fondo": "#fdf8fc",       
+        "textoOscuro": "#593e52", 
+        "textoClaro": "#ffffff"  
+      },
+      "natural": {
+        "primario": "#aad585",    
+        "secundario": "#7aab53", 
+        "acento1": "#f2bae0",     
+        "acento2": "#68dad6",    
+        "fondo": "#f8faf5",      
+        "textoOscuro": "#3d4d2c", 
+        "textoClaro": "#ffffff"   
+      },
+      "elegante": {
+        "primario": "#915aa6",    
+        "secundario": "#d75fb3",  
+        "acento1": "#278a87",     
+        "acento2": "#62893f",     
+        "fondo": "#f7f5fc",       
+        "textoOscuro": "#382a40", 
+        "textoClaro": "#ffffff"   
+      }
+    }
+  }
