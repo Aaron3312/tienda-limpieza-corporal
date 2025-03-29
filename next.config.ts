@@ -4,8 +4,9 @@ const nextConfig = {
   images: {
     unoptimized: true,          // Necesario para exportación estática
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/tienda-limpieza-corporal' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/tienda-limpieza-corporal/' : '',
+  // Usa una variable de entorno para determinar si estamos usando un dominio personalizado
+  basePath: process.env.CUSTOM_DOMAIN === 'true' ? '' : '/tienda-limpieza-corporal',
+  assetPrefix: process.env.CUSTOM_DOMAIN === 'true' ? '' : '/tienda-limpieza-corporal/',
   trailingSlash: true,          // Agrega / al final de las URLs
   
   // Ignorar errores de ESLint y TypeScript durante el build

@@ -39,13 +39,20 @@ jobs:
         env:
           NEXT_IGNORE_ESLINT: true
           NEXT_IGNORE_TYPESCRIPT_ERRORS: true
+          CUSTOM_DOMAIN: "true" # Añadido para habilitar configuración de dominio personalizado
 
       # Asegurarse de que las imágenes estén en el directorio de salida
       - name: Copy images directory
         run: |
           mkdir -p ./out/images
-          cp -r ./public/images/* ./out/images/
-          ls -la ./out/images
+          cp -r ./public/images/* ./out/images/ || echo "No images directory found in public"
+          ls -la ./out/images || echo "Images directory not created"
+
+      # Crear archivo CNAME para el dominio personalizado
+      - name: Create CNAME file
+        run: |
+          echo "soloparaeva.lat" > ./out/CNAME
+          cat ./out/CNAME
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
