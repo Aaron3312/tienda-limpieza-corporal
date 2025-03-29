@@ -314,7 +314,8 @@ export default function Home() {
 
 
       {/* Redes sociales y Footer */}
-          <Footers/>
+          {/* <Footers/> */}
+          
     </div>
   );
 }

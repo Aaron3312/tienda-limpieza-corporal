@@ -143,7 +143,7 @@ export default function ProductosPage() {
 
       {/* Sección CTA */}
       <CallToAction colores={colores} />
-      <Footers/>
+      {/* <Footers/> */}
     </div>
   );
 }
