@@ -13,8 +13,8 @@ export default function NosotrosPage() {
 
   return (
     <div className="bg-white" style={{ backgroundColor: colores.fondo }}>
-      {/* Encabezado con imagen */}
-      <div className="relative bg-primary-800 h-80 sm:h-96">
+      {/* Encabezado con imagen - Versión mejorada */}
+      <div className="relative bg-primary-800 h-96 sm:h-screen flex items-center justify-center">
         <div className="absolute inset-0">
           <CustomImage
             src="/images/banner-nosotros.jpeg"
@@ -23,16 +23,37 @@ export default function NosotrosPage() {
             height={1080}
             className="w-full h-full object-cover object-center opacity-80"
           />
-          <div className="absolute inset-0" style={{ backgroundColor: colores.primario, mixBlendMode: 'multiply', opacity: 0.6 }} />
+          <div className="absolute inset-0" style={{ backgroundColor: colores.primario, mixBlendMode: 'multiply', opacity: 0.7 }} />
         </div>
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl font-serif">
-            Nuestra Historia
-          </h1>
-          <p className="mt-6 text-xl max-w-3xl" style={{ color: colores.textoClaro }}>
-            *Porque Tú eres la fuente de vida, la luz con la que vemos*
-            <span className="block italic">(Salmos 36:9)</span>
-          </p>
+        
+        {/* Contenedor central con efecto de desvanecimiento */}
+        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+          <div className=" bg-opacity-20 backdrop-filter backdrop-blur-sm rounded-xl p-8 sm:p-12 shadow-2xl transform transition-all hover:scale-105 duration-500">
+            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl font-serif mb-8">
+              Nuestra Historia
+            </h1>
+            
+            <div className="w-24 h-1 bg-white mx-auto mb-8 opacity-80"></div>
+            
+            <div className="relative">
+              <svg className="absolute top-0 left-0 w-10 h-10 text-white opacity-30 transform -translate-x-6 -translate-y-6" fill="currentColor" viewBox="0 0 32 32">
+                <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
+              </svg>
+              
+              <p className="text-2xl sm:text-3xl font-serif italic font-light text-white tracking-wide leading-relaxed">
+                Porque Tú eres la fuente de vida,<br/>
+                la luz con la que vemos
+              </p>
+              
+              <p className="mt-4 text-lg sm:text-xl text-white opacity-80 font-light">
+                — Salmos 36:9
+              </p>
+              
+              <svg className="absolute bottom-0 right-0 w-10 h-10 text-white opacity-30 transform translate-x-6 translate-y-6" fill="currentColor" viewBox="0 0 32 32">
+                <path d="M22.648 28C27.544 24.544 31 18.88 31 12.64c0-5.088-3.072-8.064-6.624-8.064-3.36 0-5.856 2.688-5.856 5.856 0 3.168 2.208 5.472 5.088 5.472.576 0 1.344-.096 1.536-.192-.48 3.264-3.552 7.104-6.624 9.024L22.648 28zm-16.512 0c4.8-3.456 8.256-9.12 8.256-15.36 0-5.088-3.072-8.064-6.624-8.064-3.264 0-5.856 2.688-5.856 5.856 0 3.168 2.304 5.472 5.184 5.472.576 0 1.248-.096 1.44-.192-.48 3.264-3.456 7.104-6.528 9.024L6.136 28z" />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
 
