@@ -1,439 +1,439 @@
 {
-    "categorias": [
-      {
-        "id": "cabello",
-        "nombre": "Productos Capilares",
-        "descripcion": "Cuida tu cabello con nuestros jabones y shampoos sólidos hechos con ingredientes naturales."
-      },
-      {
-        "id": "corporales",
-        "nombre": "Productos Corporales",
-        "descripcion": "Descubre nuestros jabones artesanales, exfoliantes, cremas sólidas para manos y tratamientos hidratantes."
-      },
-      {
-        "id": "faciales",
-        "nombre": "Productos Faciales",
-        "descripcion": "Hidrata y protege tu piel con nuestras cremas, exfoliantes y bálsamos con vitamina E."
-      },
-      {
-        "id": "spa",
-        "nombre": "Productos SPA",
-        "descripcion": "Relájate con nuestras bombas efervescentes y sales aromáticas, ideales para un momento de bienestar."
-      },
-      {
-        "id": "kits",
-        "nombre": "Kits Personalizados",
-        "descripcion": "Crea un regalo especial con productos hechos a medida, como jabones, velas de soya, cremas y bálsamos."
-      }
-    ],
-    "productos": [
-      {
-        "id": "jabon-capilar",
-        "nombre": "Jabón Capilar",
-        "descripcion": "Excelente opción para tratamiento de crecimiento y cuidado capilar",
-        "categoria": "cabello",
-        "variantes": [
-          {
-            "id": "jabon-capilar-100g",
-            "nombre": "Jabón Capilar (100 g)",
-            "precio": 75.00,
-            "tamano": "100g"
-          },
-          {
-            "id": "jabon-capilar-1k",
-            "nombre": "Jabón Capilar (1 Kg)",
-            "precio": 170.00,
-            "tamano": "1kg"
-          }
-        ],
-        "variedades": ["Sábila y romero", "Chile y té verde", "Manzanilla"],
-        "imagen": "/images/jabon-capilar.jpg",
-        "destacado": true
-      },
-      {
-        "id": "shampo-solido",
-        "nombre": "Shampo Sólido",
-        "descripcion": "Elaborado con extractos, aceites, flores y plantas naturales, complejo anticaída y ceramidas. Duración hasta 60 lavadas.",
-        "categoria": "cabello",
-        "variantes": [
-          {
-            "id": "shampo-solido-100g",
-            "nombre": "Shampo Sólido (100 g)",
-            "precio": 95.00,
-            "tamano": "100g"
-          }
-        ],
-        "variedades": ["Cúrcuma", "Cacao", "Miel", "Frutos rojos", "Coco", "Romero", "Lavanda"],
-        "imagen": "/images/shampo-solido.jpg",
-        "destacado": false
-      },
-      {
-        "id": "jabones-gourmet",
-        "nombre": "Jabones Gourmet",
-        "descripcion": "Jabón artesanal con extractos y aceites naturales",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "jabones-gourmet-100g",
-            "nombre": "Jabones Gourmet (100 g)",
-            "precio": 35.00,
-            "tamano": "100g"
-          }
-        ],
-        "variedades": ["Cacao", "Cúrcuma con naranja", "Tepezcohuite", "Rosa mosqueta", "Aloe vera", "Naranja", "Canela", "Arroz", "Cempasuchitl", "Romero", "Café", "Granada", "Manzanilla", "Caléndula", "Limón", "Avena"],
-        "imagen": "/images/jabones-gourmet.jpg",
-        "destacado": true
-      },
-      {
-        "id": "jabones-exfoliantes",
-        "nombre": "Jabones Exfoliantes",
-        "descripcion": "Jabones artesanales con propiedades exfoliantes naturales",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "jabones-exfoliantes-100g",
-            "nombre": "Jabones Exfoliantes (100 g)",
-            "precio": 40.00,
-            "tamano": "100g"
-          }
-        ],
-        "variedades": ["Café", "Naranja", "Coco y nuez", "Avena", "Arroz", "Polvo diamante"],
-        "imagen": "/images/jabones-exfoliantes.jpg",
-        "destacado": false
-      },
-      {
-        "id": "crema-solida-manos",
-        "nombre": "Crema Sólida para Manos",
-        "descripcion": "Crema natural hidratante en formato sólido para el cuidado de tus manos",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "crema-manos-35g",
-            "nombre": "Crema Sólida para Manos (35 g)",
-            "precio": 25.00,
-            "tamano": "35g"
-          },
-          {
-            "id": "crema-manos-60g",
-            "nombre": "Crema Sólida para Manos (60 g)",
-            "precio": 50.00,
-            "tamano": "60g"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/crema-manos.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "desodorante-vegano",
-        "nombre": "Desodorante Vegano en Crema",
-        "descripcion": "Con aroma de lavanda y cítrico",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "desodorante-50g",
-            "nombre": "Desodorante Vegano (50 g)",
-            "precio": 120.00,
-            "tamano": "50g"
-          },
-          {
-            "id": "desodorante-100g",
-            "nombre": "Desodorante Vegano (100 g)",
-            "precio": 200.00,
-            "tamano": "100g"
-          }
-        ],
-        "variedades": ["Lavanda", "Cítrico"],
-        "imagen": "/images/desodorante.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "gel-jengibre",
-        "nombre": "Gel Eliminador de Grasa con Jengibre",
-        "descripcion": "Gel corporal con propiedades reductoras gracias al jengibre",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "gel-jengibre-250g",
-            "nombre": "Gel con Jengibre (250 g)",
-            "precio": 120.00,
-            "tamano": "250g"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/gel-jengibre.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "aceite-hidratante",
-        "nombre": "Aceite Hidratante de Sésamo y Vitamina E",
-        "descripcion": "Ideal para masajes",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "aceite-hidratante-250ml",
-            "nombre": "Aceite Hidratante (250 ml)",
-            "precio": 140.00,
-            "tamano": "250ml"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/aceite-hidratante.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "exfoliante-cafe",
-        "nombre": "Exfoliante Anticelulítico de Café",
-        "descripcion": "Exfoliante corporal con propiedades anticelulíticas",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "exfoliante-cafe-250ml",
-            "nombre": "Exfoliante de Café (250 ml)",
-            "precio": 150.00,
-            "tamano": "250ml"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/exfoliante-cafe.jpeg",
-        "destacado": true
-      },
-      {
-        "id": "exfoliante-citricos",
-        "nombre": "Exfoliante de Cítricos",
-        "descripcion": "Exfoliante corporal con aroma cítrico refrescante",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "exfoliante-citricos-250ml",
-            "nombre": "Exfoliante de Cítricos (250 ml)",
-            "precio": 120.00,
-            "tamano": "250ml"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/exfoliante-citricos.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "pomadas-balsamos",
-        "nombre": "Pomadas y Bálsamos",
-        "descripcion": "Pomadas y bálsamos naturales con propiedades curativas",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "pomadas-50g",
-            "nombre": "Pomadas y Bálsamos (50 g)",
-            "precio": 60.00,
-            "tamano": "50g"
-          }
-        ],
-        "variedades": ["Caléndula", "Eucalipto", "Alcanfor"],
-        "imagen": "/images/pomadas.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "crema-rosas",
-        "nombre": "Crema de Rosas con Protector Solar",
-        "descripcion": "Crema facial hidratante con extracto de rosas y protección solar",
-        "categoria": "faciales",
-        "variantes": [
-          {
-            "id": "crema-rosas-50g",
-            "nombre": "Crema de Rosas (50 g)",
-            "precio": 80.00,
-            "tamano": "50g"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/crema-rosas.jpeg",
-        "destacado": true
-      },
-      {
-        "id": "crema-hidratante",
-        "nombre": "Crema Hidratante con Vitaminas",
-        "descripcion": "Crema facial hidratante enriquecida con vitaminas",
-        "categoria": "faciales",
-        "variantes": [
-          {
-            "id": "crema-hidratante-50g",
-            "nombre": "Crema Hidratante (50 g)",
-            "precio": 100.00,
-            "tamano": "50g"
-          },
-          {
-            "id": "crema-hidratante-100g",
-            "nombre": "Crema Hidratante (100 g)",
-            "precio": 200.00,
-            "tamano": "100g"
-          },
-          {
-            "id": "crema-hidratante-150g",
-            "nombre": "Crema Hidratante (150 g)",
-            "precio": 250.00,
-            "tamano": "150g"
-          }
-        ],
-        "variedades": ["Rosa mosqueta", "Arándano y frutos rojos", "Cacao", "Coco", "Aloe vera"],
-        "imagen": "/images/crema-hidratante.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "shot-facial",
-        "nombre": "Shot Facial Efecto Botox",
-        "descripcion": "Con ácido hialurónico y proteína de arroz",
-        "categoria": "faciales",
-        "variantes": [
-          {
-            "id": "shot-facial-15ml",
-            "nombre": "Shot Facial (15 ml)",
-            "precio": 60.00,
-            "tamano": "15ml"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/shot-facial.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "exfoliante-facial",
-        "nombre": "Exfoliante Facial de Arroz y Polvo Diamante",
-        "descripcion": "Exfoliante facial suave para una limpieza profunda",
-        "categoria": "faciales",
-        "variantes": [
-          {
-            "id": "exfoliante-facial-250g",
-            "nombre": "Exfoliante Facial (250 g)",
-            "precio": 120.00,
-            "tamano": "250g"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/exfoliante-facial.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "balsamo-labios",
-        "nombre": "Bálsamo para Labios con Vitamina E",
-        "descripcion": "Bálsamo hidratante para labios con vitamina E",
-        "categoria": "faciales",
-        "variantes": [
-          {
-            "id": "balsamo-labios-30g",
-            "nombre": "Bálsamo para Labios (30 g)",
-            "precio": 60.00,
-            "tamano": "30g"
-          }
-        ],
-        "variedades": ["Coco", "Cacao", "Mango", "Arándano"],
-        "imagen": "/images/balsamo-labios.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "rubor-natural",
-        "nombre": "Rubor Natural en Polvo",
-        "descripcion": "Pigmenta por más de 8 horas, no tapa poros, tres hermosos tonos",
-        "categoria": "faciales",
-        "variantes": [
-          {
-            "id": "rubor-natural-30g",
-            "nombre": "Rubor Natural (30 g)",
-            "precio": 50.00,
-            "tamano": "30g"
-          }
-        ],
-        "variedades": ["Tono claro", "Tono medio", "Tono intenso"],
-        "imagen": "/images/rubor-natural.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "balsamo-pestanas",
-        "nombre": "Bálsamo para Pestañas",
-        "descripcion": "Con romero, mamey y sábila",
-        "categoria": "faciales",
-        "variantes": [
-          {
-            "id": "balsamo-pestanas-30g",
-            "nombre": "Bálsamo para Pestañas (30 g)",
-            "precio": 60.00,
-            "tamano": "30g"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/balsamo-pestanas.jpeg",
-        "destacado": false
-      },
-      {
-        "id": "bombas-pastillas",
-        "nombre": "Bombas y Pastillas Efervescentes",
-        "descripcion": "Ideal para un baño relajante",
-        "categoria": "spa",
-        "variantes": [
-          {
-            "id": "bombas-pastillas-unidad",
-            "nombre": "Bombas y Pastillas Efervescentes (unidad)",
-            "precio": 10.00,
-            "tamano": "Unidad"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/bombas-efervescentes.jpeg",
-        "destacado": true
-      },
-      {
-        "id": "sales-medicinales",
-        "nombre": "Sales Medicinales Aromáticas",
-        "descripcion": "Sales para baño con propiedades medicinales y aromáticas",
-        "categoria": "spa",
-        "variantes": [
-          {
-            "id": "sales-medicinales-30g",
-            "nombre": "Sales Medicinales (30 g)",
-            "precio": 20.00,
-            "tamano": "30g"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/sales-medicinales.jpeg",
-        "destacado": false
-      }
-    ],
-    "colores": {
-      "primario": "#aad585",
-      "secundario": "#68dad6",
-      "acento1": "#f2bae0",
-      "acento2": "#cba3d7",
-      "textoOscuro": "#333333",
-      "textoClaro": "#ffffff",
-      "fondo": "#f8f9fa"
+  "categorias": [
+    {
+      "id": "cabello",
+      "nombre": "Productos Capilares",
+      "descripcion": "Cuida tu cabello con nuestros jabones y shampoos sólidos hechos con ingredientes naturales."
     },
-    "informacionNegocio": {
-      "nombre": "Solo Para Eva",
-      "eslogan": "Porque Tú eres la fuente de vida, la luz con la que vemos (Salmos 36:9)",
-      "descripcion": "SoloparaEva es una pequeña empresa comprometida con colaborar desde el 2016 con el Bienestar y Salud de las mujeres mediante la oferta de servicios de spa y Cosmética de Autor. Compartir con las mujeres salud espiritual, emocional creando experiencias personalizadas mediante productos de higiene y belleza así como servicios terapéuticos de acuerdo a sus necesidades.",
-      "vision": "Ser una empresa comprometida con sus valores.",
-      "mision": "Colaborar con el bienestar de la mujer.",
-      "valores": [
-        {"valor": "Amor", "cita": "(1ª Juan 4:8) \"si no amo, no conozco a Dios; porque Dios es amor.\""},
-        {"valor": "Respeto", "cita": "(Mateo 7:12) \"Hacer a los demás todo lo que quiero que me hagan a mi\""},
-        {"valor": "Honestidad", "cita": "(Efesios 4:25) \"Dejar de decir mentiras, digamos siempre la verdad a todos\""},
-        {"valor": "Verdad", "cita": "(Juan 8:32)… \"la verdad me hará libre\"."},
-        {"valor": "Solidaridad", "cita": "(Deuteronomio 15:11) \"Siempre habrá pobres la tierra; por eso mi Dios me ordena que comparta generosamente con ellos y con quienes pasen necesidad\""},
-        {"valor": "Libertad", "cita": "(2 Corintios 3:17) \"Donde esta mi Dios, ahí hay libertad\""},
-        {"valor": "Paz", "cita": "(Filipenses 4:6-7) Si hablo con Dios \"experimento su paz, esa paz que supera todo entendimiento y que cuida mi corazón\""}
-      ],
-      "contacto": {
-        "telefono": "+52 33 1234 5678",
-        "email": "contacto@soloparaeva.com",
-        "redesSociales": {
-          "facebook": "https://www.facebook.com/share/18kSRN2JWi/",
-          "instagram": "https://www.instagram.com/soloparaeva/"
+    {
+      "id": "corporales",
+      "nombre": "Productos Corporales",
+      "descripcion": "Descubre nuestros jabones artesanales, exfoliantes, cremas sólidas para manos y tratamientos hidratantes."
+    },
+    {
+      "id": "faciales",
+      "nombre": "Productos Faciales",
+      "descripcion": "Hidrata y protege tu piel con nuestras cremas, exfoliantes y bálsamos con vitamina E."
+    },
+    {
+      "id": "spa",
+      "nombre": "Productos SPA",
+      "descripcion": "Relájate con nuestras bombas efervescentes y sales aromáticas, ideales para un momento de bienestar."
+    },
+    {
+      "id": "kits",
+      "nombre": "Kits Personalizados",
+      "descripcion": "Crea un regalo especial con productos hechos a medida, como jabones, velas de soya, cremas y bálsamos."
+    }
+  ],
+  "productos": [
+    {
+      "id": "jabon-capilar",
+      "nombre": "Jabón Capilar",
+      "descripcion": "Excelente opción para tratamiento de crecimiento y cuidado capilar",
+      "categoria": "cabello",
+      "variantes": [
+        {
+          "id": "jabon-capilar-100g",
+          "nombre": "Jabón Capilar (100 g)",
+          "precio": 75.00,
+          "tamano": "100g"
         },
-        "horarios": {
-          "lunesViernes": "9:00 AM - 6:00 PM",
-          "sabados": "10:00 AM - 3:00 PM",
-          "domingos": "Cerrado"
+        {
+          "id": "jabon-capilar-1k",
+          "nombre": "Jabón Capilar (1 Kg)",
+          "precio": 170.00,
+          "tamano": "1kg"
         }
+      ],
+      "variedades": ["Sábila y romero", "Chile y té verde", "Manzanilla"],
+      "imagen": "/images/ActualizedImages/JabonCapilar.jpeg",
+      "destacado": true
+    },
+    {
+      "id": "shampo-solido",
+      "nombre": "Shampo Sólido",
+      "descripcion": "Elaborado con extractos, aceites, flores y plantas naturales, complejo anticaída y ceramidas. Duración hasta 60 lavadas.",
+      "categoria": "cabello",
+      "variantes": [
+        {
+          "id": "shampo-solido-100g",
+          "nombre": "Shampo Sólido (100 g)",
+          "precio": 95.00,
+          "tamano": "100g"
+        }
+      ],
+      "variedades": ["Cúrcuma", "Cacao", "Miel", "Frutos rojos", "Coco", "Romero", "Lavanda"],
+      "imagen": "/images/ActualizedImages/ShampoSolido.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "jabones-gourmet",
+      "nombre": "Jabones Gourmet",
+      "descripcion": "Jabón artesanal con extractos y aceites naturales",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "jabones-gourmet-100g",
+          "nombre": "Jabones Gourmet (100 g)",
+          "precio": 35.00,
+          "tamano": "100g"
+        }
+      ],
+      "variedades": ["Cacao", "Cúrcuma con naranja", "Tepezcohuite", "Rosa mosqueta", "Aloe vera", "Naranja", "Canela", "Arroz", "Cempasuchitl", "Romero", "Café", "Granada", "Manzanilla", "Caléndula", "Limón", "Avena"],
+      "imagen": "/images/ActualizedImages/JabonGourmet.jpeg",
+      "destacado": true
+    },
+    {
+      "id": "jabones-exfoliantes",
+      "nombre": "Jabones Exfoliantes",
+      "descripcion": "Jabones artesanales con propiedades exfoliantes naturales",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "jabones-exfoliantes-100g",
+          "nombre": "Jabones Exfoliantes (100 g)",
+          "precio": 40.00,
+          "tamano": "100g"
+        }
+      ],
+      "variedades": ["Café", "Naranja", "Coco y nuez", "Avena", "Arroz", "Polvo diamante"],
+      "imagen": "/images/ActualizedImages/JabonExfoliante.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "crema-solida-manos",
+      "nombre": "Crema Sólida para Manos",
+      "descripcion": "Crema natural hidratante en formato sólido para el cuidado de tus manos",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "crema-manos-35g",
+          "nombre": "Crema Sólida para Manos (35 g)",
+          "precio": 25.00,
+          "tamano": "35g"
+        },
+        {
+          "id": "crema-manos-60g",
+          "nombre": "Crema Sólida para Manos (60 g)",
+          "precio": 50.00,
+          "tamano": "60g"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/CremaSolidaParaManos.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "desodorante-vegano",
+      "nombre": "Desodorante Vegano en Crema",
+      "descripcion": "Con aroma de lavanda y cítrico",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "desodorante-50g",
+          "nombre": "Desodorante Vegano (50 g)",
+          "precio": 120.00,
+          "tamano": "50g"
+        },
+        {
+          "id": "desodorante-100g",
+          "nombre": "Desodorante Vegano (100 g)",
+          "precio": 200.00,
+          "tamano": "100g"
+        }
+      ],
+      "variedades": ["Lavanda", "Cítrico"],
+      "imagen": "/images/ActualizedImages/DesodoranteVegano.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "gel-jengibre",
+      "nombre": "Gel Eliminador de Grasa con Jengibre",
+      "descripcion": "Gel corporal con propiedades reductoras gracias al jengibre",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "gel-jengibre-250g",
+          "nombre": "Gel con Jengibre (250 g)",
+          "precio": 120.00,
+          "tamano": "250g"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/GelesCorporales.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "aceite-hidratante",
+      "nombre": "Aceite Hidratante de Sésamo y Vitamina E",
+      "descripcion": "Ideal para masajes",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "aceite-hidratante-250ml",
+          "nombre": "Aceite Hidratante (250 ml)",
+          "precio": 140.00,
+          "tamano": "250ml"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/Aceite_hidratante_de_sésamo.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "exfoliante-cafe",
+      "nombre": "Exfoliante Anticelulítico de Café",
+      "descripcion": "Exfoliante corporal con propiedades anticelulíticas",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "exfoliante-cafe-250ml",
+          "nombre": "Exfoliante de Café (250 ml)",
+          "precio": 150.00,
+          "tamano": "250ml"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/JabonExfoliante.jpeg",
+      "destacado": true
+    },
+    {
+      "id": "exfoliante-citricos",
+      "nombre": "Exfoliante de Cítricos",
+      "descripcion": "Exfoliante corporal con aroma cítrico refrescante",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "exfoliante-citricos-250ml",
+          "nombre": "Exfoliante de Cítricos (250 ml)",
+          "precio": 120.00,
+          "tamano": "250ml"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/JabonExfoliante.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "pomadas-balsamos",
+      "nombre": "Pomadas y Bálsamos",
+      "descripcion": "Pomadas y bálsamos naturales con propiedades curativas",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "pomadas-50g",
+          "nombre": "Pomadas y Bálsamos (50 g)",
+          "precio": 60.00,
+          "tamano": "50g"
+        }
+      ],
+      "variedades": ["Caléndula", "Eucalipto", "Alcanfor"],
+      "imagen": "/images/ActualizedImages/Balsamo_labios.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "crema-rosas",
+      "nombre": "Crema de Rosas con Protector Solar",
+      "descripcion": "Crema facial hidratante con extracto de rosas y protección solar",
+      "categoria": "faciales",
+      "variantes": [
+        {
+          "id": "crema-rosas-50g",
+          "nombre": "Crema de Rosas (50 g)",
+          "precio": 80.00,
+          "tamano": "50g"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/CremaDeRosas.jpeg",
+      "destacado": true
+    },
+    {
+      "id": "crema-hidratante",
+      "nombre": "Crema Hidratante con Vitaminas",
+      "descripcion": "Crema facial hidratante enriquecida con vitaminas",
+      "categoria": "faciales",
+      "variantes": [
+        {
+          "id": "crema-hidratante-50g",
+          "nombre": "Crema Hidratante (50 g)",
+          "precio": 100.00,
+          "tamano": "50g"
+        },
+        {
+          "id": "crema-hidratante-100g",
+          "nombre": "Crema Hidratante (100 g)",
+          "precio": 200.00,
+          "tamano": "100g"
+        },
+        {
+          "id": "crema-hidratante-150g",
+          "nombre": "Crema Hidratante (150 g)",
+          "precio": 250.00,
+          "tamano": "150g"
+        }
+      ],
+      "variedades": ["Rosa mosqueta", "Arándano y frutos rojos", "Cacao", "Coco", "Aloe vera"],
+      "imagen": "/images/ActualizedImages/CremasHidratantes.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "shot-facial",
+      "nombre": "Shot Facial Efecto Botox",
+      "descripcion": "Con ácido hialurónico y proteína de arroz",
+      "categoria": "faciales",
+      "variantes": [
+        {
+          "id": "shot-facial-15ml",
+          "nombre": "Shot Facial (15 ml)",
+          "precio": 60.00,
+          "tamano": "15ml"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/ShotYsueroFacial.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "exfoliante-facial",
+      "nombre": "Exfoliante Facial de Arroz y Polvo Diamante",
+      "descripcion": "Exfoliante facial suave para una limpieza profunda",
+      "categoria": "faciales",
+      "variantes": [
+        {
+          "id": "exfoliante-facial-250g",
+          "nombre": "Exfoliante Facial (250 g)",
+          "precio": 120.00,
+          "tamano": "250g"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/ExfolianteFacial.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "balsamo-labios",
+      "nombre": "Bálsamo para Labios con Vitamina E",
+      "descripcion": "Bálsamo hidratante para labios con vitamina E",
+      "categoria": "faciales",
+      "variantes": [
+        {
+          "id": "balsamo-labios-30g",
+          "nombre": "Bálsamo para Labios (30 g)",
+          "precio": 60.00,
+          "tamano": "30g"
+        }
+      ],
+      "variedades": ["Coco", "Cacao", "Mango", "Arándano"],
+      "imagen": "/images/ActualizedImages/Balsamo_labios.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "rubor-natural",
+      "nombre": "Rubor Natural en Polvo",
+      "descripcion": "Pigmenta por más de 8 horas, no tapa poros, tres hermosos tonos",
+      "categoria": "faciales",
+      "variantes": [
+        {
+          "id": "rubor-natural-30g",
+          "nombre": "Rubor Natural (30 g)",
+          "precio": 50.00,
+          "tamano": "30g"
+        }
+      ],
+      "variedades": ["Tono claro", "Tono medio", "Tono intenso"],
+      "imagen": "/images/ActualizedImages/RuborNatural.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "balsamo-pestanas",
+      "nombre": "Bálsamo para Pestañas",
+      "descripcion": "Con romero, mamey y sábila",
+      "categoria": "faciales",
+      "variantes": [
+        {
+          "id": "balsamo-pestanas-30g",
+          "nombre": "Bálsamo para Pestañas (30 g)",
+          "precio": 60.00,
+          "tamano": "30g"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/BalsamoParaPestañas.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "bombas-pastillas",
+      "nombre": "Bombas y Pastillas Efervescentes",
+      "descripcion": "Ideal para un baño relajante",
+      "categoria": "spa",
+      "variantes": [
+        {
+          "id": "bombas-pastillas-unidad",
+          "nombre": "Bombas y Pastillas Efervescentes (unidad)",
+          "precio": 10.00,
+          "tamano": "Unidad"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/bombasYpastillasEfervecentes1.jpeg",
+      "destacado": true
+    },
+    {
+      "id": "sales-medicinales",
+      "nombre": "Sales Medicinales Aromáticas",
+      "descripcion": "Sales para baño con propiedades medicinales y aromáticas",
+      "categoria": "spa",
+      "variantes": [
+        {
+          "id": "sales-medicinales-30g",
+          "nombre": "Sales Medicinales (30 g)",
+          "precio": 20.00,
+          "tamano": "30g"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/SalesParaBaño.jpeg",
+      "destacado": false
+    }
+  ],
+  "colores": {
+    "primario": "#aad585",
+    "secundario": "#68dad6",
+    "acento1": "#f2bae0",
+    "acento2": "#cba3d7",
+    "textoOscuro": "#333333",
+    "textoClaro": "#ffffff",
+    "fondo": "#f8f9fa"
+  },
+  "informacionNegocio": {
+    "nombre": "Solo Para Eva",
+    "eslogan": "Porque Tú eres la fuente de vida, la luz con la que vemos (Salmos 36:9)",
+    "descripcion": "SoloparaEva es una pequeña empresa comprometida con colaborar desde el 2016 con el Bienestar y Salud de las mujeres mediante la oferta de servicios de spa y Cosmética de Autor. Compartir con las mujeres salud espiritual, emocional creando experiencias personalizadas mediante productos de higiene y belleza así como servicios terapéuticos de acuerdo a sus necesidades.",
+    "vision": "Ser una empresa comprometida con sus valores.",
+    "mision": "Colaborar con el bienestar de la mujer.",
+    "valores": [
+      {"valor": "Amor", "cita": "(1ª Juan 4:8) \"si no amo, no conozco a Dios; porque Dios es amor.\""},
+      {"valor": "Respeto", "cita": "(Mateo 7:12) \"Hacer a los demás todo lo que quiero que me hagan a mi\""},
+      {"valor": "Honestidad", "cita": "(Efesios 4:25) \"Dejar de decir mentiras, digamos siempre la verdad a todos\""},
+      {"valor": "Verdad", "cita": "(Juan 8:32)… \"la verdad me hará libre\"."},
+      {"valor": "Solidaridad", "cita": "(Deuteronomio 15:11) \"Siempre habrá pobres la tierra; por eso mi Dios me ordena que comparta generosamente con ellos y con quienes pasen necesidad\""},
+      {"valor": "Libertad", "cita": "(2 Corintios 3:17) \"Donde esta mi Dios, ahí hay libertad\""},
+      {"valor": "Paz", "cita": "(Filipenses 4:6-7) Si hablo con Dios \"experimento su paz, esa paz que supera todo entendimiento y que cuida mi corazón\""}
+    ],
+    "contacto": {
+      "telefono": "+52 33 1234 5678",
+      "email": "contacto@soloparaeva.com",
+      "redesSociales": {
+        "facebook": "https://www.facebook.com/share/18kSRN2JWi/",
+        "instagram": "https://www.instagram.com/soloparaeva/"
+      },
+      "horarios": {
+        "lunesViernes": "9:00 AM - 6:00 PM",
+        "sabados": "10:00 AM - 3:00 PM",
+        "domingos": "Cerrado"
       }
     }
   }
+}
