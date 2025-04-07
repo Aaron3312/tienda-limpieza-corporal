@@ -50,7 +50,7 @@ export default function ContactoPage() {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-white opacity-80">Teléfono</p>
-                    <p className="mt-1 text-lg text-white">+52 33 3333 333333</p>
+                    <p className="mt-1 text-lg text-white">+52 55 1802 6391</p>
                   </div>
                 </div>
                 
@@ -62,7 +62,7 @@ export default function ContactoPage() {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-white opacity-80">Correo Electrónico</p>
-                    <p className="mt-1 text-lg text-white">contacto@soloparaeva.com</p>
+                    <p className="mt-1 text-lg text-white">altardelcielogp@gmail.com</p>
                   </div>
                 </div>
                 
@@ -120,12 +120,8 @@ export default function ContactoPage() {
               <h3 className="text-xl font-semibold mb-4" style={{ color: colores.texto }}>Horario de atención</h3>
               <dl className="space-y-4">
                 <div className="flex justify-between items-center pb-3 border-b" style={{ borderColor: colores.pastelLavanda }}>
-                  <dt className="text-sm font-medium" style={{ color: colores.texto }}>Lunes a Viernes</dt>
-                  <dd className="text-sm font-semibold" style={{ color: colores.texto }}>9:00 AM - 6:00 PM</dd>
-                </div>
-                <div className="flex justify-between items-center pb-3 border-b" style={{ borderColor: colores.pastelLavanda }}>
-                  <dt className="text-sm font-medium" style={{ color: colores.texto }}>Sábados</dt>
-                  <dd className="text-sm font-semibold" style={{ color: colores.texto }}>10:00 AM - 3:00 PM</dd>
+                  <dt className="text-sm font-medium" style={{ color: colores.texto }}>Lunes a Sabado</dt>
+                  <dd className="text-sm font-semibold" style={{ color: colores.texto }}>9:00 AM - 5:00 PM</dd>
                 </div>
                 <div className="flex justify-between items-center">
                   <dt className="text-sm font-medium" style={{ color: colores.texto }}>Domingos</dt>
