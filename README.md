@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Solo Para Eva
 
-## Getting Started
+![Landing Page](https://github.com/Aaron3312/tienda-limpieza-corporal/blob/master/landingSoloEva.png?raw=true)
 
-First, run the development server:
+## Descripción
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Solo Para Eva es una tienda en línea dedicada a productos artesanales para el cuidado personal. Nuestra plataforma ofrece una amplia gama de productos naturales elaborados con ingredientes de alta calidad, libres de químicos dañinos, respetuosos con la piel y con el medio ambiente.
+
+## Características
+
+- **Catálogo de Productos**: Presentación detallada de productos organizados por categorías (Capilares, Corporales, Faciales, SPA, Kits Personalizados).
+- **Diseño Responsive**: Experiencia de usuario optimizada para dispositivos móviles y de escritorio.
+- **Filtrado y Ordenación**: Funcionalidad para filtrar productos por categoría y ordenar por relevancia, precio, etc.
+- **Páginas de Detalle**: Información detallada de cada producto, incluyendo presentaciones, variedades y precios.
+- **Sección de Testimonios**: Opiniones de clientes satisfechos.
+- **Página "Sobre Nosotros"**: Información sobre la filosofía y valores de la marca.
+- **Formulario de Contacto**: Canal directo para consultas y pedidos.
+
+![Productos](https://github.com/Aaron3312/tienda-limpieza-corporal/blob/master/ProductosSoloEva.png?raw=true)
+![Nosotros](https://github.com/Aaron3312/tienda-limpieza-corporal/blob/master/NosotrosSoloEva.png?raw=true)
+
+## Tecnologías Utilizadas
+
+- **Frontend**: React.js, Next.js
+- **Estilos**: CSS/SCSS con componentes estilizados
+- **Hosting**: Namecheap
+- **Dominio**: soloparaeva.lat
+- **Optimización de Imágenes**: Next.js Image Optimization
+- **Gestión de Estado**: React Context API / Redux
+- **Formularios**: React Hook Form
+
+## Requisitos
+
+- Node.js (versión 14.x o superior)
+- npm o yarn
+- Git
+
+## Instalación
+
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/soloparaeva.git
+   cd soloparaeva
+   ```
+
+2. Instalar dependencias:
+   ```bash
+   npm install
+   # o
+   yarn install
+   ```
+
+3. Crear un archivo `.env.local` con las variables de entorno necesarias:
+   ```
+   NEXT_PUBLIC_API_URL=your_api_url
+   # Otras variables de entorno
+   ```
+
+4. Iniciar el servidor de desarrollo:
+   ```bash
+   npm run dev
+   # o
+   yarn dev
+   ```
+
+5. Abrir [http://localhost:3000](http://localhost:3000) en el navegador para ver la aplicación.
+
+## Estructura del Proyecto
+
+```
+soloparaeva/
+├── components/          # Componentes React reutilizables
+│   ├── Layout/          # Componentes de diseño (Header, Footer, etc.)
+│   ├── ProductCard/     # Tarjeta de producto
+│   ├── Filters/         # Componentes de filtrado
+│   └── UI/              # Componentes de UI generales
+├── pages/               # Páginas de Next.js
+│   ├── index.js         # Página principal
+│   ├── productos/       # Listado de productos
+│   ├── productos/[id].js # Página de detalle de producto
+│   ├── nosotros.js      # Página "Sobre Nosotros"
+│   └── contacto.js      # Página de contacto
+├── public/              # Archivos estáticos
+│   ├── images/          # Imágenes
+│   └── fonts/           # Fuentes
+├── styles/              # Archivos de estilos
+├── utils/               # Utilidades y helpers
+├── contexts/            # Contextos de React
+├── hooks/               # Custom hooks
+├── services/            # Servicios y APIs
+└── config/              # Archivos de configuración
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Despliegue
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Producción
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Construir la aplicación para producción:
+   ```bash
+   npm run build
+   # o
+   yarn build
+   ```
 
-## Learn More
+2. Iniciar el servidor de producción:
+   ```bash
+   npm start
+   # o
+   yarn start
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+### Hosting con Namecheap
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+La aplicación está alojada en Namecheap con el dominio `soloparaeva.lat`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## SEO y Rendimiento
 
-## Deploy on Vercel
+- Implementación de meta etiquetas para SEO
+- Optimización de imágenes mediante Next.js Image
+- Lazy loading para componentes y rutas
+- SSR (Server-Side Rendering) para mejor rendimiento y SEO
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Mantenimiento
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Actualización de Productos
+
+Para actualizar la información de productos:
+
+1. Modificar los datos en la fuente correspondiente (archivos JSON)
+2. Ejecutar la compilación si es necesario
+3. Desplegar los cambios
+
+## Colaboradores
+
+- [Aaron Hernandez Jimenez] - Desarrollador principal
+
+## Licencia
+
+Todos los derechos reservados © Solo Para Eva 2025.
+
+---
+
+Para cualquier consulta relacionada con el desarrollo o mantenimiento, contactar a [aypierre223@gmail.com]
