@@ -8,6 +8,8 @@ import { extractColorsFromPalette } from '@/utils/colorUtils';
 import paletaColores from '@/data/paleta-colores.json';
 import catalogoData from '@/data/productos.json';
 import Footers from '@/components/layout/Footer';
+// Importamos el nuevo componente de Testimonios
+import Testimonios from '@/components/testimonios/Testimonios';
 
 export default function Home() {
   const [displayedProducts, setDisplayedProducts] = useState([]);
@@ -241,80 +243,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Testimonios */}
-      <div className="py-16" style={{ backgroundColor: colores.fondo }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-3xl font-extrabold sm:text-4xl font-serif"
-              style={{ color: colores.texto }}
-            >
-              Lo que dicen nuestros clientes
-            </motion.h2>
-          </div>
-          <div className="mt-12 space-y-8 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="p-6 rounded-lg"
-              style={{ backgroundColor: colores.pastelLavanda }}
-            >
-              <p className="italic" style={{ color: colores.texto }}>
-                "He probado muchos jabones naturales, pero los de Solo Para Eva son excepcionales. Mi piel se siente hidratada y el aroma es simplemente divino."
-              </p>
-              <div className="mt-4 flex items-center">
-                <div className="flex-shrink-0">
-                  <CustomImage 
-                    className="h-10 w-10 rounded-full" 
-                    src="/images/testimonial-1.jpg" 
-                    alt="Cliente" 
-                    width={40} 
-                    height={40}
-                  />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium" style={{ color: colores.texto }}>Mario Rodríguez</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="p-6 rounded-lg"
-              style={{ backgroundColor: colores.pastelLavanda }}
-            >
-              <p className="italic" style={{ color: colores.texto }}>
-                "Desde que empecé a usar la crema corporal de karité, mi piel ha mejorado notablemente. La textura es perfecta y la hidratación dura todo el día."
-              </p>
-              <div className="mt-4 flex items-center">
-                <div className="flex-shrink-0">
-                  <CustomImage 
-                    className="h-10 w-10 rounded-full" 
-                    src="/images/testimonial-2.jpg" 
-                    alt="Cliente" 
-                    width={40} 
-                    height={40}
-                  />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium" style={{ color: colores.texto }}>Laura Sánchez</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-
-
+      {/* Reemplazamos la sección de testimonios con nuestro nuevo componente */}
+      <Testimonios colores={colores} />
 
       {/* Redes sociales y Footer */}
-          {/* <Footers/> */}
+      {/* <Footers/> */}
           
     </div>
   );
