@@ -12,6 +12,7 @@ import { extractColorsFromPalette } from '@/utils/colorUtils';
 import paletaColores from '@/data/paleta-colores.json';
 import catalogoData from '@/data/productos.json';
 import Footers from '@/components/layout/Footer';
+import Testimonios from '@/components/testimonios/Testimonios';
 
 
 export default function ProductosPage() {
@@ -139,7 +140,7 @@ export default function ProductosPage() {
       <BenefitsSection colores={colores} />
 
       {/* Sección de testimonios */}
-      <TestimonialsSection colores={colores} />
+      <Testimonios colores={colores} />
 
       {/* Sección CTA */}
       <CallToAction colores={colores} />
