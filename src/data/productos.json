@@ -48,7 +48,7 @@
       ],
       "variedades": ["Sábila y romero", "Chile y té verde", "Manzanilla"],
       "imagen": "/images/ActualizedImages/JabonCapilar.jpeg",
-      "destacado": true
+      "destacado": false
     },
     {
       "id": "shampo-solido",
@@ -82,7 +82,7 @@
       ],
       "variedades": ["Cacao", "Cúrcuma con naranja", "Tepezcohuite", "Rosa mosqueta", "Aloe vera", "Naranja", "Canela", "Arroz", "Cempasuchitl", "Romero", "Café", "Granada", "Manzanilla", "Caléndula", "Limón", "Avena"],
       "imagen": "/images/ActualizedImages/JabonGourmet.jpeg",
-      "destacado": true
+      "destacado": false
     },
     {
       "id": "jabones-exfoliantes",
@@ -196,7 +196,7 @@
       ],
       "variedades": [],
       "imagen": "/images/ActualizedImages/ExfolianteCafe.jpeg",
-      "destacado": true
+      "destacado": false
     },
     {
       "id": "exfoliante-citricos",
@@ -247,7 +247,7 @@
       ],
       "variedades": [],
       "imagen": "/images/ActualizedImages/CremaDeRosas.jpeg",
-      "destacado": true
+      "destacado": false
     },
     {
       "id": "crema-hidratante",
@@ -293,7 +293,7 @@
       ],
       "variedades": [],
       "imagen": "/images/ActualizedImages/ShotYsueroFacial.jpeg",
-      "destacado": false
+      "destacado": true
     },
     {
       "id": "exfoliante-facial",
@@ -378,7 +378,7 @@
       ],
       "variedades": [],
       "imagen": "/images/ActualizedImages/bombasYpastillasEfervecentes1.jpeg",
-      "destacado": true
+      "destacado": false
     },
     {
       "id": "sales-medicinales",
@@ -396,7 +396,59 @@
       "variedades": [],
       "imagen": "/images/ActualizedImages/SalesParaBaño.jpeg",
       "destacado": false
+    },
+    {
+      "id": "mantequilla-corporal-mango",
+      "nombre": "Mantequilla Corporal de Mango",
+      "descripcion": "La manteca corporal de mango ofrece diversos beneficios para la piel, incluyendo hidratación profunda, reparación de daños y protección contra el envejecimiento prematuro. Ayuda a mejorar la elasticidad, suaviza la piel y calma irritaciones, Con curcuma y vitamina E",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "mantequilla-corporal-mango-100g",
+          "nombre": "Mantequilla Corporal de Mango (100 g)",
+          "precio": 50.00,
+          "tamano": "100g"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/MantequillaCorporalMango.jpeg",
+      "destacado": true
+    },
+    {
+      "id": "balsamo-fortalecedor-de-pestanas",
+      "nombre": "Bálsamo fortalecedor de pestañas",
+      "descripcion": "Con vitamina E aceites de ricino, romero y mamey, Utilizalo por las noches para fortalecer tus pestañas.",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "balsamo-fortalecedor-de-pestanas-30g",
+          "nombre": "Bálsamo fortalecedor de pestañas (30 g)",
+          "precio": 60.00,
+          "tamano": "30g"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/BalsamoFortalecedorDePestañas.jpeg",
+      "destacado": true
+    },
+    {
+      "id": "cremitas-solidas-hidratantes",
+      "nombre": "Cremitas solidas hidratantes",
+      "descripcion": "Arándano y frutos rojos, Lavanda y menta, Granada, Maracuya, Coco, Citricos",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "cremitas-solidas-hidratantes-100g",
+          "nombre": "Cremitas solidas hidratantes (100 g)",
+          "precio": 50.00,
+          "tamano": "100g"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/ActualizedImages/CremitasSolidasHidratantes.jpeg",
+      "destacado": true
     }
+
   ],
   "colores": {
     "primario": "#aad585",
