@@ -447,6 +447,48 @@
       "variedades": [],
       "imagen": "/images/ActualizedImages/CremitasSolidasHidratantes.jpeg",
       "destacado": true
+    },
+    {
+      "id": "kit-limpieza-facial",
+      "nombre": "Kit de limpieza facial",
+      "descripcion": "Incluye exfoliante, jabón, crema y shot hialurónico.",
+      "categoria": "kits",
+      "variantes": [
+        {
+          "id": "kit-limpieza-facial-cafe",
+          "nombre": "Kit de limpieza facial completo café",
+          "precio": 120.00,
+          "tamano": "Kit café"
+        },
+        {
+          "id": "kit-limpieza-facial-rosa-mosqueta",
+          "nombre": "Kit de limpieza facial completo rosa mosqueta",
+          "precio": 120.00,
+          "tamano": "Kit rosa mosqueta"
+        }
+      ],
+      "variedades": [
+        "café",
+        "rosa mosqueta"
+      ],
+      "imagen": "/images/ActualizedImages/KitLimpiezaFacialCafe.jpeg",
+      "destacado": false
+    },
+    {
+      "id": "kit-limpieza-facial-avena",
+      "nombre": "Kit de limpieza facial completo avena",
+      "descripcion": "Incluye exfoliante, jabón, crema y shot hialurónico.",
+      "categoria": "kits",
+      "variantes": [
+        {
+          "id": "kit-limpieza-facial-avena",
+          "nombre": "Kit de limpieza facial completo avena",
+          "precio": 120.00,
+          "tamano": "Kit avena"
+        }
+      ],
+      "imagen": "/images/ActualizedImages/KitLimpiezaFacialAv.jpeg",
+      "destacado": false
     }
 
   ],
