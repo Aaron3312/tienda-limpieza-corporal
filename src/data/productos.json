@@ -503,6 +503,11 @@
           "tamano": "Kit completo"
         }
       ],
+      "variedades": [
+        "lavanda",
+        "mango - maracayá",
+        "brisas frescas"
+      ],
       "imagen": "/images/ActualizedImages/KitBano.jpeg",
       "destacado": false
     },
