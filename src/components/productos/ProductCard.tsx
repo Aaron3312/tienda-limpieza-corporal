@@ -105,17 +105,6 @@ export default function ProductCard({ product, index, isVisible, colores }) {
         )}
         
         <div className="flex justify-between items-center">
-          <div>
-            <p className="text-lg font-semibold" style={{ color: colores.acento1 }}>
-              ${product.variantes[0].precio.toFixed(2)}
-            </p>
-            {product.variantes.length > 1 && (
-              <p className="text-xs" style={{ color: colores.texto }}>
-                Desde ${Math.min(...product.variantes.map(v => v.precio)).toFixed(2)}
-              </p>
-            )}
-          </div>
-          
           <Link href={`/productos/${product.id}`} className="text-sm px-3 py-1 rounded-md font-medium transition-colors hover:opacity-90"
                 style={{ backgroundColor: colores.primario, color: colores.textoOscuro }}>
             Ver detalles

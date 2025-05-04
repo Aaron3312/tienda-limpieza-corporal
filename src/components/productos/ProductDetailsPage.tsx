@@ -231,10 +231,6 @@ export default function ProductDetailsPage() {
             {/* Precio y cantidad */}
             <div className="mb-8">
               <div className="flex items-baseline gap-2 mb-4">
-                <span className="text-3xl font-bold text-black">
-                  ${selectedVariant?.precio.toFixed(2)}
-                </span>
-                <span className="text-sm opacity-70 text-black">MXN</span>
               </div>
 
               <div className="flex items-center gap-6">
@@ -295,9 +291,6 @@ export default function ProductDetailsPage() {
                   <h3 className="font-medium text-lg mb-1 text-black">{related.nombre}</h3>
                   <p className="text-sm mb-2 line-clamp-2 text-black">{related.descripcion}</p>
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-black">
-                      ${related.variantes[0].precio.toFixed(2)}
-                    </span>
                     <span 
                       className="px-3 py-1 rounded text-sm font-medium text-black"
                       style={{ backgroundColor: textColors.primario }}

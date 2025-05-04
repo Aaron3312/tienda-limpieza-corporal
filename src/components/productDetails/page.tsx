@@ -73,7 +73,7 @@ export default function ProductDetailsPage() {
   };
 
   const handleAddToCart = () => {
-    // Aquí implementarías la lógica para añadir al carrito
+    // Aquí agregamos la lógica para añadir al carrito
     // Por ejemplo, usando un contexto o servicio de carrito
     alert(`Añadido al carrito: ${product.nombre} - ${selectedVariant.nombre} - ${selectedVariety || 'Sin variedad'} - Cantidad: ${quantity}`);
   };
@@ -210,10 +210,6 @@ export default function ProductDetailsPage() {
             {/* Precio y cantidad */}
             <div className="mb-8">
               <div className="flex items-baseline gap-2 mb-4">
-                <span className="text-3xl font-bold" style={{ color: colores.textoOscuro }}>
-                  ${selectedVariant?.precio.toFixed(2)}
-                </span>
-                <span className="text-sm opacity-70" style={{ color: colores.textoOscuro }}>MXN</span>
               </div>
 
               <div className="flex items-center gap-6">
@@ -298,9 +294,7 @@ export default function ProductDetailsPage() {
                   <h3 className="font-medium text-lg mb-1" style={{ color: colores.textoOscuro }}>{related.nombre}</h3>
                   <p className="text-sm mb-2 line-clamp-2" style={{ color: colores.texto }}>{related.descripcion}</p>
                   <div className="flex justify-between items-center">
-                    <span className="font-bold" style={{ color: colores.textoOscuro }}>
-                      ${related.variantes[0].precio.toFixed(2)}
-                    </span>
+
                     <button 
                       onClick={() => router.push(`/productos/${related.id}`)}
                       className="px-3 py-1 rounded text-sm font-medium"
