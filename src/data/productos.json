@@ -489,6 +489,22 @@
       ],
       "imagen": "/images/ActualizedImages/KitLimpiezaFacialAv.jpeg",
       "destacado": false
+    },
+    {
+      "id": "kit-bano",
+      "nombre": "Kit de baño",
+      "descripcion": "Incluye gel de ducha, sales aromáticas, bomba efervescente y crema corporal",
+      "categoria": "kits",
+      "variantes": [
+        {
+          "id": "kit-bano-completo",
+          "nombre": "Kit de baño completo",
+          "precio": 150.00,
+          "tamano": "Kit completo"
+        }
+      ],
+      "imagen": "/images/ActualizedImages/KitBano.jpeg",
+      "destacado": true
     }
 
   ],
