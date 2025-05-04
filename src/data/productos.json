@@ -508,13 +508,13 @@
     },
     {
       "id": "kit-solido-cero-empaque",
-      "nombre": "Kit Sólido \"Cero Empaque\"",
+      "nombre": "Kit Sólido Cero Empaque",
       "descripcion": "Personalizado, para amenidades o viaje. Incluye: 2 jabones, shampo, acondicionador, crema.",
       "categoria": "kits",
       "variantes": [
         {
           "id": "kit-solido-cero-empaque-completo",
-          "nombre": "Kit Sólido \"Cero Empaque\" completo",
+          "nombre": "Kit Sólido Cero Empaque completo",
           "precio": 180.00,
           "tamano": "Kit completo"
         }
