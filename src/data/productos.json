@@ -519,6 +519,14 @@
           "tamano": "Kit completo"
         }
       ],
+      "variedades": [
+        "frutos rojos",
+        "menta",
+        "lavanda",
+        "te verde",
+        "coco",
+        "frutas"
+      ],
       "imagen": "/images/ActualizedImages/KitSolidoCeroEmpaque.jpeg",
       "destacado": false
     }
