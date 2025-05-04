@@ -160,7 +160,7 @@ export default function ProductDetailsPage() {
           {/* Columna Izquierda - Imagen */}
           <div className="relative h-96 md:h-auto rounded-xl overflow-hidden shadow-lg bg-white">
             <ProductImage 
-              src={product.imagen} 
+              src={product.imagen}
               alt={product.nombre}
             />
             {product.destacado && (
