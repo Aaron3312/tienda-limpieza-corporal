@@ -6,7 +6,7 @@ import Footers from '@/components/layout/Footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'NaturClean - Productos de Limpieza Corporal',
+  title: 'Solo Para Eva - Productos de Limpieza Corporal',
   description: 'Tienda de productos naturales para la limpieza corporal',
 };
 
