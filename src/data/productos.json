@@ -534,9 +534,49 @@
       ],
       "imagen": "/images/ActualizedImages/KitSolidoCeroEmpaque.jpeg",
       "destacado": false
-    }
-
+    },
+      {
+        "id": "kit-mango",
+        "nombre": "Kit Mango",
+        "descripcion": "Incluye: shampo sólido, gel de ducha y crema corporal",
+        "categoria": "kits",
+        "variantes": [
+          {
+            "id": "kit-mango-completo",
+            "nombre": "Kit Mango completo",
+            "precio": 150.00,
+            "tamano": "Kit completo"
+          }
+        ],
+        "variedades": [],
+        "imagen": "/images/ActualizedImages/KitMango.jpeg",
+        "destacado": true
+      },
+      {
+        "id": "sales-efervescentes",
+        "nombre": "Sales efervescentes",
+        "descripcion": "Limpian, relajan y exfolian",
+        "categoria": "corporales",
+        "variantes": [
+          {
+            "id": "sales-efervescentes-50g",
+            "nombre": "Sales efervescentes (50 g)",
+            "precio": 45.00,
+            "tamano": "50g"
+          }
+        ],
+        "variedades": [
+          "lavanda",
+          "cítricos",
+          "frutas tropicales",
+          "rosa"
+        ],
+        "imagen": "/images/ActualizedImages/SalesEfervescentes.jpeg",
+        "destacado": true
+      }
   ],
+
+
   "colores": {
     "primario": "#aad585",
     "secundario": "#68dad6",
