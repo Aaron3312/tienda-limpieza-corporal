@@ -1,4 +1,5 @@
-"use client"
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import HeroSection from '@/components/productos/HeroSection';
 import ProductDescription from '@/components/productos/ProductDescription';
@@ -6,73 +7,113 @@ import FilterSortBar from '@/components/productos/FilterSortBar';
 import ProductCard from '@/components/productos/ProductCard';
 import EmptyState from '@/components/productos/EmptyState';
 import BenefitsSection from '@/components/productos/BenefitsSection';
-import TestimonialsSection from '@/components/productos/TestimonialsSection';
 import CallToAction from '@/components/productos/CallToAction';
-import { extractColorsFromPalette } from '@/utils/colorUtils';
-import paletaColores from '@/data/paleta-colores.json';
-import catalogoData from '@/data/productos.json';
-import Footers from '@/components/layout/Footer';
 import Testimonios from '@/components/testimonios/Testimonios';
-
+import { getProductos, getCategorias, getColores } from '@/services/firestore';
+import { Producto, Categoria, Colores } from '@/types';
 
 export default function ProductosPage() {
   const [activeCategory, setActiveCategory] = useState('todos');
   const [sortOrder, setSortOrder] = useState('');
-  const [displayedProducts, setDisplayedProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState<Producto[]>([]);
+  const [allProducts, setAllProducts] = useState<Producto[]>([]);
+  const [categoriesList, setCategoriesList] = useState<Categoria[]>([]);
   const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Para manejo de carga
+  const [isLoading, setIsLoading] = useState(true);
+  const [colores, setColores] = useState<Colores>({
+    primario: '#aad585',
+    secundario: '#68dad6',
+    acento1: '#f2bae0',
+    acento2: '#cba3d7',
+    textoOscuro: '#333333',
+    textoClaro: '#ffffff',
+    fondo: '#f8f9fa',
+    pastelLavanda: '#e6e6fa',
+    texto: '#333333',
+    pastelVerde: '#d8f3dc'  // Añadimos el color pastelVerde que estaba faltando
+  });
   
-  // Extraer colores de la paleta
-  const colores = extractColorsFromPalette(paletaColores);
+  // Cargar datos de Firebase
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      
+      try {
+        // Cargar colores, productos y categorías en paralelo
+        const [coloresData, productosData, categoriasData] = await Promise.all([
+          getColores(),
+          getProductos(),
+          getCategorias()
+        ]);
+        
+        if (coloresData) {
+          setColores({
+            ...coloresData,
+            pastelLavanda: '#e6e6fa',
+            texto: coloresData.textoOscuro,
+            pastelVerde: '#d8f3dc'  // Asegurarnos de que pastelVerde existe
+          });
+        }
+        
+        setAllProducts(productosData);
+        setCategoriesList(categoriasData);
+        
+      } catch (error) {
+        console.error("Error al cargar datos:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
+  // Filtrar y ordenar productos cuando cambian los filtros o datos
+  useEffect(() => {
+    // Si aún no tenemos productos, no hacer nada
+    if (allProducts.length === 0) return;
+    
+    try {
+      // Filtrar por categoría si es necesario
+      let filtered = activeCategory === 'todos' 
+        ? allProducts 
+        : allProducts.filter(product => product.categoria === activeCategory);
+      
+      // Ordenar productos según la selección
+      const sorted = [...filtered].sort((a, b) => {
+        if (sortOrder === 'price-asc') {
+          return (a.variantes[0]?.precio || 0) - (b.variantes[0]?.precio || 0);
+        }
+        if (sortOrder === 'price-desc') {
+          return (b.variantes[0]?.precio || 0) - (a.variantes[0]?.precio || 0);
+        }
+        if (sortOrder === 'name') {
+          return a.nombre.localeCompare(b.nombre);
+        }
+        if (sortOrder === 'destacados') {
+          return (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0);
+        }
+        // Por defecto, mostrar destacados primero
+        return (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0);
+      });
+      
+      // Establecer los productos a mostrar
+      setDisplayedProducts(sorted);
+      
+      // Activar la animación de aparición
+      setIsVisible(true);
+      
+    } catch (error) {
+      console.error("Error al procesar productos:", error);
+      setDisplayedProducts([]);
+    }
+  }, [allProducts, activeCategory, sortOrder]);
   
   // Categorías para el filtro
   const categories = [
     { id: 'todos', nombre: 'Todos los productos' },
-    ...catalogoData.categorias
+    ...categoriesList
   ];
-  
-  useEffect(() => {
-    // Indicar que estamos cargando
-    setIsLoading(true);
-    
-    // Pequeño retraso para asegurar que el DOM esté listo
-    setTimeout(() => {
-      try {
-        // Obtener todos los productos del catálogo
-        const allProducts = catalogoData.productos || [];
-        console.log(`Total productos en catálogo: ${allProducts.length}`);
-        
-        // Filtrar por categoría si es necesario
-        let filtered = activeCategory === 'todos' 
-          ? allProducts 
-          : allProducts.filter(product => product.categoria === activeCategory);
-        
-        console.log(`Productos filtrados para categoría ${activeCategory}: ${filtered.length}`);
-        
-        // Ordenar productos según la selección
-        const sorted = [...filtered].sort((a, b) => {
-          if (sortOrder === 'price-asc') return a.variantes[0].precio - b.variantes[0].precio;
-          if (sortOrder === 'price-desc') return b.variantes[0].precio - a.variantes[0].precio;
-          if (sortOrder === 'name') return a.nombre.localeCompare(b.nombre);
-          if (sortOrder === 'destacados') return (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0);
-          // Por defecto, mostrar destacados primero
-          return (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0);
-        });
-        
-        // Establecer los productos a mostrar
-        setDisplayedProducts(sorted);
-        
-        // Activar la animación de aparición
-        setIsVisible(true);
-        
-      } catch (error) {
-        console.error("Error al procesar productos:", error);
-        setDisplayedProducts([]);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 100);
-  }, [activeCategory, sortOrder]);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: colores.fondo }}>
@@ -144,7 +185,6 @@ export default function ProductosPage() {
 
       {/* Sección CTA */}
       <CallToAction colores={colores} />
-      {/* <Footers/> */}
     </div>
   );
 }

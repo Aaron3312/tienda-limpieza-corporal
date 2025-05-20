@@ -1,48 +1,57 @@
-"use client"
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import CustomImage from '@/components/CustomImage';
 import ProductCard from '@/components/productos/ProductCard';
-import { extractColorsFromPalette } from '@/utils/colorUtils';
-import paletaColores from '@/data/paleta-colores.json';
-import catalogoData from '@/data/productos.json';
+import { getProductosDestacados } from '@/services/firestore';
+import { getColores } from '@/services/firestore';
+import { getInformacionNegocio } from '@/services/firestore';
+import { Producto, Colores } from '@/types';
 import Footers from '@/components/layout/Footer';
-// Importamos el nuevo componente de Testimonios
+// Importamos el componente de Testimonios
 import Testimonios from '@/components/testimonios/Testimonios';
 
 export default function Home() {
-  const [displayedProducts, setDisplayedProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState<Producto[]>([]);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [colores, setColores] = useState<Colores>({
+    primario: '#aad585',
+    secundario: '#68dad6',
+    acento1: '#f2bae0',
+    acento2: '#cba3d7',
+    textoOscuro: '#333333',
+    textoClaro: '#ffffff',
+    fondo: '#f8f9fa',
+    pastelLavanda: '#e6e6fa',
+    texto: '#333333'
+  });
   
-  // Extraer colores de la paleta
-  const colores = extractColorsFromPalette(paletaColores);
-
   useEffect(() => {
     // Indicar que estamos cargando
     setIsLoading(true);
     
     // Pequeño retraso para asegurar que el DOM esté listo
-    setTimeout(() => {
+    setTimeout(async () => {
       try {
-        // Obtener productos destacados del catálogo
-        const allProducts = catalogoData.productos || [];
+        // Obtener colores de Firestore
+        const coloresData = await getColores();
+        if (coloresData) {
+          setColores({
+            ...coloresData,
+            pastelLavanda: '#e6e6fa', // Añadir si no existe
+            texto: coloresData.textoOscuro // Usar textoOscuro como texto si no existe
+          });
+        }
         
-        // Filtrar productos destacados
-        const destacados = allProducts.filter(product => product.destacado);
-        
-        // Si no hay suficientes destacados, agregar algunos productos más
-        let productsToShow = destacados.length >= 4 
-          ? destacados.slice(0, 4) 
-          : [...destacados, ...allProducts.filter(p => !p.destacado).slice(0, 4 - destacados.length)];
-        
-        // Establecer los productos a mostrar
-        setDisplayedProducts(productsToShow);
+        // Obtener productos destacados de Firestore
+        const destacados = await getProductosDestacados();
+        setDisplayedProducts(destacados);
         
         // Activar la animación de aparición
         setIsVisible(true);
-        
       } catch (error) {
         console.error("Error al procesar productos:", error);
         setDisplayedProducts([]);
@@ -247,7 +256,6 @@ export default function Home() {
       <Testimonios colores={colores} />
 
       {/* Redes sociales y Footer */}
-      {/* <Footers/> */}
           
     </div>
   );
