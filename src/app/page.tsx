@@ -37,14 +37,7 @@ export default function Home() {
     setTimeout(async () => {
       try {
         // Obtener colores de Firestore
-        const coloresData = await getColores();
-        if (coloresData) {
-          setColores({
-            ...coloresData,
-            pastelLavanda: '#e6e6fa', // Añadir si no existe
-            texto: coloresData.textoOscuro // Usar textoOscuro como texto si no existe
-          });
-        }
+
         
         // Obtener productos destacados de Firestore
         const destacados = await getProductosDestacados();

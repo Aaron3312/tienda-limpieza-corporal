@@ -46,14 +46,14 @@ export default function ProductosPage() {
           getCategorias()
         ]);
         
-        if (coloresData) {
-          setColores({
-            ...coloresData,
-            pastelLavanda: '#e6e6fa',
-            texto: coloresData.textoOscuro,
-            pastelVerde: '#d8f3dc'  // Asegurarnos de que pastelVerde existe
-          });
-        }
+        // if (coloresData) {
+        //   setColores({
+        //     ...coloresData,
+        //     pastelLavanda: '#e6e6fa',
+        //     texto: coloresData.textoOscuro,
+        //     pastelVerde: '#d8f3dc'  // Asegurarnos de que pastelVerde existe
+        //   });
+        // }
         
         setAllProducts(productosData);
         setCategoriesList(categoriasData);
