@@ -11,11 +11,13 @@ export default function CallToAction({ colores }: { colores: Colores }) {
           <span className="block text-sm mt-2 opacity-90">Haz tu pedido hoy y recibe un regalo especial.</span>
         </h2>
         <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-          <Link href="/contacto" legacyBehavior>
-            <a className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md shadow-sm transition-colors duration-300" 
-               style={{ backgroundColor: colores.textoClaro, color: colores.acento1 }}>
+          <Link
+            href="/contacto"
+            className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md shadow-sm transition-colors duration-300"
+            style={{ backgroundColor: colores.textoClaro, color: colores.acento1 }}>
+            
               Contáctanos
-            </a>
+            
           </Link>
           <div className="ml-3">
             <a href="#" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md shadow-sm transition-colors duration-300" 
