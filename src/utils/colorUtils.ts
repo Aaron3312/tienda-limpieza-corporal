@@ -3,7 +3,8 @@
  * @param {Object} paletaColores - Objeto con la paleta de colores
  * @returns {Object} Objeto con los colores organizados para usar en la aplicación
  */
-export function extractColorsFromPalette(paletaColores: Record<string, unknown> | null | undefined) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function extractColorsFromPalette(paletaColores: any) {
   if (!paletaColores) {
     return {
       primario: "#aad585",

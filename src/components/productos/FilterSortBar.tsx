@@ -1,14 +1,16 @@
-// src/components/productos/FilterSortBar.jsx
 import React from 'react';
+import { Colores } from '@/types';
 
-export default function FilterSortBar({ 
-  categories, 
-  activeCategory, 
-  setActiveCategory, 
-  sortOrder, 
-  setSortOrder, 
-  colores 
-}) {
+interface FilterSortBarProps {
+  categories: { id: string; nombre: string }[];
+  activeCategory: string;
+  setActiveCategory: (cat: string) => void;
+  sortOrder: string;
+  setSortOrder: (order: string) => void;
+  colores: Colores;
+}
+
+export default function FilterSortBar({ categories, activeCategory, setActiveCategory, sortOrder, setSortOrder, colores }: FilterSortBarProps) {
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 space-y-4 md:space-y-0">
       {/* Filtros por categoría */}

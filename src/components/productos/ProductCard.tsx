@@ -3,12 +3,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Colores, Producto } from '@/types';
 
-export default function ProductCard({ product, index, isVisible, colores }) {
-  // Manejo de imágenes con fallback por si la ruta no existe
-  const handleImageError = (e) => {
-    e.target.src = '/images/placeholder-product.png'; // Imagen de respaldo
-    e.target.onerror = null; // Prevenir bucle infinito
+export default function ProductCard({ product, index, isVisible, colores }: { product: Producto; index: number; isVisible: boolean; colores: Colores }) {
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = '/images/placeholder-product.png';
+    e.currentTarget.onerror = null;
   };
 
   // Verificación para evitar errores si falta alguna propiedad

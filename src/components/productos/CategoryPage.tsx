@@ -49,7 +49,7 @@ export default function CategoryPage() {
     
     // Buscar la categoría en el catálogo
     const foundCategory = catalogoData.categorias.find(c => c.id === categoryId);
-    setCategory(foundCategory);
+    setCategory(foundCategory ?? null);
     
     // Indicar que estamos cargando
     setIsLoading(true);

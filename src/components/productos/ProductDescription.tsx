@@ -1,9 +1,9 @@
-// src/components/productos/ProductDescription.jsx
 "use client"
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Colores } from '@/types';
 
-export default function ProductDescription({ colores }) {
+export default function ProductDescription({ colores }: { colores: Colores }) {
   return (
     <div className="text-center mb-16">
       <motion.h2 

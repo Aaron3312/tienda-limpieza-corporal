@@ -1,6 +1,7 @@
 import React from 'react';
+import { Colores } from '@/types';
 
-export default function EmptyState({ setActiveCategory, colores }) {
+export default function EmptyState({ setActiveCategory, colores }: { setActiveCategory: (cat: string) => void; colores: Colores }) {
   return (
     <div className="text-center py-12 bg-white rounded-lg shadow-sm p-8">
       <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: colores.acento1 }}>

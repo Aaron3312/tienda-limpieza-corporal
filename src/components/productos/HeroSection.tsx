@@ -1,10 +1,10 @@
-// src/components/productos/HeroSection.jsx
 "use client"
 import React from 'react';
 import { motion } from 'framer-motion';
 import CustomImage from '@/components/CustomImage';
+import { Colores } from '@/types';
 
-export default function HeroSection({ colores }) {
+export default function HeroSection({ colores, categoryTitle }: { colores: Colores; categoryTitle?: string }) {
   return (
     <div className="relative" style={{ backgroundColor: colores.acento1 }}>
       <div className="absolute inset-0">
