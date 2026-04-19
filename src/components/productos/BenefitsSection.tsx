@@ -1,8 +1,9 @@
 "use client"
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Colores } from '@/types';
 
-export default function BenefitsSection({ colores }) {
+export default function BenefitsSection({ colores }: { colores: Colores }) {
   return (
     <div style={{ backgroundColor: colores.pastelVerde }}>
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-20 lg:px-8">

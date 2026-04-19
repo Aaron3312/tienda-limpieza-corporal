@@ -1,8 +1,9 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Colores } from '@/types';
 
-const Testimonios = ({ colores }) => {
+const Testimonios = ({ colores }: { colores: Colores }) => {
   // Estado para controlar el índice inicial visible
   const [startIndex, setStartIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -71,7 +72,7 @@ const Testimonios = ({ colores }) => {
   };
   
   // Ir a un índice específico
-  const goToIndex = (index) => {
+  const goToIndex = (index: number) => {
     setStartIndex(index);
   };
   

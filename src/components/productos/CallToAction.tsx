@@ -1,8 +1,8 @@
-// src/components/productos/CallToAction.jsx
 import React from 'react';
 import Link from 'next/link';
+import { Colores } from '@/types';
 
-export default function CallToAction({ colores }) {
+export default function CallToAction({ colores }: { colores: Colores }) {
   return (
     <div style={{ backgroundColor: colores.acento1 }}>
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">

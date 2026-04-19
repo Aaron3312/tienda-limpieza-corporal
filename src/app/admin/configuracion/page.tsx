@@ -86,7 +86,7 @@ export default function ConfiguracionPage() {
       setFormData(prev => ({
         ...prev,
         [parent]: {
-          ...prev[parent as keyof InformacionNegocio],
+          ...(prev[parent as keyof InformacionNegocio] as unknown as Record<string, unknown>),
           [child]: value
         }
       }));
@@ -109,7 +109,7 @@ export default function ConfiguracionPage() {
         contacto: {
           ...prev.contacto,
           [parent]: {
-            ...prev.contacto[parent as keyof typeof prev.contacto],
+            ...(prev.contacto[parent as keyof typeof prev.contacto] as unknown as Record<string, unknown>),
             [child]: value
           }
         }

@@ -7,25 +7,8 @@ import CustomImage from '@/components/CustomImage';
 import { Colores, InformacionNegocio } from '@/types';
 import { Instagram, Facebook } from 'lucide-react';
 
-// Importaciones condicionales de Firebase (solo se usarán en el cliente)
-let useFirebase;
-let firestore;
-
-// Esta es una solución para evitar el error "Can't resolve '@/lib/clientFirebase'" durante la generación estática
-if (typeof window !== 'undefined') {
-  // Importación dinámica solo en el cliente
-  try {
-    // Intentamos importar Firebase solo en el cliente
-    import('@/lib/clientFirebase').then(module => {
-      useFirebase = module.useFirebase;
-    });
-    import('firebase/firestore').then(module => {
-      firestore = module;
-    });
-  } catch (error) {
-    console.error('Error al importar Firebase:', error);
-  }
-}
+import { firestore } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 interface ClientNosotrosPageProps {
   initialData: InformacionNegocio;
@@ -35,46 +18,23 @@ interface ClientNosotrosPageProps {
 export default function ClientNosotrosPage({ initialData, colores }: ClientNosotrosPageProps) {
   const [informacion, setInformacion] = useState<InformacionNegocio>(initialData);
   const [loading, setLoading] = useState(false);
-  const [firebaseLoaded, setFirebaseLoaded] = useState(false);
-  
-  // Intentar obtener datos actualizados de Firebase en el cliente
   useEffect(() => {
-    // Solo ejecutar en el navegador
-    if (typeof window === 'undefined') {
-      return;
-    }
-
     const fetchFirebaseData = async () => {
-      // Si no tenemos las funciones de Firebase, no intentamos la actualización
-      if (!useFirebase || !firestore) {
-        return;
-      }
-      
       try {
         setLoading(true);
-        const { firestore: fs } = useFirebase();
-        if (!fs) return;
-        
-        const infoRef = firestore.doc(fs, 'configuracion', 'informacionNegocio');
-        const snapshot = await firestore.getDoc(infoRef);
-        
+        const infoRef = doc(firestore, 'configuracion', 'informacionNegocio');
+        const snapshot = await getDoc(infoRef);
         if (snapshot.exists()) {
           setInformacion(snapshot.data() as InformacionNegocio);
         }
       } catch (error) {
         console.error('Error al obtener información del negocio:', error);
-        // Si hay un error, mantenemos los datos iniciales
       } finally {
         setLoading(false);
       }
     };
-    
-    // Esperamos un poco para asegurar que la importación dinámica se complete
-    const timer = setTimeout(() => {
-      fetchFirebaseData();
-    }, 1000);
-    
-    return () => clearTimeout(timer);
+
+    fetchFirebaseData();
   }, []);
 
   const fadeIn = {

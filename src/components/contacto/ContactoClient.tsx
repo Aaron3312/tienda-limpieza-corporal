@@ -5,31 +5,8 @@ import Image from 'next/image';
 import CustomImage from '@/components/CustomImage';
 import { Colores, InformacionNegocio } from '@/types';
 
-// Variables para Firebase
-let firebaseLoaded = false;
-let firestore;
-let doc;
-let getDoc;
-
-// Intentar cargar Firebase solo en el cliente
-if (typeof window !== 'undefined') {
-  // Cargamos dinámicamente Firebase para evitar errores en tiempo de compilación
-  import('firebase/firestore').then(module => {
-    doc = module.doc;
-    getDoc = module.getDoc;
-    firebaseLoaded = true;
-  }).catch(error => {
-    console.error('Error cargando Firebase:', error);
-  });
-
-  // Cargamos la configuración de Firebase
-  import('@/lib/clientFirebase').then(module => {
-    const { firestore: fs } = module.useFirebase();
-    firestore = fs;
-  }).catch(error => {
-    console.error('Error cargando clientFirebase:', error);
-  });
-}
+import { firestore } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 interface ContactoClientProps {
   initialData: InformacionNegocio;
@@ -47,23 +24,12 @@ export default function ContactoClient({ initialData, colores }: ContactoClientP
 
     // Configuramos un temporizador para dar tiempo a la carga de Firebase
     const timer = setTimeout(async () => {
-      if (!firebaseLoaded || !firestore || !doc || !getDoc) {
-        console.log('Firebase aún no está listo');
-        return;
-      }
-
       try {
         setLoading(true);
-        console.log('Intentando obtener datos de Firebase...');
-        
         const infoRef = doc(firestore, 'configuracion', 'informacionNegocio');
         const snapshot = await getDoc(infoRef);
-        
         if (snapshot.exists()) {
-          console.log('Datos obtenidos de Firebase');
           setInformacion(snapshot.data() as InformacionNegocio);
-        } else {
-          console.log('No se encontraron datos en Firebase');
         }
       } catch (error) {
         console.error('Error al obtener datos de Firebase:', error);

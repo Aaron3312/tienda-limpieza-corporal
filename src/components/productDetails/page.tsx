@@ -8,17 +8,18 @@ import catalogoData from '@/data/productos.json';
 import BenefitsSection from '@/components/productos/BenefitsSection';
 import TestimonialsSection from '@/components/productos/TestimonialsSection';
 import CallToAction from '@/components/productos/CallToAction';
+import { Producto, Variante } from '@/types';
 
 export default function ProductDetailsPage() {
   const router = useRouter();
   const { productId } = useParams();
-  const [product, setProduct] = useState(null);
-  const [selectedVariant, setSelectedVariant] = useState(null);
-  const [selectedVariety, setSelectedVariety] = useState(null);
+  const [product, setProduct] = useState<Producto | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState<Variante | null>(null);
+  const [selectedVariety, setSelectedVariety] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [error, setError] = useState<string | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Producto[]>([]);
 
   // Extraer colores de la paleta
   const colores = extractColorsFromPalette(paletaColores);
@@ -57,15 +58,15 @@ export default function ProductDetailsPage() {
     }
   }, [productId]);
 
-  const handleVariantChange = (variant) => {
+  const handleVariantChange = (variant: Variante) => {
     setSelectedVariant(variant);
   };
 
-  const handleVarietyChange = (variety) => {
+  const handleVarietyChange = (variety: string) => {
     setSelectedVariety(variety);
   };
 
-  const handleQuantityChange = (e) => {
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (value > 0) {
       setQuantity(value);
@@ -73,16 +74,14 @@ export default function ProductDetailsPage() {
   };
 
   const handleAddToCart = () => {
-    // Aquí agregamos la lógica para añadir al carrito
-    // Por ejemplo, usando un contexto o servicio de carrito
-    alert(`Añadido al carrito: ${product.nombre} - ${selectedVariant.nombre} - ${selectedVariety || 'Sin variedad'} - Cantidad: ${quantity}`);
+    alert(`Añadido al carrito: ${product?.nombre} - ${selectedVariant?.nombre} - ${selectedVariety || 'Sin variedad'} - Cantidad: ${quantity}`);
   };
 
   const handleGoBack = () => {
     router.back();
   };
 
-  const getCategoryName = (categoryId) => {
+  const getCategoryName = (categoryId: string) => {
     const category = catalogoData.categorias.find(c => c.id === categoryId);
     return category ? category.nombre : categoryId;
   };

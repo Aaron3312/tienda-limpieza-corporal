@@ -3,17 +3,17 @@
  * @param {Object} paletaColores - Objeto con la paleta de colores
  * @returns {Object} Objeto con los colores organizados para usar en la aplicación
  */
-export function extractColorsFromPalette(paletaColores) {
-  // Si la paleta está vacía o no existe, devolvemos colores por defecto
+export function extractColorsFromPalette(paletaColores: Record<string, unknown> | null | undefined) {
   if (!paletaColores) {
     return {
       primario: "#aad585",
       secundario: "#7aab53",
-      acento1: "#cba3d7", 
+      acento1: "#cba3d7",
       acento2: "#68dad6",
-      fondo: "#f8faf5",
+      textoOscuro: "#3d4d2c",
       texto: "#3d4d2c",
       textoClaro: "#ffffff",
+      fondo: "#f8faf5",
       pastelVerde: "#d6e9c1",
       pastelLavanda: "#e4d3ed"
     };
@@ -38,6 +38,7 @@ export function extractColorsFromPalette(paletaColores) {
     acento1: variacionesLavanda.lavandaBase || "#cba3d7",
     acento2: variacionesTurquesa.turquesaBase || "#68dad6",
     fondo: temaElegido.fondo || "#f8faf5",
+    textoOscuro: temaElegido.textoOscuro || "#3d4d2c",
     texto: temaElegido.textoOscuro || "#3d4d2c",
     textoClaro: temaElegido.textoClaro || "#ffffff",
     
@@ -67,19 +68,16 @@ export function extractColorsFromPalette(paletaColores) {
  * @param {number} factor - Factor de ajuste (0-1, donde <0.5 oscurece, >0.5 aclara)
  * @returns {string} Color ajustado en formato hexadecimal
  */
-export function adjustColor(color, factor = 0.2) {
-  // Eliminar el # si existe
+export function adjustColor(color: string, factor = 0.2) {
   color = color.replace('#', '');
-  
-  // Convertir a RGB
+
   const r = parseInt(color.substring(0, 2), 16);
   const g = parseInt(color.substring(2, 4), 16);
   const b = parseInt(color.substring(4, 6), 16);
-  
-  // Ajustar basado en el factor (oscurecer o aclarar)
-  const adjust = factor < 0.5 ? 
-    (c) => Math.max(0, Math.floor(c * (1 - Math.abs(factor - 0.5) * 2))) : 
-    (c) => Math.min(255, Math.floor(c + (255 - c) * (factor - 0.5) * 2));
+
+  const adjust = factor < 0.5 ?
+    (c: number) => Math.max(0, Math.floor(c * (1 - Math.abs(factor - 0.5) * 2))) :
+    (c: number) => Math.min(255, Math.floor(c + (255 - c) * (factor - 0.5) * 2));
   
   // Calcular nuevos valores RGB
   const newR = adjust(r);

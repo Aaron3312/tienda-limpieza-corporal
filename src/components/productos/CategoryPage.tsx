@@ -11,15 +11,16 @@ import CallToAction from '@/components/productos/CallToAction';
 import { extractColorsFromPalette } from '@/utils/colorUtils';
 import paletaColores from '@/data/paleta-colores.json';
 import catalogoData from '@/data/productos.json';
+import { Categoria, Producto } from '@/types';
 
 export default function CategoryPage() {
   const router = useRouter();
   const { categoryId } = useParams();
   const [sortOrder, setSortOrder] = useState('');
-  const [displayedProducts, setDisplayedProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState<Producto[]>([]);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState<Categoria | null>(null);
   
   // Extraer colores de la paleta
   const colores = extractColorsFromPalette(paletaColores);

@@ -1,9 +1,9 @@
-// src/components/productos/TestimonialsSection.jsx
 "use client"
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Colores } from '@/types';
 
-export default function TestimonialsSection({ colores }) {
+export default function TestimonialsSection({ colores }: { colores: Colores }) {
   return (
     <div style={{ backgroundColor: colores.fondo }}>
       <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
