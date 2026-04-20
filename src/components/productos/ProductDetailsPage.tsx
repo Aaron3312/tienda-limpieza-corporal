@@ -1,315 +1,264 @@
-"use client"
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { extractColorsFromPalette } from '@/utils/colorUtils';
-import paletaColores from '@/data/paleta-colores.json';
+import { gsap } from 'gsap';
 import catalogoData from '@/data/productos.json';
-import BenefitsSection from '@/components/productos/BenefitsSection';
-import TestimonialsSection from '@/components/productos/TestimonialsSection';
-import CallToAction from '@/components/productos/CallToAction';
-import { Producto, Variante } from '@/types';
+
+const C = {
+  bg:    '#F7F4EF',
+  dark:  '#1C2B12',
+  green: '#5C7A3E',
+  sage:  '#aad585',
+  muted: '#EDE8DF',
+  body:  '#5A5A5A',
+};
+
+type Product = typeof catalogoData.productos[0];
+type Variante = Product['variantes'][0];
 
 export default function ProductDetailsPage() {
-  const router = useRouter();
-  const params = useParams();
-  const productId = params?.productId;
+  const router   = useRouter();
+  const params   = useParams();
+  const ref      = useRef<HTMLDivElement>(null);
 
-  const [product, setProduct] = useState<Producto | null>(null);
-  const [selectedVariant, setSelectedVariant] = useState<Variante | null>(null);
-  const [selectedVariety, setSelectedVariety] = useState<string | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [relatedProducts, setRelatedProducts] = useState<Producto[]>([]);
-
-  // Extraer colores de la paleta
-  const colores = extractColorsFromPalette(paletaColores);
-  
-  // Definir colores por defecto para los textos en caso de que no estén bien definidos
-  const textColors = {
-    textoOscuro: colores.textoOscuro || '#333333',
-    textoClaro: colores.textoClaro || '#ffffff',
-    texto: colores.texto || '#4a4a4a',
-    acento1: colores.acento1 || '#f2bae0',
-    acento2: colores.acento2 || '#cba3d7',
-    primario: colores.primario || '#aad585',
-    secundario: colores.secundario || '#68dad6',
-    fondo: colores.fondo || '#f8f9fa'
-  };
+  const [product,       setProduct]       = useState<Product | null>(null);
+  const [selectedVar,   setSelectedVar]   = useState<Variante | null>(null);
+  const [selectedVty,   setSelectedVty]   = useState<string | null>(null);
+  const [related,       setRelated]       = useState<Product[]>([]);
+  const [imgError,      setImgError]      = useState(false);
 
   useEffect(() => {
-    if (!productId) return;
-
-    try {
-      // Buscar el producto en el catálogo
-      const foundProduct = catalogoData.productos.find(p => p.id === productId);
-      
-      if (foundProduct) {
-        setProduct(foundProduct);
-        // Establecer la primera variante como seleccionada por defecto
-        if (foundProduct.variantes && foundProduct.variantes.length > 0) {
-          setSelectedVariant(foundProduct.variantes[0]);
-        }
-        // Establecer la primera variedad como seleccionada por defecto
-        if (foundProduct.variedades && foundProduct.variedades.length > 0) {
-          setSelectedVariety(foundProduct.variedades[0]);
-        }
-
-        // Buscar productos relacionados (misma categoría)
-        const related = catalogoData.productos
-          .filter(p => p.categoria === foundProduct.categoria && p.id !== productId)
-          .slice(0, 3); // Limitar a 3 productos relacionados
-        setRelatedProducts(related);
-      } else {
-        setError('Producto no encontrado');
-      }
-    } catch (err) {
-      console.error('Error al cargar el producto:', err);
-      setError('Error al cargar los detalles del producto');
-    } finally {
-      setLoading(false);
+    const id = params?.productId as string;
+    if (!id) return;
+    const found = catalogoData.productos.find(p => p.id === id) ?? null;
+    setProduct(found);
+    if (found) {
+      setSelectedVar(found.variantes[0] ?? null);
+      setSelectedVty(found.variedades[0] ?? null);
+      setRelated(
+        catalogoData.productos.filter(p => p.categoria === found.categoria && p.id !== id).slice(0, 3)
+      );
     }
-  }, [productId]);
+  }, [params]);
 
-  const handleVariantChange = (variant: Variante) => {
-    setSelectedVariant(variant);
-  };
+  useEffect(() => {
+    if (!product || !ref.current) return;
+    gsap.fromTo('.pd-in',
+      { opacity: 0, y: 28 },
+      { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.1, delay: 0.05 });
+  }, [product]);
 
-  const handleVarietyChange = (variety: string) => {
-    setSelectedVariety(variety);
-  };
-
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (value > 0) {
-      setQuantity(value);
-    }
-  };
-
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  const getCategoryName = (categoryId: string) => {
-    const category = catalogoData.categorias.find(c => c.id === categoryId);
-    return category ? category.nombre : categoryId;
-  };
-
-  // Componente para manejar imágenes con fallback
-  const ProductImage = ({ src, alt }: { src: string; alt: string }) => {
-    const [imgSrc, setImgSrc] = useState(src || '/images/shared/placeholder-product.png');
-    
-    return (
-      <div className="relative w-full h-full">
-        <img 
-          src={imgSrc}
-          alt={alt} 
-          className="w-full h-full object-cover object-center"
-          onError={() => setImgSrc('/images/shared/placeholder-product.png')}
-        />
+  if (!product) return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: C.bg }}>
+      <div className="text-center">
+        <p className="font-serif text-xl mb-4" style={{ color: C.dark }}>Producto no encontrado</p>
+        <Link href="/productos" className="text-sm underline" style={{ color: C.green }}>← Ver todos los productos</Link>
       </div>
-    );
-  };
+    </div>
+  );
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: textColors.fondo }}>
-        <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-r-transparent" style={{ color: textColors.acento1 }}></div>
-        <p className="ml-4 text-black font-medium">Cargando producto...</p>
-      </div>
-    );
-  }
-
-  if (error || !product) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ backgroundColor: textColors.fondo }}>
-        <h1 className="text-3xl font-bold mb-4 text-black">{error || 'Producto no encontrado'}</h1>
-        <p className="mb-6 text-black">Lo sentimos, no pudimos encontrar el producto que estás buscando.</p>
-        <button 
-          onClick={handleGoBack}
-          className="px-6 py-2 rounded-md font-medium text-black"
-          style={{ backgroundColor: textColors.acento1 }}
-        >
-          Volver a Productos
-        </button>
-      </div>
-    );
-  }
+  const catName = catalogoData.categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
+  const imgSrc  = imgError ? '/images/shared/placeholder-product.png' : product.imagen;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: textColors.fondo }}>
-      {/* Breadcrumb */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <nav className="flex text-black">
-          <Link href="/" className="hover:underline">Inicio</Link>
-          <span className="mx-2">/</span>
-          <Link href="/productos" className="hover:underline">Productos</Link>
-          <span className="mx-2">/</span>
-          <Link href={`/productos/categorias/${product.categoria}`} className="hover:underline">
-            {getCategoryName(product.categoria)}
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="font-semibold">{product.nombre}</span>
-        </nav>
-      </div>
+    <div ref={ref} style={{ backgroundColor: C.bg, minHeight: '100vh' }}>
 
-      {/* Detalles del producto */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Columna Izquierda - Imagen */}
-          <div className="relative h-96 md:h-auto rounded-xl overflow-hidden shadow-lg bg-white">
-            <ProductImage 
-              src={product.imagen}
-              alt={product.nombre}
-            />
+      {/* ── breadcrumb ── */}
+      <nav className="pd-in px-6 sm:px-14 lg:px-20 xl:px-24 pt-6 pb-0
+                      flex items-center gap-2 text-[11px] font-medium"
+        style={{ color: 'rgba(0,0,0,0.35)' }}>
+        <Link href="/" className="hover:underline">Inicio</Link>
+        <span>/</span>
+        <Link href="/productos" className="hover:underline">Productos</Link>
+        <span>/</span>
+        <span style={{ color: C.dark }}>{product.nombre}</span>
+      </nav>
+
+      {/* ── main: image + info ── */}
+      <section className="px-6 sm:px-14 lg:px-20 xl:px-24 pt-10 pb-16 sm:pb-20">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-start">
+
+          {/* image */}
+          <div className="pd-in sticky top-24 rounded-3xl overflow-hidden shadow-xl
+                          aspect-square relative"
+            style={{ backgroundColor: C.muted }}>
+            <Image src={imgSrc} alt={product.nombre} fill
+              className="object-cover" onError={() => setImgError(true)} />
             {product.destacado && (
-              <div 
-                className="absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium" 
-                style={{ backgroundColor: textColors.acento2, color: textColors.textoClaro }}
-              >
-                Destacado
+              <div className="absolute top-5 left-5 rounded-full px-3 py-1.5
+                              text-[10px] font-bold uppercase tracking-wider"
+                style={{ backgroundColor: C.sage, color: C.dark }}>
+                Favorito
               </div>
             )}
           </div>
 
-          {/* Columna Derecha - Información */}
+          {/* info */}
           <div className="flex flex-col">
-            <h1 className="text-3xl font-bold mb-2 text-black">{product.nombre}</h1>
-            <div className="mb-4 px-3 py-1 rounded-full inline-block w-fit text-sm text-black" 
-                 style={{ backgroundColor: textColors.primario }}>
-              {getCategoryName(product.categoria)}
-            </div>
-            <p className="mb-6 text-lg text-black">{product.descripcion}</p>
+            <p className="pd-in text-[10px] font-semibold uppercase tracking-[0.24em] mb-3"
+              style={{ color: C.green }}>{catName}</p>
 
-            {/* Selección de variante */}
-            {product.variantes && product.variantes.length > 0 && (
-              <div className="mb-6">
-                <h3 className="text-lg font-medium mb-2 text-black">Presentación:</h3>
+            <h1 className="pd-in font-serif font-bold leading-tight mb-4"
+              style={{ fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', color: C.dark }}>
+              {product.nombre}
+            </h1>
+
+            <p className="pd-in text-base leading-relaxed mb-8" style={{ color: C.body }}>
+              {product.descripcion}
+            </p>
+
+            {/* variantes */}
+            {product.variantes.length > 1 && (
+              <div className="pd-in mb-6">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] mb-3"
+                  style={{ color: C.green }}>Presentación</p>
                 <div className="flex flex-wrap gap-2">
-                  {product.variantes.map((variant) => (
-                    <button
-                      key={variant.id}
-                      onClick={() => handleVariantChange(variant)}
-                      className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors ${
-                        selectedVariant?.id === variant.id ? 'border-transparent text-black' : 'border-gray-300 text-black'
-                      }`}
-                      style={{ 
-                        backgroundColor: selectedVariant?.id === variant.id ? textColors.secundario : 'transparent'
-                      }}
-                    >
-                      {variant.nombre}
+                  {product.variantes.map(v => (
+                    <button key={v.id} onClick={() => setSelectedVar(v)}
+                      className="px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200"
+                      style={{
+                        backgroundColor: selectedVar?.id === v.id ? C.dark : 'transparent',
+                        color:           selectedVar?.id === v.id ? '#fff'  : C.dark,
+                        borderColor:     selectedVar?.id === v.id ? C.dark  : 'rgba(0,0,0,0.18)',
+                      }}>
+                      {v.tamano ?? v.nombre}
                     </button>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Selección de variedad/aroma */}
-            {product.variedades && product.variedades.length > 0 && (
-              <div className="mb-6">
-                <h3 className="text-lg font-medium mb-2 text-black">Variedad:</h3>
+            {/* variedades */}
+            {product.variedades.length > 0 && (
+              <div className="pd-in mb-8">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] mb-3"
+                  style={{ color: C.green }}>
+                  Variedad · {selectedVty}
+                </p>
                 <div className="flex flex-wrap gap-2">
-                  {product.variedades.map((variety) => (
-                    <button
-                      key={variety}
-                      onClick={() => handleVarietyChange(variety)}
-                      className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors text-black ${
-                        selectedVariety === variety ? 'border-transparent' : 'border-gray-300'
-                      }`}
-                      style={{ 
-                        backgroundColor: selectedVariety === variety ? textColors.acento1 : 'transparent'
-                      }}
-                    >
-                      {variety}
+                  {product.variedades.map(v => (
+                    <button key={v} onClick={() => setSelectedVty(v)}
+                      className="px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200"
+                      style={{
+                        backgroundColor: selectedVty === v ? C.sage  : 'transparent',
+                        color:           selectedVty === v ? C.dark  : C.body,
+                        borderColor:     selectedVty === v ? C.sage  : 'rgba(0,0,0,0.14)',
+                      }}>
+                      {v}
                     </button>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Precio y cantidad */}
-            <div className="mb-8">
-              <div className="flex items-baseline gap-2 mb-4">
-              </div>
-
-              <div className="flex items-center gap-6">
-
-
-              </div>
+            {/* CTA */}
+            <div className="pd-in flex flex-col sm:flex-row gap-3 mb-10">
+              <a href="https://www.instagram.com/soloparaeva/"
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
+                           font-semibold text-sm text-white transition-all duration-300 hover:-translate-y-px hover:shadow-xl"
+                style={{ backgroundColor: C.dark }}>
+                Pedir por Instagram
+              </a>
+              <a href="https://www.facebook.com/share/18kSRN2JWi/"
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
+                           font-semibold text-sm border-2 transition-all duration-300 hover:-translate-y-px"
+                style={{ borderColor: C.dark, color: C.dark }}>
+                Pedir por Facebook
+              </a>
             </div>
 
-            {/* Información adicional */}
-            <div className="border-t border-gray-200 pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h3 className="text-lg font-medium mb-2 text-black">Detalles:</h3>
-                  <ul className="list-disc list-inside space-y-1 text-black">
-                    <li>Producto 100% natural</li>
-                    <li>Elaborado artesanalmente</li>
-                    <li>Libre de químicos nocivos</li>
-                    <li>No testado en animales</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium mb-2 text-black">Beneficios:</h3>
-                  <ul className="list-disc list-inside space-y-1 text-black">
-                    <li>Cuida tu piel y tu salud</li>
-                    <li>Respeta el medio ambiente</li>
-                    <li>Productos de larga duración</li>
-                    <li>Apoya a emprendedores locales</li>
-                  </ul>
-                </div>
+            {/* detalles + beneficios */}
+            <div className="pd-in grid sm:grid-cols-2 gap-6 pt-8 border-t"
+              style={{ borderColor: 'rgba(0,0,0,0.08)' }}>
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] mb-3"
+                  style={{ color: C.green }}>Detalles</p>
+                <ul className="space-y-2 text-sm" style={{ color: C.body }}>
+                  {['100% natural', 'Elaborado artesanalmente', 'Sin químicos nocivos', 'No testado en animales'].map(d => (
+                    <li key={d} className="flex items-center gap-2">
+                      <span style={{ color: C.sage }}>✓</span> {d}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] mb-3"
+                  style={{ color: C.green }}>Beneficios</p>
+                <ul className="space-y-2 text-sm" style={{ color: C.body }}>
+                  {['Cuida tu piel y tu salud', 'Respeta el medio ambiente', 'Larga duración', 'Apoya emprendedores locales'].map(b => (
+                    <li key={b} className="flex items-center gap-2">
+                      <span style={{ color: C.sage }}>✓</span> {b}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Productos relacionados */}
-      {relatedProducts.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h2 className="text-2xl font-bold mb-6 text-black">Productos relacionados</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {relatedProducts.map((related) => (
-              <Link href={`/productos/${related.id}`} key={related.id} className="bg-white rounded-xl overflow-hidden shadow-md transition-transform hover:scale-105 block">
-                <div className="relative h-48">
-                  <ProductImage 
-                    src={related.imagen} 
-                    alt={related.nombre}
-                  />
-                  {related.destacado && (
-                    <div 
-                      className="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium" 
-                      style={{ backgroundColor: textColors.acento2, color: textColors.textoClaro }}
-                    >
-                      Destacado
-                    </div>
-                  )}
-                </div>
-                <div className="p-4">
-                  <h3 className="font-medium text-lg mb-1 text-black">{related.nombre}</h3>
-                  <p className="text-sm mb-2 line-clamp-2 text-black">{related.descripcion}</p>
-                  <div className="flex justify-between items-center">
-                    <span 
-                      className="px-3 py-1 rounded text-sm font-medium text-black"
-                      style={{ backgroundColor: textColors.primario }}
-                    >
-                      Ver detalles
+      {/* ── relacionados ── */}
+      {related.length > 0 && (
+        <section style={{ backgroundColor: C.muted }}
+          className="px-6 sm:px-14 lg:px-20 xl:px-24 py-14 sm:py-20">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center gap-4 mb-10">
+              <div className="h-px w-8 flex-shrink-0" style={{ backgroundColor: C.green }} />
+              <p className="text-[10px] font-semibold uppercase tracking-[0.26em]"
+                style={{ color: C.green }}>También te puede gustar</p>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {related.map(p => (
+                <Link key={p.id} href={`/productos/${p.id}`}
+                  className="group flex flex-col overflow-hidden rounded-2xl bg-white
+                             transition-shadow duration-300 hover:shadow-lg">
+                  <div className="relative aspect-square overflow-hidden"
+                    style={{ backgroundColor: C.muted }}>
+                    <Image src={p.imagen} alt={p.nombre} fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.05]" />
+                  </div>
+                  <div className="p-4">
+                    <p className="text-[10px] uppercase tracking-[0.2em] mb-1 font-semibold"
+                      style={{ color: C.green }}>
+                      {catalogoData.categorias.find(c => c.id === p.categoria)?.nombre}
+                    </p>
+                    <h3 className="font-serif font-semibold text-sm leading-snug mb-3"
+                      style={{ color: C.dark }}>{p.nombre}</h3>
+                    <span className="text-xs font-semibold flex items-center gap-1
+                                     transition-all duration-300 group-hover:gap-2"
+                      style={{ color: C.green }}>
+                      Ver más →
                     </span>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
       )}
 
-      {/* Secciones adicionales */}
-      <BenefitsSection colores={colores} />
-      <TestimonialsSection colores={colores} />
-      <CallToAction colores={colores} />
+      {/* ── back ── */}
+      <div className="px-6 sm:px-14 lg:px-20 xl:px-24 py-10 sm:py-14">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <button onClick={() => router.back()}
+            className="text-sm font-medium flex items-center gap-2 hover:gap-3 transition-all duration-200"
+            style={{ color: C.green }}>
+            ← Volver
+          </button>
+          <Link href="/productos"
+            className="text-sm font-medium underline underline-offset-2"
+            style={{ color: C.body }}>
+            Ver catálogo completo
+          </Link>
+        </div>
+      </div>
+
     </div>
   );
 }
