@@ -1,190 +1,174 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import HeroSection from '@/components/productos/HeroSection';
-import ProductDescription from '@/components/productos/ProductDescription';
-import FilterSortBar from '@/components/productos/FilterSortBar';
-import ProductCard from '@/components/productos/ProductCard';
-import EmptyState from '@/components/productos/EmptyState';
-import BenefitsSection from '@/components/productos/BenefitsSection';
-import CallToAction from '@/components/productos/CallToAction';
-import Testimonios from '@/components/testimonios/Testimonios';
-import { getProductos, getCategorias, getColores } from '@/services/firestore';
-import { Producto, Categoria, Colores } from '@/types';
+import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { gsap } from 'gsap';
+import catalogoData from '@/data/productos.json';
 
-export default function ProductosPage() {
-  const [activeCategory, setActiveCategory] = useState('todos');
-  const [sortOrder, setSortOrder] = useState('');
-  const [displayedProducts, setDisplayedProducts] = useState<Producto[]>([]);
-  const [allProducts, setAllProducts] = useState<Producto[]>([]);
-  const [categoriesList, setCategoriesList] = useState<Categoria[]>([]);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [colores, setColores] = useState<Colores>({
-    primario: '#aad585',
-    secundario: '#68dad6',
-    acento1: '#f2bae0',
-    acento2: '#cba3d7',
-    textoOscuro: '#333333',
-    textoClaro: '#ffffff',
-    fondo: '#f8f9fa',
-    pastelLavanda: '#e6e6fa',
-    texto: '#333333',
-    pastelVerde: '#d8f3dc'  // Añadimos el color pastelVerde que estaba faltando
-  });
-  
-  // Cargar datos de Firebase
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      
-      try {
-        // Cargar colores, productos y categorías en paralelo
-        const [coloresData, productosData, categoriasData] = await Promise.all([
-          getColores(),
-          getProductos(),
-          getCategorias()
-        ]);
-        
-        // if (coloresData) {
-        //   setColores({
-        //     ...coloresData,
-        //     pastelLavanda: '#e6e6fa',
-        //     texto: coloresData.textoOscuro,
-        //     pastelVerde: '#d8f3dc'  // Asegurarnos de que pastelVerde existe
-        //   });
-        // }
-        
-        setAllProducts(productosData);
-        setCategoriesList(categoriasData);
-        
-      } catch (error) {
-        console.error("Error al cargar datos:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+const C = {
+  bg:    '#F7F4EF',
+  dark:  '#1C2B12',
+  green: '#5C7A3E',
+  sage:  '#aad585',
+  muted: '#EDE8DF',
+  body:  '#5A5A5A',
+};
 
-    fetchData();
-  }, []);
-  
-  // Filtrar y ordenar productos cuando cambian los filtros o datos
-  useEffect(() => {
-    // Si aún no tenemos productos, no hacer nada
-    if (allProducts.length === 0) return;
-    
-    try {
-      // Filtrar por categoría si es necesario
-      let filtered = activeCategory === 'todos' 
-        ? allProducts 
-        : allProducts.filter(product => product.categoria === activeCategory);
-      
-      // Ordenar productos según la selección
-      const sorted = [...filtered].sort((a, b) => {
-        if (sortOrder === 'price-asc') {
-          return (a.variantes[0]?.precio || 0) - (b.variantes[0]?.precio || 0);
-        }
-        if (sortOrder === 'price-desc') {
-          return (b.variantes[0]?.precio || 0) - (a.variantes[0]?.precio || 0);
-        }
-        if (sortOrder === 'name') {
-          return a.nombre.localeCompare(b.nombre);
-        }
-        if (sortOrder === 'destacados') {
-          return (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0);
-        }
-        // Por defecto, mostrar destacados primero
-        return (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0);
-      });
-      
-      // Establecer los productos a mostrar
-      setDisplayedProducts(sorted);
-      
-      // Activar la animación de aparición
-      setIsVisible(true);
-      
-    } catch (error) {
-      console.error("Error al procesar productos:", error);
-      setDisplayedProducts([]);
-    }
-  }, [allProducts, activeCategory, sortOrder]);
-  
-  // Categorías para el filtro
-  const categories = [
-    { id: 'todos', nombre: 'Todos los productos' },
-    ...categoriesList
-  ];
+type Product = typeof catalogoData.productos[0];
+
+const CATS = [
+  { id: 'todos', nombre: 'Todos' },
+  ...catalogoData.categorias.map(c => ({ id: c.id, nombre: c.nombre })),
+];
+
+function ProductCard({ p }: { p: Product }) {
+  const catName = catalogoData.categorias.find(c => c.id === p.categoria)?.nombre ?? p.categoria;
+  // const price = p.variantes[0]?.precio;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: colores.fondo }}>
-      {/* Hero section */}
-      <HeroSection colores={colores} />
-
-      {/* Contenido principal */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Descripción de los productos */}
-        <ProductDescription colores={colores} />
-
-        {/* Filtros y ordenación */}
-        <FilterSortBar 
-          categories={categories} 
-          activeCategory={activeCategory} 
-          setActiveCategory={setActiveCategory} 
-          sortOrder={sortOrder} 
-          setSortOrder={setSortOrder} 
-          colores={colores} 
-        />
-
-        {/* Estado de carga y contador de productos */}
-        <div className="mb-6">
-          {isLoading ? (
-            <div className="text-center py-4">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent" 
-                   style={{ color: colores.acento1 }}></div>
-              <p className="mt-2 text-sm" style={{ color: colores.texto }}>Cargando productos...</p>
-            </div>
-          ) : (
-            <div className="flex justify-between items-center">
-              <p className="text-sm" style={{ color: colores.texto }}>
-                Mostrando {displayedProducts.length} productos
-                {activeCategory !== 'todos' && ` en la categoría ${categories.find(c => c.id === activeCategory)?.nombre || activeCategory}`}
-              </p>
-              {displayedProducts.length > 0 && (
-                <p className="text-xs px-2 py-1 rounded-full" style={{ backgroundColor: colores.pastelVerde, color: colores.texto }}>
-                  {displayedProducts.filter(p => p.destacado).length} destacados
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Cuadrícula de productos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-          {displayedProducts.map((product, index) => (
-            <ProductCard 
-              key={product.id}
-              product={product} 
-              index={index} 
-              isVisible={isVisible} 
-              colores={colores} 
-            />
-          ))}
-        </div>
-
-        {/* Caso de no encontrar productos */}
-        {!isLoading && displayedProducts.length === 0 && (
-          <EmptyState setActiveCategory={setActiveCategory} colores={colores} />
+    <Link href={`/productos/${p.id}`}
+      className="group flex flex-col overflow-hidden rounded-2xl bg-white
+                 transition-shadow duration-300 hover:shadow-xl">
+      {/* image */}
+      <div className="relative overflow-hidden aspect-[4/3]" style={{ backgroundColor: C.muted }}>
+        <Image src={p.imagen} alt={p.nombre} fill
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]" />
+        {p.destacado && (
+          <div className="absolute top-3 left-3 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider"
+            style={{ backgroundColor: C.sage, color: C.dark }}>
+            Favorito
+          </div>
         )}
       </div>
 
-      {/* Sección de beneficios */}
-      <BenefitsSection colores={colores} />
+      {/* info */}
+      <div className="flex flex-col flex-1 p-4 sm:p-5">
+        <p className="text-[10px] uppercase tracking-[0.2em] mb-1 font-semibold"
+          style={{ color: C.green }}>{catName}</p>
+        <h3 className="font-serif font-semibold text-base leading-snug mb-1"
+          style={{ color: C.dark }}>{p.nombre}</h3>
+        <p className="text-xs leading-relaxed line-clamp-2 flex-1"
+          style={{ color: C.body }}>{p.descripcion}</p>
 
-      {/* Sección de testimonios */}
-      <Testimonios colores={colores} />
+        <div className="flex items-center justify-end mt-4 pt-4 border-t"
+          style={{ borderColor: '#eee' }}>
+          {/* precio oculto por decisión del negocio
+          {price ? (
+            <span className="font-serif font-bold text-base" style={{ color: C.dark }}>
+              ${price.toFixed(0)} <span className="text-xs font-sans font-normal" style={{ color: '#bbb' }}>MXN</span>
+            </span>
+          ) : <span />}
+          */}
+          <span className="text-xs font-semibold flex items-center gap-1 transition-all duration-300 group-hover:gap-2"
+            style={{ color: C.green }}>
+            Ver más →
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
-      {/* Sección CTA */}
-      <CallToAction colores={colores} />
+export default function ProductosPage() {
+  const [active, setActive] = useState('todos');
+  const gridRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  const products = active === 'todos'
+    ? catalogoData.productos
+    : catalogoData.productos.filter(p => p.categoria === active);
+
+  /* entrance */
+  useEffect(() => {
+    gsap.fromTo([headerRef.current],
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' });
+  }, []);
+
+  /* grid re-animate on filter change */
+  useEffect(() => {
+    if (!gridRef.current) return;
+    const cards = gridRef.current.querySelectorAll('.prod-card');
+    gsap.fromTo(cards,
+      { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out', stagger: 0.06 });
+  }, [active]);
+
+  return (
+    <div style={{ backgroundColor: C.bg, minHeight: '100vh' }}>
+
+      {/* ── Hero ── */}
+      <div ref={headerRef}
+        className="px-6 sm:px-14 lg:px-20 xl:px-24 pt-14 sm:pt-20 pb-10 sm:pb-14">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-px w-8" style={{ backgroundColor: C.green }} />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.28em]"
+              style={{ color: C.green }}>Catálogo completo</span>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <h1 className="font-serif font-bold leading-tight"
+              style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', color: C.dark }}>
+              Nuestros productos
+            </h1>
+            <p className="text-sm max-w-xs sm:text-right" style={{ color: C.body }}>
+              {catalogoData.productos.length} productos artesanales,<br className="hidden sm:block" /> 100% naturales
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Filter bar ── */}
+      <div className="sticky top-16 z-30 border-b"
+        style={{ backgroundColor: C.bg, borderColor: 'rgba(0,0,0,0.08)' }}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-14 lg:px-20 xl:px-24">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide py-3">
+            {CATS.map(cat => (
+              <button key={cat.id} onClick={() => setActive(cat.id)}
+                className="shrink-0 px-4 py-2 rounded-full text-xs font-semibold
+                           uppercase tracking-[0.18em] transition-all duration-250"
+                style={{
+                  backgroundColor: active === cat.id ? C.dark : 'transparent',
+                  color:           active === cat.id ? '#fff'  : C.body,
+                  border: `1px solid ${active === cat.id ? C.dark : 'rgba(0,0,0,0.14)'}`,
+                }}>
+                {cat.nombre}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Grid ── */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-14 lg:px-20 xl:px-24 py-10 sm:py-14">
+
+        <p className="text-xs mb-8 font-medium" style={{ color: '#bbb' }}>
+          {products.length} {products.length === 1 ? 'producto' : 'productos'}
+          {active !== 'todos' && ` · ${CATS.find(c => c.id === active)?.nombre}`}
+        </p>
+
+        <div ref={gridRef}
+          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          {products.map(p => (
+            <div key={p.id} className="prod-card">
+              <ProductCard p={p} />
+            </div>
+          ))}
+        </div>
+
+        {products.length === 0 && (
+          <div className="text-center py-24">
+            <p className="font-serif text-xl mb-2" style={{ color: C.dark }}>Sin productos</p>
+            <p className="text-sm mb-6" style={{ color: C.body }}>No hay productos en esta categoría.</p>
+            <button onClick={() => setActive('todos')}
+              className="px-6 py-3 rounded-full text-sm font-semibold text-white"
+              style={{ backgroundColor: C.dark }}>
+              Ver todos
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

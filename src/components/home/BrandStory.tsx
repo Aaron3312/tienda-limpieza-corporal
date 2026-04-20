@@ -32,10 +32,10 @@ export default function BrandStory() {
 
   return (
     <section ref={sectionRef}
-      className="h-screen flex items-center overflow-hidden
-                 px-6 sm:px-14 lg:px-20 xl:px-24 py-8 sm:py-10"
+      className="flex items-center overflow-hidden
+                 px-6 sm:px-14 lg:px-20 xl:px-24 py-10 sm:py-14"
       style={{ backgroundColor: C.bg }}>
-      <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-[50%_1fr] gap-12 lg:gap-16 items-center h-full py-8 sm:py-10">
+      <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-[50%_1fr] gap-12 lg:gap-16 items-center">
 
         {/* images — desktop only */}
         <div className="relative h-full hidden lg:block">
