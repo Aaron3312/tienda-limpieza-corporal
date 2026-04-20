@@ -5,7 +5,7 @@ import LayoutClient from '@/components/layout/LayoutClient';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const BASE_URL = 'https://solo-para-eva.vercel.app';
+const BASE_URL = 'https://www.soloparaeva.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -32,10 +32,10 @@ export const metadata: Metadata = {
       'Productos artesanales 100% naturales para el cuidado de tu piel. Sin sulfatos, sin parabenos, hechos a mano en México.',
     images: [
       {
-        url: '/images/home/stock-hero-soap.jpg',
+        url: '/images/nosotros/nosotros-1.jpeg',
         width: 1200,
         height: 630,
-        alt: 'Solo Para Eva — Jabones artesanales naturales',
+        alt: 'Solo Para Eva — Cosmética Artesanal',
       },
     ],
   },
@@ -44,11 +44,14 @@ export const metadata: Metadata = {
     title: 'Solo Para Eva — Cosmética Artesanal',
     description:
       'Productos artesanales 100% naturales para el cuidado de tu piel. Sin sulfatos, sin parabenos, hechos a mano en México.',
-    images: ['/images/home/stock-hero-soap.jpg'],
+    images: ['/images/nosotros/nosotros-1.jpeg'],
   },
   robots: {
     index: true,
     follow: true,
+  },
+  other: {
+    'fb:app_id': 'TU_FB_APP_ID',
   },
 };
 

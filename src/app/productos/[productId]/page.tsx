@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import ProductDetailsPage from '@/components/productos/ProductDetailsPage';
 import catalogoData from '@/data/productos.json';
 
-const BASE_URL = 'https://solo-para-eva.vercel.app';
+const BASE_URL = 'https://www.soloparaeva.com';
 
 export async function generateStaticParams() {
   return catalogoData.productos.map(p => ({ productId: p.id }));

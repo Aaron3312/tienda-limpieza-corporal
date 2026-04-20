@@ -16,4 +16,4 @@ Allow: /
 User-agent: Slackbot
 Allow: /
 
-Sitemap: https://solo-para-eva.vercel.app/sitemap.xml
+Sitemap: https://www.soloparaeva.com/sitemap.xml
