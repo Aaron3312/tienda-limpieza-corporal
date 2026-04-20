@@ -261,7 +261,7 @@ export default function Home() {
             {/* ── Right image (desktop only) ── move the image a ittle to the left*/}
             <div className="hidden lg:block relative overflow-hidden" style={{ backgroundColor: C.muted}}>
               <div ref={heroImgRef} className="absolute inset-0">
-                <Image src="images/productos/lavandaFondo.jpeg" alt="Jabones artesanales" fill
+                <Image src="images/home/hero1.png" alt="Jabones artesanales" fill
                   className="object-cover " priority />
                 <div className="absolute inset-0"
                   style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(28,43,18,0.48) 100%)' }} />
@@ -407,13 +407,13 @@ export default function Home() {
             <div className="relative h-full hidden lg:block">
               <div ref={brandImg1Ref}
                 className="absolute left-0 top-0 w-[62%] h-[80%] rounded-3xl overflow-hidden shadow-2xl">
-                <Image src="/images/home/stock-brand-making.jpg" alt="Elaboración artesanal" fill
+                <Image src="/images/home/quienes.png" alt="Elaboración artesanal" fill
                   className="object-cover scale-110" />
               </div>
               <div ref={brandImg2Ref}
                 className="absolute right-0 bottom-0 w-[50%] h-[56%] rounded-3xl overflow-hidden shadow-2xl"
                 style={{ border: `5px solid ${C.bg}` }}>
-                <Image src="/images/home/stock-brand-ingredients.jpg" alt="Ingredientes naturales" fill
+                <Image src="/images/home/quienes2.png" alt="Ingredientes naturales" fill
                   className="object-cover scale-110" />
               </div>
               <div className="absolute -bottom-6 -left-6 w-28 h-28 rounded-3xl -z-10"
