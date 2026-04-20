@@ -47,7 +47,7 @@
         }
       ],
       "variedades": ["Sábila y romero", "Chile y té verde", "Manzanilla"],
-      "imagen": "/images/ActualizedImages/JabonCapilar.jpeg",
+      "imagen": "/images/productos/ActualizedImages/JabonCapilar.jpeg",
       "destacado": false
     },
     {
@@ -64,7 +64,7 @@
         }
       ],
       "variedades": ["Cúrcuma", "Cacao", "Miel", "Frutos rojos", "Coco", "Romero", "Lavanda"],
-      "imagen": "/images/ActualizedImages/ShampoSolido.jpeg",
+      "imagen": "/images/productos/ActualizedImages/ShampoSolido.jpeg",
       "destacado": false
     },
     {
@@ -81,7 +81,7 @@
         }
       ],
       "variedades": ["Cacao", "Cúrcuma con naranja", "Tepezcohuite", "Rosa mosqueta", "Aloe vera", "Naranja", "Canela", "Arroz", "Cempasuchitl", "Romero", "Café", "Granada", "Manzanilla", "Caléndula", "Limón", "Avena"],
-      "imagen": "/images/ActualizedImages/JabonGourmet.jpeg",
+      "imagen": "/images/productos/ActualizedImages/JabonGourmet.jpeg",
       "destacado": false
     },
     {
@@ -98,7 +98,7 @@
         }
       ],
       "variedades": ["Café", "Naranja", "Coco y nuez", "Avena", "Arroz", "Polvo diamante"],
-      "imagen": "/images/ActualizedImages/JabonExfoliante.jpeg",
+      "imagen": "/images/productos/ActualizedImages/JabonExfoliante.jpeg",
       "destacado": false
     },
     {
@@ -121,7 +121,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/CremaSolidaParaManos.jpeg",
+      "imagen": "/images/productos/ActualizedImages/CremaSolidaParaManos.jpeg",
       "destacado": false
     },
     {
@@ -144,7 +144,7 @@
         }
       ],
       "variedades": ["Lavanda", "Cítrico"],
-      "imagen": "/images/ActualizedImages/DesodoranteVegano.jpeg",
+      "imagen": "/images/productos/ActualizedImages/DesodoranteVegano.jpeg",
       "destacado": false
     },
     {
@@ -161,7 +161,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/GelesCorporales.jpeg",
+      "imagen": "/images/productos/ActualizedImages/GelesCorporales.jpeg",
       "destacado": false
     },
     {
@@ -178,7 +178,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/Aceite_hidratante_de_sésamo.jpeg",
+      "imagen": "/images/productos/ActualizedImages/Aceite_hidratante_de_sésamo.jpeg",
       "destacado": false
     },
     {
@@ -195,7 +195,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/ExfolianteCafe.jpeg",
+      "imagen": "/images/productos/ActualizedImages/ExfolianteCafe.jpeg",
       "destacado": false
     },
     {
@@ -212,7 +212,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/Exfoliante_citricos.jpeg",
+      "imagen": "/images/productos/ActualizedImages/Exfoliante_citricos.jpeg",
       "destacado": false
     },
     {
@@ -229,7 +229,7 @@
         }
       ],
       "variedades": ["Caléndula", "Eucalipto", "Alcanfor"],
-      "imagen": "/images/ActualizedImages/Balsamo_labios.jpeg",
+      "imagen": "/images/productos/ActualizedImages/Balsamo_labios.jpeg",
       "destacado": false
     },
     {
@@ -246,7 +246,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/CremaDeRosas.jpeg",
+      "imagen": "/images/productos/ActualizedImages/CremaDeRosas.jpeg",
       "destacado": false
     },
     {
@@ -275,7 +275,7 @@
         }
       ],
       "variedades": ["Rosa mosqueta", "Arándano y frutos rojos", "Cacao", "Coco", "Aloe vera"],
-      "imagen": "/images/ActualizedImages/CremasHidratantes.jpeg",
+      "imagen": "/images/productos/ActualizedImages/CremasHidratantes.jpeg",
       "destacado": false
     },
     {
@@ -292,7 +292,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/ShotYsueroFacial.jpeg",
+      "imagen": "/images/productos/ActualizedImages/ShotYsueroFacial.jpeg",
       "destacado": true
     },
     {
@@ -309,7 +309,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/ExfolianteFacial.jpeg",
+      "imagen": "/images/productos/ActualizedImages/ExfolianteFacial.jpeg",
       "destacado": false
     },
     {
@@ -326,7 +326,7 @@
         }
       ],
       "variedades": ["Coco", "Cacao", "Mango", "Arándano"],
-      "imagen": "/images/ActualizedImages/Balsamo_labios.jpeg",
+      "imagen": "/images/productos/ActualizedImages/Balsamo_labios.jpeg",
       "destacado": false
     },
     {
@@ -343,7 +343,7 @@
         }
       ],
       "variedades": ["Tono claro", "Tono medio", "Tono intenso"],
-      "imagen": "/images/ActualizedImages/RuborNatural.jpeg",
+      "imagen": "/images/productos/ActualizedImages/RuborNatural.jpeg",
       "destacado": false
     },
     {
@@ -360,7 +360,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/BalsamoParaPestañas.jpeg",
+      "imagen": "/images/productos/ActualizedImages/BalsamoParaPestañas.jpeg",
       "destacado": false
     },
     {
@@ -377,7 +377,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/bombasYpastillasEfervecentes1.jpeg",
+      "imagen": "/images/productos/ActualizedImages/bombasYpastillasEfervecentes1.jpeg",
       "destacado": false
     },
     {
@@ -394,7 +394,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/SalesParaBaño.jpeg",
+      "imagen": "/images/productos/ActualizedImages/SalesParaBaño.jpeg",
       "destacado": false
     },
     {
@@ -411,7 +411,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/MantequillaCorporalMango.jpeg",
+      "imagen": "/images/productos/ActualizedImages/MantequillaCorporalMango.jpeg",
       "destacado": true
     },
     {
@@ -428,7 +428,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/BalsamoFortalecedorDePestañas.jpeg",
+      "imagen": "/images/productos/ActualizedImages/BalsamoFortalecedorDePestañas.jpeg",
       "destacado": true
     },
     {
@@ -445,7 +445,7 @@
         }
       ],
       "variedades": [],
-      "imagen": "/images/ActualizedImages/CremitasSolidasHidratantes.jpeg",
+      "imagen": "/images/productos/ActualizedImages/CremitasSolidasHidratantes.jpeg",
       "destacado": true
     },
     {
@@ -471,7 +471,7 @@
         "café",
         "rosa mosqueta"
       ],
-      "imagen": "/images/ActualizedImages/KitLimpiezaFacialCafe.jpeg",
+      "imagen": "/images/productos/ActualizedImages/KitLimpiezaFacialCafe.jpeg",
       "destacado": false
     },
     {
@@ -487,7 +487,7 @@
           "tamano": "Kit avena"
         }
       ],
-      "imagen": "/images/ActualizedImages/KitLimpiezaFacialAv.jpeg",
+      "imagen": "/images/productos/ActualizedImages/KitLimpiezaFacialAv.jpeg",
       "destacado": false
     },
     {
@@ -508,7 +508,7 @@
         "mango - maracayá",
         "brisas frescas"
       ],
-      "imagen": "/images/ActualizedImages/KitBano.jpeg",
+      "imagen": "/images/productos/ActualizedImages/KitBano.jpeg",
       "destacado": false
     },
     {
@@ -532,7 +532,7 @@
         "coco",
         "frutas"
       ],
-      "imagen": "/images/ActualizedImages/KitSolidoCeroEmpaque.jpeg",
+      "imagen": "/images/productos/ActualizedImages/KitSolidoCeroEmpaque.jpeg",
       "destacado": false
     },
       {
@@ -549,7 +549,7 @@
           }
         ],
         "variedades": [],
-        "imagen": "/images/ActualizedImages/KitMango.jpeg",
+        "imagen": "/images/productos/ActualizedImages/KitMango.jpeg",
         "destacado": true
       },
       {
@@ -571,7 +571,7 @@
           "frutas tropicales",
           "rosa"
         ],
-        "imagen": "/images/ActualizedImages/SalesEfervescentes.jpeg",
+        "imagen": "/images/productos/ActualizedImages/SalesEfervescentes.jpeg",
         "destacado": true
       }
   ],

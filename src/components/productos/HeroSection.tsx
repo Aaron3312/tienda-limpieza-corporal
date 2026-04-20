@@ -9,7 +9,7 @@ export default function HeroSection({ colores, categoryTitle }: { colores: Color
     <div className="relative" style={{ backgroundColor: colores.acento1 }}>
       <div className="absolute inset-0">
         <CustomImage
-          src="/images/lavandaFondo.jpeg"
+          src="/images/productos/lavandaFondo.jpeg"
           alt="Productos naturales Solo Para Eva"
           width={1920}
           height={1080}

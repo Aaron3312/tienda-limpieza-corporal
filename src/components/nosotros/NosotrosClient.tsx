@@ -65,7 +65,7 @@ export default function NosotrosClient({ initialData, colores }: NosotrosClientP
       <div className="relative bg-primary-800 h-96 sm:h-screen flex items-center justify-center">
         <div className="absolute inset-0">
           <CustomImage
-            src="/images/banner-nosotros.jpeg"
+            src="/images/nosotros/banner-nosotros.jpeg"
             alt="Productos naturales para el cuidado personal"
             width={1920}
             height={1080}
@@ -123,7 +123,7 @@ export default function NosotrosClient({ initialData, colores }: NosotrosClientP
           <div className="mt-8 lg:mt-0">
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
               <CustomImage
-                src="/images/nosotros-1.jpeg"
+                src="/images/nosotros/nosotros-1.jpeg"
                 alt="Elaboración artesanal de jabones"
                 width={1000}
                 height={667}
@@ -192,7 +192,7 @@ export default function NosotrosClient({ initialData, colores }: NosotrosClientP
           <div className="mt-8 lg:mt-0 lg:order-1">
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
               <CustomImage
-                src="/images/nosotros-2.jpeg"
+                src="/images/nosotros/nosotros-2.jpeg"
                 alt="Ingredientes naturales para productos de belleza"
                 width={1000}
                 height={667}

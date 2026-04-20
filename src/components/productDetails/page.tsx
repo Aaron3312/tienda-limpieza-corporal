@@ -134,7 +134,7 @@ export default function ProductDetailsPage() {
           {/* Columna Izquierda - Imagen */}
           <div className="relative h-96 md:h-full rounded-xl overflow-hidden shadow-lg">
             <Image 
-              src={product.imagen || '/images/placeholder.png'} 
+              src={product.imagen || '/images/shared/placeholder.png'} 
               alt={product.nombre}
               layout="fill"
               objectFit="cover"
@@ -275,7 +275,7 @@ export default function ProductDetailsPage() {
               <div key={related.id} className="bg-white rounded-xl overflow-hidden shadow-md transition-transform hover:scale-105">
                 <div className="relative h-48">
                   <Image 
-                    src={related.imagen || '/images/placeholder.png'} 
+                    src={related.imagen || '/images/shared/placeholder.png'} 
                     alt={related.nombre}
                     layout="fill"
                     objectFit="cover"

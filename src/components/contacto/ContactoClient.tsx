@@ -74,7 +74,7 @@ export default function ContactoClient({ initialData, colores }: ContactoClientP
       <div className="relative bg-primary-800 h-64 sm:h-96">
         <div className="absolute inset-0">
           <Image
-            src="/images/contacto-banner.jpeg"
+            src="/images/contacto/contacto-banner.jpeg"
             alt="Contáctanos"
             fill
             className="w-full h-full object-cover object-center opacity-80"
@@ -211,7 +211,7 @@ export default function ContactoClient({ initialData, colores }: ContactoClientP
             
             <div className="rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/images/contacto-2.jpeg"
+                src="/images/contacto/contacto-2.jpeg"
                 alt="Productos naturales Solo Para Eva"
                 width={600}
                 height={400}

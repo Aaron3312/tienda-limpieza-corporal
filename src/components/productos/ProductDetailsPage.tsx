@@ -99,7 +99,7 @@ export default function ProductDetailsPage() {
 
   // Componente para manejar imágenes con fallback
   const ProductImage = ({ src, alt }: { src: string; alt: string }) => {
-    const [imgSrc, setImgSrc] = useState(src || '/images/placeholder-product.png');
+    const [imgSrc, setImgSrc] = useState(src || '/images/shared/placeholder-product.png');
     
     return (
       <div className="relative w-full h-full">
@@ -107,7 +107,7 @@ export default function ProductDetailsPage() {
           src={imgSrc}
           alt={alt} 
           className="w-full h-full object-cover object-center"
-          onError={() => setImgSrc('/images/placeholder-product.png')}
+          onError={() => setImgSrc('/images/shared/placeholder-product.png')}
         />
       </div>
     );

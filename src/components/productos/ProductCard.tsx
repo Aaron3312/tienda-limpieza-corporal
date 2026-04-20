@@ -7,7 +7,7 @@ import { Colores, Producto } from '@/types';
 
 export default function ProductCard({ product, index, isVisible, colores }: { product: Producto; index: number; isVisible: boolean; colores: Colores }) {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = '/images/placeholder-product.png';
+    e.currentTarget.src = '/images/shared/placeholder-product.png';
     e.currentTarget.onerror = null;
   };
 

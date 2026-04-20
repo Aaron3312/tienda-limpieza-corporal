@@ -55,7 +55,7 @@ export default function ClientNosotrosPage({ initialData, colores }: ClientNosot
       <div className="relative bg-primary-800 h-64 sm:h-96 lg:h-[500px] overflow-hidden">
         <div className="absolute inset-0">
           <CustomImage
-            src="/images/nosotros-hero.jpg"
+            src="/images/nosotros/nosotros-hero.jpg"
             alt="Solo Para Eva - Nosotros"
             width={1920}
             height={1080}
@@ -170,7 +170,7 @@ export default function ClientNosotrosPage({ initialData, colores }: ClientNosot
 
           <div className="mt-16">
             <CustomImage
-              src="/images/productos-display.jpg"
+              src="/images/nosotros/productos-display.jpg"
               alt="Nuestros productos"
               width={1200}
               height={600}
@@ -333,7 +333,7 @@ export default function ClientNosotrosPage({ initialData, colores }: ClientNosot
           
           <div className="mt-16">
             <CustomImage
-              src="/images/ingredientes-naturales.jpg"
+              src="/images/nosotros/ingredientes-naturales.jpg"
               alt="Ingredientes naturales"
               width={1200}
               height={600}

@@ -28,21 +28,21 @@ export default function CartPage() {
           name: "Jabón de Lavanda",
           price: 12.99,
           quantity: 2,
-          image: "/images/jabon0.jpeg"
+          image: "/images/productos/jabon0.jpeg"
         },
         {
           id: 2,
           name: "Crema Hidratante Natural",
           price: 24.95,
           quantity: 1,
-          image: "/images/jabon1.jpeg"
+          image: "/images/productos/jabon1.jpeg"
         },
         {
           id: 3,
           name: "Aceite Esencial de Rosas",
           price: 18.50,
           quantity: 1,
-          image: "/images/jabon2.jpeg"
+          image: "/images/productos/jabon2.jpeg"
         }
       ]);
       setLoading(false);
@@ -74,7 +74,7 @@ export default function CartPage() {
       <div className="relative bg-indigo-800 h-40">
         <div className="absolute inset-0">
           <CustomImage
-            src="/images/lavandaFondo.jpeg"
+            src="/images/productos/lavandaFondo.jpeg"
             alt="Productos naturales para el cuidado personal"
             width={1920}
             height={400}
