@@ -82,7 +82,7 @@ export default function ProductDetailsPage() {
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-start">
 
           {/* image */}
-          <div className="pd-in sticky top-24 rounded-3xl overflow-hidden shadow-xl
+          <div className="pd-in lg:sticky lg:top-24 rounded-3xl overflow-hidden shadow-xl
                           aspect-square relative"
             style={{ backgroundColor: C.muted }}>
             <Image src={imgSrc} alt={product.nombre} fill

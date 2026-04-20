@@ -7,7 +7,6 @@ const nextConfig = {
   // Usa una variable de entorno para determinar si estamos usando un dominio personalizado
   basePath: process.env.CUSTOM_DOMAIN === 'true' ? '' : '/tienda-limpieza-corporal',
   assetPrefix: process.env.CUSTOM_DOMAIN === 'true' ? '' : '/tienda-limpieza-corporal/',
-  trailingSlash: true,          // Agrega / al final de las URLs
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 };
