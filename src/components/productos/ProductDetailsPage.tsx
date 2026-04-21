@@ -16,30 +16,34 @@ const C = {
   body:  '#5A5A5A',
 };
 
-type Product = typeof catalogoData.productos[0];
-type Variante = Product['variantes'][0];
+type RawProduct = typeof catalogoData.productos[0];
+type Product    = RawProduct & { imagenes?: string[] };
+type Variante   = RawProduct['variantes'][0];
 
 export default function ProductDetailsPage() {
-  const router   = useRouter();
-  const params   = useParams();
-  const ref      = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const params = useParams();
+  const ref    = useRef<HTMLDivElement>(null);
 
-  const [product,       setProduct]       = useState<Product | null>(null);
-  const [selectedVar,   setSelectedVar]   = useState<Variante | null>(null);
-  const [selectedVty,   setSelectedVty]   = useState<string | null>(null);
-  const [related,       setRelated]       = useState<Product[]>([]);
-  const [imgError,      setImgError]      = useState(false);
+  const [product,     setProduct]     = useState<Product | null>(null);
+  const [selectedVar, setSelectedVar] = useState<Variante | null>(null);
+  const [selectedVty, setSelectedVty] = useState<string | null>(null);
+  const [related,     setRelated]     = useState<Product[]>([]);
+  const [activeImg,   setActiveImg]   = useState<string>('');
 
   useEffect(() => {
     const id = params?.productId as string;
     if (!id) return;
-    const found = catalogoData.productos.find(p => p.id === id) ?? null;
+    const found = (catalogoData.productos as Product[]).find(p => p.id === id) ?? null;
     setProduct(found);
     if (found) {
       setSelectedVar(found.variantes[0] ?? null);
       setSelectedVty(found.variedades[0] ?? null);
+      setActiveImg(found.imagen);
       setRelated(
-        catalogoData.productos.filter(p => p.categoria === found.categoria && p.id !== id).slice(0, 3)
+        (catalogoData.productos as Product[])
+          .filter(p => p.categoria === found.categoria && p.id !== id)
+          .slice(0, 3)
       );
     }
   }, [params]);
@@ -60,8 +64,8 @@ export default function ProductDetailsPage() {
     </div>
   );
 
-  const catName = catalogoData.categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
-  const imgSrc  = imgError ? '/images/shared/placeholder-product.png' : product.imagen;
+  const catName  = catalogoData.categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
+  const gallery  = product.imagenes && product.imagenes.length > 1 ? product.imagenes : null;
 
   return (
     <div ref={ref} style={{ backgroundColor: C.bg, minHeight: '100vh' }}>
@@ -81,22 +85,43 @@ export default function ProductDetailsPage() {
       <section className="px-6 sm:px-14 lg:px-20 xl:px-24 pt-10 pb-16 sm:pb-20">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-start">
 
-          {/* image */}
-          <div className="pd-in lg:sticky lg:top-24 rounded-3xl overflow-hidden shadow-xl
-                          aspect-square relative"
-            style={{ backgroundColor: C.muted }}>
-            <Image src={imgSrc} alt={product.nombre} fill
-              className="object-cover" onError={() => setImgError(true)} />
-            {product.destacado && (
-              <div className="absolute top-5 left-5 rounded-full px-3 py-1.5
-                              text-[10px] font-bold uppercase tracking-wider"
-                style={{ backgroundColor: C.sage, color: C.dark }}>
-                Favorito
+          {/* ── image column ── */}
+          <div className="pd-in lg:sticky lg:top-24 flex flex-col gap-3">
+
+            {/* main image */}
+            <div className="rounded-3xl overflow-hidden shadow-xl aspect-square relative"
+              style={{ backgroundColor: C.muted }}>
+              <Image src={activeImg || product.imagen} alt={product.nombre} fill
+                className="object-cover transition-opacity duration-300" />
+              {product.destacado && (
+                <div className="absolute top-5 left-5 rounded-full px-3 py-1.5
+                                text-[10px] font-bold uppercase tracking-wider"
+                  style={{ backgroundColor: C.sage, color: C.dark }}>
+                  Favorito
+                </div>
+              )}
+            </div>
+
+            {/* thumbnails */}
+            {gallery && (
+              <div className="flex gap-2">
+                {gallery.map((img, i) => (
+                  <button key={i} onClick={() => setActiveImg(img)}
+                    className="relative rounded-xl overflow-hidden flex-1 aspect-square transition-all duration-200"
+                    style={{
+                      outline: activeImg === img ? `2px solid ${C.dark}` : '2px solid transparent',
+                      outlineOffset: 2,
+                      backgroundColor: C.muted,
+                    }}>
+                    <Image src={img} alt={`${product.nombre} ${i + 1}`} fill
+                      className="object-cover" />
+                  </button>
+                ))}
               </div>
             )}
           </div>
 
-          {/* info */}
+          {/* ── info column ── */}
           <div className="flex flex-col">
             <p className="pd-in text-[10px] font-semibold uppercase tracking-[0.24em] mb-3"
               style={{ color: C.green }}>{catName}</p>
@@ -212,7 +237,6 @@ export default function ProductDetailsPage() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.26em]"
                 style={{ color: C.green }}>También te puede gustar</p>
             </div>
-
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {related.map(p => (
                 <Link key={p.id} href={`/productos/${p.id}`}

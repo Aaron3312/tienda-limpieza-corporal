@@ -36,17 +36,21 @@
         {
           "id": "jabon-capilar-100g",
           "nombre": "Jabón Capilar (100 g)",
-          "precio": 75.00,
+          "precio": 75.0,
           "tamano": "100g"
         },
         {
           "id": "jabon-capilar-1k",
           "nombre": "Jabón Capilar (1 Kg)",
-          "precio": 170.00,
+          "precio": 170.0,
           "tamano": "1kg"
         }
       ],
-      "variedades": ["Sábila y romero", "Chile y té verde", "Manzanilla"],
+      "variedades": [
+        "Sábila y romero",
+        "Chile y té verde",
+        "Manzanilla"
+      ],
       "imagen": "/images/productos/ActualizedImages/JabonCapilar.jpeg",
       "destacado": false
     },
@@ -59,11 +63,19 @@
         {
           "id": "shampo-solido-100g",
           "nombre": "Shampo Sólido (100 g)",
-          "precio": 95.00,
+          "precio": 95.0,
           "tamano": "100g"
         }
       ],
-      "variedades": ["Cúrcuma", "Cacao", "Miel", "Frutos rojos", "Coco", "Romero", "Lavanda"],
+      "variedades": [
+        "Cúrcuma",
+        "Cacao",
+        "Miel",
+        "Frutos rojos",
+        "Coco",
+        "Romero",
+        "Lavanda"
+      ],
       "imagen": "/images/productos/ActualizedImages/ShampoSolido.jpeg",
       "destacado": false
     },
@@ -76,11 +88,28 @@
         {
           "id": "jabones-gourmet-100g",
           "nombre": "Jabones Gourmet (100 g)",
-          "precio": 35.00,
+          "precio": 35.0,
           "tamano": "100g"
         }
       ],
-      "variedades": ["Cacao", "Cúrcuma con naranja", "Tepezcohuite", "Rosa mosqueta", "Aloe vera", "Naranja", "Canela", "Arroz", "Cempasuchitl", "Romero", "Café", "Granada", "Manzanilla", "Caléndula", "Limón", "Avena"],
+      "variedades": [
+        "Cacao",
+        "Cúrcuma con naranja",
+        "Tepezcohuite",
+        "Rosa mosqueta",
+        "Aloe vera",
+        "Naranja",
+        "Canela",
+        "Arroz",
+        "Cempasuchitl",
+        "Romero",
+        "Café",
+        "Granada",
+        "Manzanilla",
+        "Caléndula",
+        "Limón",
+        "Avena"
+      ],
       "imagen": "/images/productos/ActualizedImages/JabonGourmet.jpeg",
       "destacado": false
     },
@@ -93,11 +122,18 @@
         {
           "id": "jabones-exfoliantes-100g",
           "nombre": "Jabones Exfoliantes (100 g)",
-          "precio": 40.00,
+          "precio": 40.0,
           "tamano": "100g"
         }
       ],
-      "variedades": ["Café", "Naranja", "Coco y nuez", "Avena", "Arroz", "Polvo diamante"],
+      "variedades": [
+        "Café",
+        "Naranja",
+        "Coco y nuez",
+        "Avena",
+        "Arroz",
+        "Polvo diamante"
+      ],
       "imagen": "/images/productos/ActualizedImages/JabonExfoliante.jpeg",
       "destacado": false
     },
@@ -110,13 +146,13 @@
         {
           "id": "crema-manos-35g",
           "nombre": "Crema Sólida para Manos (35 g)",
-          "precio": 25.00,
+          "precio": 25.0,
           "tamano": "35g"
         },
         {
           "id": "crema-manos-60g",
           "nombre": "Crema Sólida para Manos (60 g)",
-          "precio": 50.00,
+          "precio": 50.0,
           "tamano": "60g"
         }
       ],
@@ -133,17 +169,20 @@
         {
           "id": "desodorante-50g",
           "nombre": "Desodorante Vegano (50 g)",
-          "precio": 120.00,
+          "precio": 120.0,
           "tamano": "50g"
         },
         {
           "id": "desodorante-100g",
           "nombre": "Desodorante Vegano (100 g)",
-          "precio": 200.00,
+          "precio": 200.0,
           "tamano": "100g"
         }
       ],
-      "variedades": ["Lavanda", "Cítrico"],
+      "variedades": [
+        "Lavanda",
+        "Cítrico"
+      ],
       "imagen": "/images/productos/ActualizedImages/DesodoranteVegano.jpeg",
       "destacado": false
     },
@@ -156,7 +195,7 @@
         {
           "id": "gel-jengibre-250g",
           "nombre": "Gel con Jengibre (250 g)",
-          "precio": 120.00,
+          "precio": 120.0,
           "tamano": "250g"
         }
       ],
@@ -173,7 +212,7 @@
         {
           "id": "aceite-hidratante-250ml",
           "nombre": "Aceite Hidratante (250 ml)",
-          "precio": 140.00,
+          "precio": 140.0,
           "tamano": "250ml"
         }
       ],
@@ -190,7 +229,7 @@
         {
           "id": "exfoliante-cafe-250ml",
           "nombre": "Exfoliante de Café (250 ml)",
-          "precio": 150.00,
+          "precio": 150.0,
           "tamano": "250ml"
         }
       ],
@@ -207,7 +246,7 @@
         {
           "id": "exfoliante-citricos-250ml",
           "nombre": "Exfoliante de Cítricos (250 ml)",
-          "precio": 120.00,
+          "precio": 120.0,
           "tamano": "250ml"
         }
       ],
@@ -224,11 +263,15 @@
         {
           "id": "pomadas-50g",
           "nombre": "Pomadas y Bálsamos (50 g)",
-          "precio": 60.00,
+          "precio": 60.0,
           "tamano": "50g"
         }
       ],
-      "variedades": ["Caléndula", "Eucalipto", "Alcanfor"],
+      "variedades": [
+        "Caléndula",
+        "Eucalipto",
+        "Alcanfor"
+      ],
       "imagen": "/images/productos/ActualizedImages/Balsamo_labios.jpeg",
       "destacado": false
     },
@@ -241,7 +284,7 @@
         {
           "id": "crema-rosas-50g",
           "nombre": "Crema de Rosas (50 g)",
-          "precio": 80.00,
+          "precio": 80.0,
           "tamano": "50g"
         }
       ],
@@ -258,42 +301,53 @@
         {
           "id": "crema-hidratante-50g",
           "nombre": "Crema Hidratante (50 g)",
-          "precio": 100.00,
+          "precio": 100.0,
           "tamano": "50g"
         },
         {
           "id": "crema-hidratante-100g",
           "nombre": "Crema Hidratante (100 g)",
-          "precio": 200.00,
+          "precio": 200.0,
           "tamano": "100g"
         },
         {
           "id": "crema-hidratante-150g",
           "nombre": "Crema Hidratante (150 g)",
-          "precio": 250.00,
+          "precio": 250.0,
           "tamano": "150g"
         }
       ],
-      "variedades": ["Rosa mosqueta", "Arándano y frutos rojos", "Cacao", "Coco", "Aloe vera"],
+      "variedades": [
+        "Rosa mosqueta",
+        "Arándano y frutos rojos",
+        "Cacao",
+        "Coco",
+        "Aloe vera"
+      ],
       "imagen": "/images/productos/ActualizedImages/CremasHidratantes.jpeg",
       "destacado": false
     },
     {
       "id": "shot-facial",
-      "nombre": "Shot Facial Efecto Botox",
-      "descripcion": "Con ácido hialurónico y proteína de arroz",
+      "nombre": "Elixir 3R",
+      "descripcion": "Elixir facial con ácido hialurónico que Regenera, Restaura y Revitaliza tu piel. Combate la resequedad y aspereza, atenúa arrugas y mejora la firmeza, estimula la producción de colágeno, ayuda a reducir manchas y devuelve luminosidad y vida a tu piel. Cuidado real para una piel que brilla desde adentro.",
       "categoria": "faciales",
       "variantes": [
         {
           "id": "shot-facial-15ml",
           "nombre": "Shot Facial (15 ml)",
-          "precio": 60.00,
+          "precio": 60.0,
           "tamano": "15ml"
         }
       ],
       "variedades": [],
-      "imagen": "/images/productos/ActualizedImages/ShotYsueroFacial.jpeg",
-      "destacado": true
+      "imagen": "/images/productos/acidoHialuronico/AcidoHialuronicoDiseño.jpeg",
+      "destacado": true,
+      "imagenes": [
+        "/images/productos/acidoHialuronico/AcidoHialuronicoDiseño.jpeg",
+        "/images/productos/acidoHialuronico/acido-Hialuronico-fondo-naturaleza.jpeg",
+        "/images/productos/acidoHialuronico/acidoHialuronicoQueHacePorTi.jpeg"
+      ]
     },
     {
       "id": "exfoliante-facial",
@@ -304,7 +358,7 @@
         {
           "id": "exfoliante-facial-250g",
           "nombre": "Exfoliante Facial (250 g)",
-          "precio": 120.00,
+          "precio": 120.0,
           "tamano": "250g"
         }
       ],
@@ -321,11 +375,16 @@
         {
           "id": "balsamo-labios-30g",
           "nombre": "Bálsamo para Labios (30 g)",
-          "precio": 60.00,
+          "precio": 60.0,
           "tamano": "30g"
         }
       ],
-      "variedades": ["Coco", "Cacao", "Mango", "Arándano"],
+      "variedades": [
+        "Coco",
+        "Cacao",
+        "Mango",
+        "Arándano"
+      ],
       "imagen": "/images/productos/ActualizedImages/Balsamo_labios.jpeg",
       "destacado": false
     },
@@ -338,11 +397,15 @@
         {
           "id": "rubor-natural-30g",
           "nombre": "Rubor Natural (30 g)",
-          "precio": 50.00,
+          "precio": 50.0,
           "tamano": "30g"
         }
       ],
-      "variedades": ["Tono claro", "Tono medio", "Tono intenso"],
+      "variedades": [
+        "Tono claro",
+        "Tono medio",
+        "Tono intenso"
+      ],
       "imagen": "/images/productos/ActualizedImages/RuborNatural.jpeg",
       "destacado": false
     },
@@ -355,7 +418,7 @@
         {
           "id": "balsamo-pestanas-30g",
           "nombre": "Bálsamo para Pestañas (30 g)",
-          "precio": 60.00,
+          "precio": 60.0,
           "tamano": "30g"
         }
       ],
@@ -372,7 +435,7 @@
         {
           "id": "bombas-pastillas-unidad",
           "nombre": "Bombas y Pastillas Efervescentes (unidad)",
-          "precio": 10.00,
+          "precio": 10.0,
           "tamano": "Unidad"
         }
       ],
@@ -389,7 +452,7 @@
         {
           "id": "sales-medicinales-30g",
           "nombre": "Sales Medicinales (30 g)",
-          "precio": 20.00,
+          "precio": 20.0,
           "tamano": "30g"
         }
       ],
@@ -406,7 +469,7 @@
         {
           "id": "mantequilla-corporal-mango-100g",
           "nombre": "Mantequilla Corporal de Mango (100 g)",
-          "precio": 50.00,
+          "precio": 50.0,
           "tamano": "100g"
         }
       ],
@@ -423,7 +486,7 @@
         {
           "id": "balsamo-fortalecedor-de-pestanas-30g",
           "nombre": "Bálsamo fortalecedor de pestañas (30 g)",
-          "precio": 60.00,
+          "precio": 60.0,
           "tamano": "30g"
         }
       ],
@@ -440,7 +503,7 @@
         {
           "id": "cremitas-solidas-hidratantes-100g",
           "nombre": "Cremitas solidas hidratantes (100 g)",
-          "precio": 50.00,
+          "precio": 50.0,
           "tamano": "100g"
         }
       ],
@@ -457,13 +520,13 @@
         {
           "id": "kit-limpieza-facial-cafe",
           "nombre": "Kit de limpieza facial completo café",
-          "precio": 120.00,
+          "precio": 120.0,
           "tamano": "Kit café"
         },
         {
           "id": "kit-limpieza-facial-rosa-mosqueta",
           "nombre": "Kit de limpieza facial completo rosa mosqueta",
-          "precio": 120.00,
+          "precio": 120.0,
           "tamano": "Kit rosa mosqueta"
         }
       ],
@@ -483,7 +546,7 @@
         {
           "id": "kit-limpieza-facial-avena",
           "nombre": "Kit de limpieza facial completo avena",
-          "precio": 120.00,
+          "precio": 120.0,
           "tamano": "Kit avena"
         }
       ],
@@ -499,7 +562,7 @@
         {
           "id": "kit-bano-completo",
           "nombre": "Kit de baño completo",
-          "precio": 150.00,
+          "precio": 150.0,
           "tamano": "Kit completo"
         }
       ],
@@ -520,7 +583,7 @@
         {
           "id": "kit-solido-cero-empaque-completo",
           "nombre": "Kit Sólido Cero Empaque completo",
-          "precio": 180.00,
+          "precio": 180.0,
           "tamano": "Kit completo"
         }
       ],
@@ -535,48 +598,46 @@
       "imagen": "/images/productos/ActualizedImages/KitSolidoCeroEmpaque.jpeg",
       "destacado": false
     },
-      {
-        "id": "kit-mango",
-        "nombre": "Kit Mango",
-        "descripcion": "Incluye: shampo sólido, gel de ducha y crema corporal",
-        "categoria": "kits",
-        "variantes": [
-          {
-            "id": "kit-mango-completo",
-            "nombre": "Kit Mango completo",
-            "precio": 150.00,
-            "tamano": "Kit completo"
-          }
-        ],
-        "variedades": [],
-        "imagen": "/images/productos/ActualizedImages/KitMango.jpeg",
-        "destacado": true
-      },
-      {
-        "id": "sales-efervescentes",
-        "nombre": "Sales efervescentes",
-        "descripcion": "Limpian, relajan y exfolian",
-        "categoria": "corporales",
-        "variantes": [
-          {
-            "id": "sales-efervescentes-50g",
-            "nombre": "Sales efervescentes (50 g)",
-            "precio": 45.00,
-            "tamano": "50g"
-          }
-        ],
-        "variedades": [
-          "lavanda",
-          "cítricos",
-          "frutas tropicales",
-          "rosa"
-        ],
-        "imagen": "/images/productos/ActualizedImages/SalesEfervescentes.jpeg",
-        "destacado": true
-      }
+    {
+      "id": "kit-mango",
+      "nombre": "Kit Mango",
+      "descripcion": "Incluye: shampo sólido, gel de ducha y crema corporal",
+      "categoria": "kits",
+      "variantes": [
+        {
+          "id": "kit-mango-completo",
+          "nombre": "Kit Mango completo",
+          "precio": 150.0,
+          "tamano": "Kit completo"
+        }
+      ],
+      "variedades": [],
+      "imagen": "/images/productos/ActualizedImages/KitMango.jpeg",
+      "destacado": true
+    },
+    {
+      "id": "sales-efervescentes",
+      "nombre": "Sales efervescentes",
+      "descripcion": "Limpian, relajan y exfolian",
+      "categoria": "corporales",
+      "variantes": [
+        {
+          "id": "sales-efervescentes-50g",
+          "nombre": "Sales efervescentes (50 g)",
+          "precio": 45.0,
+          "tamano": "50g"
+        }
+      ],
+      "variedades": [
+        "lavanda",
+        "cítricos",
+        "frutas tropicales",
+        "rosa"
+      ],
+      "imagen": "/images/productos/ActualizedImages/SalesEfervescentes.jpeg",
+      "destacado": true
+    }
   ],
-
-
   "colores": {
     "primario": "#aad585",
     "secundario": "#68dad6",
@@ -593,13 +654,34 @@
     "vision": "Ser una empresa comprometida con sus valores.",
     "mision": "Colaborar con el bienestar de la mujer.",
     "valores": [
-      {"valor": "Amor", "cita": "(1ª Juan 4:8) \"si no amo, no conozco a Dios; porque Dios es amor.\""},
-      {"valor": "Respeto", "cita": "(Mateo 7:12) \"Hacer a los demás todo lo que quiero que me hagan a mi\""},
-      {"valor": "Honestidad", "cita": "(Efesios 4:25) \"Dejar de decir mentiras, digamos siempre la verdad a todos\""},
-      {"valor": "Verdad", "cita": "(Juan 8:32)… \"la verdad me hará libre\"."},
-      {"valor": "Solidaridad", "cita": "(Deuteronomio 15:11) \"Siempre habrá pobres la tierra; por eso mi Dios me ordena que comparta generosamente con ellos y con quienes pasen necesidad\""},
-      {"valor": "Libertad", "cita": "(2 Corintios 3:17) \"Donde esta mi Dios, ahí hay libertad\""},
-      {"valor": "Paz", "cita": "(Filipenses 4:6-7) Si hablo con Dios \"experimento su paz, esa paz que supera todo entendimiento y que cuida mi corazón\""}
+      {
+        "valor": "Amor",
+        "cita": "(1ª Juan 4:8) \"si no amo, no conozco a Dios; porque Dios es amor.\""
+      },
+      {
+        "valor": "Respeto",
+        "cita": "(Mateo 7:12) \"Hacer a los demás todo lo que quiero que me hagan a mi\""
+      },
+      {
+        "valor": "Honestidad",
+        "cita": "(Efesios 4:25) \"Dejar de decir mentiras, digamos siempre la verdad a todos\""
+      },
+      {
+        "valor": "Verdad",
+        "cita": "(Juan 8:32)… \"la verdad me hará libre\"."
+      },
+      {
+        "valor": "Solidaridad",
+        "cita": "(Deuteronomio 15:11) \"Siempre habrá pobres la tierra; por eso mi Dios me ordena que comparta generosamente con ellos y con quienes pasen necesidad\""
+      },
+      {
+        "valor": "Libertad",
+        "cita": "(2 Corintios 3:17) \"Donde esta mi Dios, ahí hay libertad\""
+      },
+      {
+        "valor": "Paz",
+        "cita": "(Filipenses 4:6-7) Si hablo con Dios \"experimento su paz, esa paz que supera todo entendimiento y que cuida mi corazón\""
+      }
     ],
     "contacto": {
       "telefono": "+52 55 1802 6391",
