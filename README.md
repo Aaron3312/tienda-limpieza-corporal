@@ -1,6 +1,14 @@
 # Solo Para Eva - Tienda de Productos de Limpieza Corporal
 
-![Hero Section](public/screenshots2026/screenshot-hero.png)
+## Vista Previa — Rediseño 2026
+
+### Antes → Ahora
+
+| Antes | Ahora |
+|-------|-------|
+| ![Landing antigua](landingSoloEva.png) | ![Hero nuevo](public/screenshots2026/screenshot-hero.png) |
+| ![Productos antiguos](ProductosSoloEva.png) | ![Productos nuevos](public/screenshots2026/Screenshot-productos.png) |
+| ![Nosotros antigua](NosotrosSoloEva.png) | ![Quiénes Somos nuevo](public/screenshots2026/screenshot-quienes-somos.png) |
 
 ## Descripción
 
@@ -36,9 +44,6 @@ La aplicación está desarrollada con Next.js 15 y exportada como sitio estátic
 - **Robots.txt**: `/public/robots.txt` configurado para crawlers
 - **Metadata Dinámica**: Archivo `metadata.tsx` centralizado por página
 - **Exportación Estática**: Salida como HTML/CSS/JS puro para máximo rendimiento
-
-![Productos Destacados](public/screenshots2026/Screenshot-productos.png)
-![Quiénes Somos](public/screenshots2026/screenshot-quienes-somos.png)
 
 ## Tecnologías Utilizadas
 
