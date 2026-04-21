@@ -210,7 +210,7 @@ Vercel detecta automáticamente la configuración de Next.js. La variable `CUSTO
 
 - **Desarrollador**: Aaron Hernández Jiménez
 - **Email**: contacto@acsoftwarelabs.com
-- **Sitio Web**: [soloparaeva.com](https://soloparaeva.com)
+- **Sitio Web**: [aaronhernandez.me](https://aaronhernandez.me)
 
 ## Licencia
 
