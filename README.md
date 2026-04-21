@@ -1,6 +1,6 @@
 # Solo Para Eva - Tienda de Productos de Limpieza Corporal
 
-![Landing Page](https://github.com/Aaron3312/tienda-limpieza-corporal/blob/master/landingSoloEva.png?raw=true)
+![Hero Section](public/screenshots2026/screenshot-hero.png)
 
 ## Descripción
 
@@ -37,8 +37,8 @@ La aplicación está desarrollada con Next.js 15 y exportada como sitio estátic
 - **Metadata Dinámica**: Archivo `metadata.tsx` centralizado por página
 - **Exportación Estática**: Salida como HTML/CSS/JS puro para máximo rendimiento
 
-![Productos](https://github.com/Aaron3312/tienda-limpieza-corporal/blob/master/ProductosSoloEva.png?raw=true)
-![Nosotros](https://github.com/Aaron3312/tienda-limpieza-corporal/blob/master/NosotrosSoloEva.png?raw=true)
+![Productos Destacados](public/screenshots2026/Screenshot-productos.png)
+![Quiénes Somos](public/screenshots2026/screenshot-quienes-somos.png)
 
 ## Tecnologías Utilizadas
 
@@ -209,8 +209,8 @@ Vercel detecta automáticamente la configuración de Next.js. La variable `CUSTO
 ## Soporte y Contacto
 
 - **Desarrollador**: Aaron Hernández Jiménez
-- **Email**: aypierre224@gmail.com
-- **Sitio Web**: [soloparaeva.lat](https://soloparaeva.lat)
+- **Email**: contacto@acsoftwarelabs.com
+- **Sitio Web**: [soloparaeva.com](https://soloparaeva.com)
 
 ## Licencia
 
