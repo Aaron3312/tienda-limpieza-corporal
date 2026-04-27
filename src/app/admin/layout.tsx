@@ -34,24 +34,33 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, logOut } = useAuth();
+  const { user, loading, logOut } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   
   // Redirigir si no hay usuario autenticado
   useEffect(() => {
-    if (!user && !pathname?.includes('/admin/login')) {
+    if (!loading && !user && !pathname?.includes('/admin/login')) {
       router.push('/admin/login');
     }
-  }, [user, router, pathname]);
+  }, [user, loading, router, pathname]);
 
   const handleLogout = async () => {
     await logOut();
     router.push('/admin/login');
   };
 
-  // Si no hay usuario y no estamos en la página de login, mostrar cargando
-  if (!user && !pathname?.includes('/admin/login')) {
+  // Mientras Firebase resuelve la sesión, mostrar spinner
+  if (loading && !pathname?.includes('/admin/login')) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Una vez resuelto, si no hay usuario redirigir (el useEffect lo maneja)
+  if (!loading && !user && !pathname?.includes('/admin/login')) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>

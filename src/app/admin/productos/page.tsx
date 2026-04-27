@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getProductos, getCategorias, eliminarProducto } from '@/services/firestore';
+import { getImageSrc } from '@/lib/utils';
 import { Producto, Categoria } from '@/types';
 import {
   Table,
@@ -225,7 +226,7 @@ export default function ProductosPage() {
                         <div className="h-12 w-12 rounded-md overflow-hidden bg-gray-100 flex items-center justify-center">
                           {producto.imagen ? (
                             <img
-                              src={producto.imagen}
+                              src={getImageSrc(producto.imagen)}
                               alt={producto.nombre}
                               className="h-full w-full object-cover"
                             />

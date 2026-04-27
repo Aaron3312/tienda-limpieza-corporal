@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Colores, Producto } from '@/types';
+import { getImageSrc } from '@/lib/utils';
 
 export default function ProductCard({ product, index, isVisible, colores }: { product: Producto; index: number; isVisible: boolean; colores: Colores }) {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -34,7 +35,7 @@ export default function ProductCard({ product, index, isVisible, colores }: { pr
         {/* Imagen del producto con manejo de errores */}
         <div className="w-full h-full relative">
           <img
-            src={product.imagen}
+            src={getImageSrc(product.imagen)}
             alt={product.nombre}
             className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
             onError={handleImageError}

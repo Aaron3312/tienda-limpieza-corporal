@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Producto, Categoria, Variante } from '@/types';
+import { getImageSrc } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -566,7 +567,7 @@ export default function ProductoForm({ productoId, isEditing = false }: Producto
                 <div className="h-32 w-32 rounded-md overflow-hidden bg-gray-100 flex items-center justify-center">
                   {imagenPreview ? (
                     <img
-                      src={imagenPreview}
+                      src={getImageSrc(imagenPreview)}
                       alt="Vista previa"
                       className="h-full w-full object-cover"
                     />

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getProductos, getCategorias } from '@/services/firestore';
+import { getImageSrc } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Package, Tag, ShoppingBag, TrendingUp, Archive, Eye } from 'lucide-react';
@@ -154,7 +155,7 @@ export default function Dashboard() {
                         <div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 overflow-hidden">
                           {producto.imagen ? (
                             <img 
-                              src={producto.imagen}
+                              src={getImageSrc(producto.imagen)}
                               alt={producto.nombre}
                               className="h-full w-full object-cover"
                             />
