@@ -6,18 +6,11 @@ import Image from 'next/image';
 import { gsap } from 'gsap';
 import { getProductos, getCategorias } from '@/services/firestore';
 import { getImageSrc } from '@/lib/utils';
+import { useSiteData } from '@/context/SiteDataContext';
 import { Producto, Categoria } from '@/types';
 
-const C = {
-  bg:    '#F7F4EF',
-  dark:  '#1C2B12',
-  green: '#5C7A3E',
-  sage:  '#aad585',
-  muted: '#EDE8DF',
-  body:  '#5A5A5A',
-};
-
 function ProductCard({ p, categorias }: { p: Producto; categorias: Categoria[] }) {
+  const { C } = useSiteData();
   const catName = categorias.find(c => c.id === p.categoria)?.nombre ?? p.categoria;
 
   return (
@@ -56,6 +49,7 @@ function ProductCard({ p, categorias }: { p: Producto; categorias: Categoria[] }
 }
 
 export default function ProductosPage() {
+  const { C } = useSiteData();
   const [active, setActive] = useState('todos');
   const [productos, setProductos] = useState<Producto[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);

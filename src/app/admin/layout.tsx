@@ -81,8 +81,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     // { name: 'Tienda', href: '/admin/tienda', icon: ShoppingBag },
     { name: 'Colores', href: '/admin/colores', icon: Palette },
     { name: 'Configuración', href: '/admin/configuracion', icon: Settings },
-    //import
-    // { name: "importar", href: "/admin/import", icon: PanelRight },
+    ...(process.env.NODE_ENV === 'development' ? [{ name: 'Importar datos', href: '/admin/import', icon: PanelRight }] : []),
   ];
 
   return (

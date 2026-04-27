@@ -5,30 +5,30 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-const C = {
-  bg:    '#F7F4EF',
-  dark:  '#1C2B12',
-  green: '#5C7A3E',
-  sage:  '#aad585',
-  muted: '#EDE8DF',
-  body:  '#5A5A5A',
-};
-
-const INFO = [
-  { label: 'Teléfono',   value: '+52 55 1802 6391',        href: 'tel:+5215518026391' },
-  { label: 'Correo',     value: 'altardelcielogp@gmail.com', href: 'mailto:altardelcielogp@gmail.com' },
-  { label: 'Instagram',  value: '@soloparaeva',              href: 'https://www.instagram.com/soloparaeva/' },
-  { label: 'Facebook',   value: 'Solo Para Eva',             href: 'https://www.facebook.com/share/18kSRN2JWi/' },
-];
-
-const HORARIOS = [
-  { dia: 'Lunes – Sábado', hora: '9:00 AM – 5:00 PM' },
-  { dia: 'Domingos',       hora: 'Cerrado' },
-];
+import { useSiteData } from '@/context/SiteDataContext';
 
 export default function ContactoPage() {
+  const { C, info } = useSiteData();
   const ref = useRef<HTMLDivElement>(null);
+
+  const tel       = info.contacto?.telefono || '+52 55 1802 6391';
+  const email     = info.contacto?.email    || 'altardelcielogp@gmail.com';
+  const instagram = info.contacto?.redesSociales?.instagram || 'https://www.instagram.com/soloparaeva/';
+  const facebook  = info.contacto?.redesSociales?.facebook  || 'https://www.facebook.com/share/18kSRN2JWi/';
+  const horarios  = info.contacto?.horarios;
+
+  const INFO = [
+    { label: 'Teléfono',  value: tel,          href: `tel:${tel.replace(/\s/g,'')}` },
+    { label: 'Correo',    value: email,         href: `mailto:${email}` },
+    { label: 'Instagram', value: '@soloparaeva', href: instagram },
+    { label: 'Facebook',  value: 'Solo Para Eva', href: facebook },
+  ];
+
+  const HORARIOS = [
+    { dia: 'Lunes – Viernes', hora: horarios?.lunesViernes || '9:00 AM – 5:00 PM' },
+    { dia: 'Sábados',         hora: horarios?.sabados      || '9:00 AM – 5:00 PM' },
+    { dia: 'Domingos',        hora: horarios?.domingos     || 'Cerrado' },
+  ];
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -135,13 +135,13 @@ export default function ContactoPage() {
               Estaremos encantadas de atenderte.
             </p>
             <div className="r flex flex-wrap gap-3">
-              <a href="mailto:altardelcielogp@gmail.com"
+              <a href={`mailto:${email}`}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm
                            transition-all duration-300 hover:-translate-y-px"
                 style={{ backgroundColor: C.sage, color: C.dark }}>
                 Enviar correo →
               </a>
-              <a href="https://www.instagram.com/soloparaeva/"
+              <a href={instagram}
                 target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm
                            border transition-all duration-300 hover:-translate-y-px text-white"

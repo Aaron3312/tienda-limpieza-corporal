@@ -8,9 +8,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { C } from './constants';
 import { getProductosDestacados, getCategorias } from '@/services/firestore';
 import { getImageSrc } from '@/lib/utils';
+import { useSiteData } from '@/context/SiteDataContext';
 import { Producto, Categoria } from '@/types';
 
 function ProductCard({ product, categorias, className = '' }: { product: Producto; categorias: Categoria[]; className?: string }) {
+  const { C } = useSiteData();
   const catName = categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
 
   return (
@@ -42,6 +44,7 @@ function ProductCard({ product, categorias, className = '' }: { product: Product
 }
 
 export default function FeaturedProducts() {
+  const { C } = useSiteData();
   const sectionRef = useRef<HTMLElement>(null);
   const [featured, setFeatured] = useState<Producto[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);

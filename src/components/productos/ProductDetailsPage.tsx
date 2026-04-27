@@ -7,21 +7,14 @@ import Link from 'next/link';
 import { gsap } from 'gsap';
 import { getProducto, getProductosPorCategoria, getCategorias } from '@/services/firestore';
 import { getImageSrc } from '@/lib/utils';
+import { useSiteData } from '@/context/SiteDataContext';
 import { Producto, Categoria } from '@/types';
-
-const C = {
-  bg:    '#F7F4EF',
-  dark:  '#1C2B12',
-  green: '#5C7A3E',
-  sage:  '#aad585',
-  muted: '#EDE8DF',
-  body:  '#5A5A5A',
-};
 
 type ProductWithGallery = Producto & { imagenes?: string[] };
 type Variante = Producto['variantes'][0];
 
 export default function ProductDetailsPage() {
+  const { C } = useSiteData();
   const router = useRouter();
   const params = useParams();
   const ref    = useRef<HTMLDivElement>(null);

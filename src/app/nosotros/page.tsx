@@ -5,17 +5,9 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useSiteData } from '@/context/SiteDataContext';
 
-const C = {
-  bg:    '#F7F4EF',
-  dark:  '#1C2B12',
-  green: '#5C7A3E',
-  sage:  '#aad585',
-  muted: '#EDE8DF',
-  body:  '#5A5A5A',
-};
-
-const VALORES = [
+const VALORES_DEFAULT = [
   { n: '01', valor: 'Amor',        ref: '1ª Juan 4:8',       cita: '"Si no amo, no conozco a Dios; porque Dios es amor."' },
   { n: '02', valor: 'Respeto',     ref: 'Mateo 7:12',         cita: '"Hacer a los demás todo lo que quiero que me hagan a mí."' },
   { n: '03', valor: 'Honestidad',  ref: 'Efesios 4:25',       cita: '"Dejar de decir mentiras, digamos siempre la verdad."' },
@@ -26,7 +18,17 @@ const VALORES = [
 ];
 
 export default function NosotrosPage() {
+  const { C, info } = useSiteData();
   const ref = useRef<HTMLDivElement>(null);
+
+  const valores = info.valores?.length
+    ? info.valores.map((v, i) => ({ n: String(i + 1).padStart(2, '0'), valor: v.valor, ref: '', cita: v.cita }))
+    : VALORES_DEFAULT;
+
+  const mision  = info.mision  || 'Colaborar con el bienestar espiritual, emocional y físico de la mujer a través de productos artesanales honestos, naturales y con propósito.';
+  const vision  = info.vision  || 'Ser una empresa comprometida con sus valores, con el bienestar integral de la mujer y con el cuidado consciente del planeta.';
+  const facebook   = info.contacto?.redesSociales?.facebook   || 'https://www.facebook.com/share/18kSRN2JWi/';
+  const instagram  = info.contacto?.redesSociales?.instagram  || 'https://www.instagram.com/soloparaeva/';
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -152,8 +154,8 @@ export default function NosotrosPage() {
 
           <div className="flex flex-col divide-y" style={{ borderColor: 'rgba(0,0,0,0.1)' }}>
             {[
-              { label: 'Visión', text: 'Ser una empresa comprometida con sus valores, con el bienestar integral de la mujer y con el cuidado consciente del planeta.' },
-              { label: 'Misión', text: 'Colaborar con el bienestar espiritual, emocional y físico de la mujer a través de productos artesanales honestos, naturales y con propósito.' },
+              { label: 'Visión', text: vision },
+              { label: 'Misión', text: mision },
             ].map(({ label, text }) => (
               <div key={label}
                 className="r grid sm:grid-cols-[180px_1fr] gap-6 sm:gap-12 py-10 items-baseline">
@@ -205,7 +207,7 @@ export default function NosotrosPage() {
             style={{ color: C.green }}>Lo que nos guía</p>
 
           <div className="divide-y" style={{ borderColor: 'rgba(0,0,0,0.08)' }}>
-            {VALORES.map(({ n, valor, ref: ref2, cita }) => (
+            {valores.map(({ n, valor, ref: ref2, cita }) => (
               <div key={n}
                 className="r grid grid-cols-[40px_1fr] sm:grid-cols-[60px_200px_1fr_140px]
                            gap-4 sm:gap-8 py-6 sm:py-7 items-center group">
@@ -233,8 +235,8 @@ export default function NosotrosPage() {
           </div>
           <div className="r flex gap-3 shrink-0">
             {[
-              { href: 'https://www.facebook.com/share/18kSRN2JWi/', label: 'Facebook' },
-              { href: 'https://www.instagram.com/soloparaeva/', label: '@soloparaeva' },
+              { href: facebook,  label: 'Facebook' },
+              { href: instagram, label: '@soloparaeva' },
             ].map(({ href, label }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer"
                 className="px-5 py-3 rounded-full text-sm font-semibold

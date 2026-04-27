@@ -1,8 +1,13 @@
 import type { Metadata } from 'next';
 import ProductDetailsPage from '@/components/productos/ProductDetailsPage';
-import { getProducto, getCategorias } from '@/services/firestore';
+import { getProducto, getProductos, getCategorias } from '@/services/firestore';
 
 const BASE_URL = 'https://www.soloparaeva.com';
+
+export async function generateStaticParams() {
+  const productos = await getProductos();
+  return productos.map(p => ({ productId: p.id }));
+}
 
 export async function generateMetadata(
   { params }: { params: Promise<{ productId: string }> }
