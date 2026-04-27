@@ -1,24 +1,20 @@
 import type { Metadata } from 'next';
 import ProductDetailsPage from '@/components/productos/ProductDetailsPage';
-import catalogoData from '@/data/productos.json';
+import { getProducto, getCategorias } from '@/services/firestore';
 
 const BASE_URL = 'https://www.soloparaeva.com';
-
-export async function generateStaticParams() {
-  return catalogoData.productos.map(p => ({ productId: p.id }));
-}
 
 export async function generateMetadata(
   { params }: { params: Promise<{ productId: string }> }
 ): Promise<Metadata> {
   const { productId } = await params;
-  const product = catalogoData.productos.find(p => p.id === productId);
+  const [product, categorias] = await Promise.all([getProducto(productId), getCategorias()]);
 
   if (!product) {
     return { title: 'Producto no encontrado' };
   }
 
-  const catName = catalogoData.categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
+  const catName = categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
   const title   = `${product.nombre} — ${catName}`;
   const desc    = product.descripcion.slice(0, 155);
   const img     = product.imagen.startsWith('http') ? product.imagen : `${BASE_URL}${product.imagen}`;

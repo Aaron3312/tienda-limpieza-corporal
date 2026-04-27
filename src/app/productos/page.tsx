@@ -4,7 +4,9 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { gsap } from 'gsap';
-import catalogoData from '@/data/productos.json';
+import { getProductos, getCategorias } from '@/services/firestore';
+import { getImageSrc } from '@/lib/utils';
+import { Producto, Categoria } from '@/types';
 
 const C = {
   bg:    '#F7F4EF',
@@ -15,24 +17,15 @@ const C = {
   body:  '#5A5A5A',
 };
 
-type Product = typeof catalogoData.productos[0];
-
-const CATS = [
-  { id: 'todos', nombre: 'Todos' },
-  ...catalogoData.categorias.map(c => ({ id: c.id, nombre: c.nombre })),
-];
-
-function ProductCard({ p }: { p: Product }) {
-  const catName = catalogoData.categorias.find(c => c.id === p.categoria)?.nombre ?? p.categoria;
-  // const price = p.variantes[0]?.precio;
+function ProductCard({ p, categorias }: { p: Producto; categorias: Categoria[] }) {
+  const catName = categorias.find(c => c.id === p.categoria)?.nombre ?? p.categoria;
 
   return (
     <Link href={`/productos/${p.id}`}
       className="group flex flex-col overflow-hidden rounded-2xl bg-white
                  transition-shadow duration-300 hover:shadow-xl">
-      {/* image */}
       <div className="relative overflow-hidden aspect-[4/3]" style={{ backgroundColor: C.muted }}>
-        <Image src={p.imagen} alt={p.nombre} fill
+        <Image src={getImageSrc(p.imagen)} alt={p.nombre} fill
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]" />
         {p.destacado && (
           <div className="absolute top-3 left-3 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider"
@@ -42,7 +35,6 @@ function ProductCard({ p }: { p: Product }) {
         )}
       </div>
 
-      {/* info */}
       <div className="flex flex-col flex-1 p-4 sm:p-5">
         <p className="text-[10px] uppercase tracking-[0.2em] mb-1 font-semibold"
           style={{ color: C.green }}>{catName}</p>
@@ -53,13 +45,6 @@ function ProductCard({ p }: { p: Product }) {
 
         <div className="flex items-center justify-end mt-4 pt-4 border-t"
           style={{ borderColor: '#eee' }}>
-          {/* precio oculto por decisión del negocio
-          {price ? (
-            <span className="font-serif font-bold text-base" style={{ color: C.dark }}>
-              ${price.toFixed(0)} <span className="text-xs font-sans font-normal" style={{ color: '#bbb' }}>MXN</span>
-            </span>
-          ) : <span />}
-          */}
           <span className="text-xs font-semibold flex items-center gap-1 transition-all duration-300 group-hover:gap-2"
             style={{ color: C.green }}>
             Ver más →
@@ -72,28 +57,36 @@ function ProductCard({ p }: { p: Product }) {
 
 export default function ProductosPage() {
   const [active, setActive] = useState('todos');
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [loading, setLoading] = useState(true);
   const gridRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
-  const products = active === 'todos'
-    ? catalogoData.productos
-    : catalogoData.productos.filter(p => p.categoria === active);
+  useEffect(() => {
+    Promise.all([getProductos(), getCategorias()]).then(([prods, cats]) => {
+      setProductos(prods);
+      setCategorias(cats);
+      setLoading(false);
+    });
+  }, []);
 
-  /* entrance */
+  const CATS = [{ id: 'todos', nombre: 'Todos' }, ...categorias];
+  const products = active === 'todos' ? productos : productos.filter(p => p.categoria === active);
+
   useEffect(() => {
     gsap.fromTo([headerRef.current],
       { opacity: 0, y: 30 },
       { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' });
   }, []);
 
-  /* grid re-animate on filter change */
   useEffect(() => {
     if (!gridRef.current) return;
     const cards = gridRef.current.querySelectorAll('.prod-card');
     gsap.fromTo(cards,
       { opacity: 0, y: 24 },
       { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out', stagger: 0.06 });
-  }, [active]);
+  }, [active, productos]);
 
   return (
     <div style={{ backgroundColor: C.bg, minHeight: '100vh' }}>
@@ -113,7 +106,7 @@ export default function ProductosPage() {
               Nuestros productos
             </h1>
             <p className="text-sm max-w-xs sm:text-right" style={{ color: C.body }}>
-              {catalogoData.productos.length} productos artesanales,<br className="hidden sm:block" /> 100% naturales
+              {productos.length} productos artesanales,<br className="hidden sm:block" /> 100% naturales
             </p>
           </div>
         </div>
@@ -143,30 +136,39 @@ export default function ProductosPage() {
       {/* ── Grid ── */}
       <div className="max-w-7xl mx-auto px-6 sm:px-14 lg:px-20 xl:px-24 py-10 sm:py-14">
 
-        <p className="text-xs mb-8 font-medium" style={{ color: '#bbb' }}>
-          {products.length} {products.length === 1 ? 'producto' : 'productos'}
-          {active !== 'todos' && ` · ${CATS.find(c => c.id === active)?.nombre}`}
-        </p>
-
-        <div ref={gridRef}
-          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {products.map(p => (
-            <div key={p.id} className="prod-card">
-              <ProductCard p={p} />
-            </div>
-          ))}
-        </div>
-
-        {products.length === 0 && (
-          <div className="text-center py-24">
-            <p className="font-serif text-xl mb-2" style={{ color: C.dark }}>Sin productos</p>
-            <p className="text-sm mb-6" style={{ color: C.body }}>No hay productos en esta categoría.</p>
-            <button onClick={() => setActive('todos')}
-              className="px-6 py-3 rounded-full text-sm font-semibold text-white"
-              style={{ backgroundColor: C.dark }}>
-              Ver todos
-            </button>
+        {loading ? (
+          <div className="flex justify-center py-24">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2"
+              style={{ borderColor: C.dark }} />
           </div>
+        ) : (
+          <>
+            <p className="text-xs mb-8 font-medium" style={{ color: '#bbb' }}>
+              {products.length} {products.length === 1 ? 'producto' : 'productos'}
+              {active !== 'todos' && ` · ${CATS.find(c => c.id === active)?.nombre}`}
+            </p>
+
+            <div ref={gridRef}
+              className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              {products.map(p => (
+                <div key={p.id} className="prod-card">
+                  <ProductCard p={p} categorias={categorias} />
+                </div>
+              ))}
+            </div>
+
+            {products.length === 0 && (
+              <div className="text-center py-24">
+                <p className="font-serif text-xl mb-2" style={{ color: C.dark }}>Sin productos</p>
+                <p className="text-sm mb-6" style={{ color: C.body }}>No hay productos en esta categoría.</p>
+                <button onClick={() => setActive('todos')}
+                  className="px-6 py-3 rounded-full text-sm font-semibold text-white"
+                  style={{ backgroundColor: C.dark }}>
+                  Ver todos
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

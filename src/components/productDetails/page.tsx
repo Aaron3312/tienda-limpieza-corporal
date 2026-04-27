@@ -3,12 +3,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { extractColorsFromPalette } from '@/utils/colorUtils';
-import paletaColores from '@/data/paleta-colores.json';
-import catalogoData from '@/data/productos.json';
 import BenefitsSection from '@/components/productos/BenefitsSection';
 import TestimonialsSection from '@/components/productos/TestimonialsSection';
 import CallToAction from '@/components/productos/CallToAction';
-import { Producto, Variante } from '@/types';
+import { getProducto, getProductosPorCategoria, getCategorias, getColores } from '@/services/firestore';
+import { getImageSrc } from '@/lib/utils';
+import { Colores, Producto, Variante, Categoria } from '@/types';
+
+const DEFAULT_COLORES = {
+  fondo: '#f8f9fa', textoOscuro: '#333333', textoClaro: '#ffffff',
+  texto: '#4a4a4a', acento1: '#f2bae0', acento2: '#cba3d7',
+  primario: '#aad585', secundario: '#68dad6', pastelVerde: '#c8e6c9',
+} as Colores;
 
 export default function ProductDetailsPage() {
   const router = useRouter();
@@ -20,42 +26,33 @@ export default function ProductDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Producto[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [colores, setColores] = useState<Colores>(DEFAULT_COLORES);
 
-  // Extraer colores de la paleta
-  const colores = extractColorsFromPalette(paletaColores);
+  useEffect(() => {
+    getColores().then(c => { if (c) setColores(c); });
+    getCategorias().then(cats => setCategorias(cats));
+  }, []);
 
   useEffect(() => {
     if (!productId) return;
-
-    try {
-      // Buscar el producto en el catálogo
-      const foundProduct = catalogoData.productos.find(p => p.id === productId);
-      
+    getProducto(productId as string).then(foundProduct => {
       if (foundProduct) {
         setProduct(foundProduct);
-        // Establecer la primera variante como seleccionada por defecto
-        if (foundProduct.variantes && foundProduct.variantes.length > 0) {
-          setSelectedVariant(foundProduct.variantes[0]);
-        }
-        // Establecer la primera variedad como seleccionada por defecto
-        if (foundProduct.variedades && foundProduct.variedades.length > 0) {
-          setSelectedVariety(foundProduct.variedades[0]);
-        }
-
-        // Buscar productos relacionados (misma categoría)
-        const related = catalogoData.productos
-          .filter(p => p.categoria === foundProduct.categoria && p.id !== productId)
-          .slice(0, 3); // Limitar a 3 productos relacionados
-        setRelatedProducts(related);
+        setSelectedVariant(foundProduct.variantes?.[0] ?? null);
+        setSelectedVariety(foundProduct.variedades?.[0] ?? null);
+        getProductosPorCategoria(foundProduct.categoria).then(rel => {
+          setRelatedProducts(rel.filter(p => p.id !== productId).slice(0, 3));
+        });
       } else {
         setError('Producto no encontrado');
       }
-    } catch (err) {
+      setLoading(false);
+    }).catch(err => {
       console.error('Error al cargar el producto:', err);
       setError('Error al cargar los detalles del producto');
-    } finally {
       setLoading(false);
-    }
+    });
   }, [productId]);
 
   const handleVariantChange = (variant: Variante) => {
@@ -82,8 +79,7 @@ export default function ProductDetailsPage() {
   };
 
   const getCategoryName = (categoryId: string) => {
-    const category = catalogoData.categorias.find(c => c.id === categoryId);
-    return category ? category.nombre : categoryId;
+    return categorias.find(c => c.id === categoryId)?.nombre ?? categoryId;
   };
 
   if (loading) {
@@ -134,7 +130,7 @@ export default function ProductDetailsPage() {
           {/* Columna Izquierda - Imagen */}
           <div className="relative h-96 md:h-full rounded-xl overflow-hidden shadow-lg">
             <Image 
-              src={product.imagen || '/images/shared/placeholder.png'} 
+              src={getImageSrc(product.imagen)}
               alt={product.nombre}
               layout="fill"
               objectFit="cover"
@@ -275,7 +271,7 @@ export default function ProductDetailsPage() {
               <div key={related.id} className="bg-white rounded-xl overflow-hidden shadow-md transition-transform hover:scale-105">
                 <div className="relative h-48">
                   <Image 
-                    src={related.imagen || '/images/shared/placeholder.png'} 
+                    src={getImageSrc(related.imagen)}
                     alt={related.nombre}
                     layout="fill"
                     objectFit="cover"

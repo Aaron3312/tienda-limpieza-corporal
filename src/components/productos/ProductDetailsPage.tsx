@@ -5,7 +5,9 @@ import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from 'gsap';
-import catalogoData from '@/data/productos.json';
+import { getProducto, getProductosPorCategoria, getCategorias } from '@/services/firestore';
+import { getImageSrc } from '@/lib/utils';
+import { Producto, Categoria } from '@/types';
 
 const C = {
   bg:    '#F7F4EF',
@@ -16,36 +18,38 @@ const C = {
   body:  '#5A5A5A',
 };
 
-type RawProduct = typeof catalogoData.productos[0];
-type Product    = RawProduct & { imagenes?: string[] };
-type Variante   = RawProduct['variantes'][0];
+type ProductWithGallery = Producto & { imagenes?: string[] };
+type Variante = Producto['variantes'][0];
 
 export default function ProductDetailsPage() {
   const router = useRouter();
   const params = useParams();
   const ref    = useRef<HTMLDivElement>(null);
 
-  const [product,     setProduct]     = useState<Product | null>(null);
+  const [product,     setProduct]     = useState<ProductWithGallery | null>(null);
+  const [categorias,  setCategorias]  = useState<Categoria[]>([]);
   const [selectedVar, setSelectedVar] = useState<Variante | null>(null);
   const [selectedVty, setSelectedVty] = useState<string | null>(null);
-  const [related,     setRelated]     = useState<Product[]>([]);
+  const [related,     setRelated]     = useState<Producto[]>([]);
   const [activeImg,   setActiveImg]   = useState<string>('');
+  const [loading,     setLoading]     = useState(true);
 
   useEffect(() => {
     const id = params?.productId as string;
     if (!id) return;
-    const found = (catalogoData.productos as Product[]).find(p => p.id === id) ?? null;
-    setProduct(found);
-    if (found) {
-      setSelectedVar(found.variantes[0] ?? null);
-      setSelectedVty(found.variedades[0] ?? null);
+
+    Promise.all([getProducto(id), getCategorias()]).then(([found, cats]) => {
+      setCategorias(cats);
+      if (!found) { setLoading(false); return; }
+      setProduct(found as ProductWithGallery);
+      setSelectedVar(found.variantes?.[0] ?? null);
+      setSelectedVty(found.variedades?.[0] ?? null);
       setActiveImg(found.imagen);
-      setRelated(
-        (catalogoData.productos as Product[])
-          .filter(p => p.categoria === found.categoria && p.id !== id)
-          .slice(0, 3)
-      );
-    }
+      getProductosPorCategoria(found.categoria).then(rel => {
+        setRelated(rel.filter(p => p.id !== id).slice(0, 3));
+      });
+      setLoading(false);
+    });
   }, [params]);
 
   useEffect(() => {
@@ -54,6 +58,13 @@ export default function ProductDetailsPage() {
       { opacity: 0, y: 28 },
       { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.1, delay: 0.05 });
   }, [product]);
+
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: C.bg }}>
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2"
+        style={{ borderColor: C.dark }} />
+    </div>
+  );
 
   if (!product) return (
     <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: C.bg }}>
@@ -64,8 +75,8 @@ export default function ProductDetailsPage() {
     </div>
   );
 
-  const catName  = catalogoData.categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
-  const gallery  = product.imagenes && product.imagenes.length > 1 ? product.imagenes : null;
+  const catName = categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
+  const gallery = product.imagenes && product.imagenes.length > 1 ? product.imagenes : null;
 
   return (
     <div ref={ref} style={{ backgroundColor: C.bg, minHeight: '100vh' }}>
@@ -87,11 +98,9 @@ export default function ProductDetailsPage() {
 
           {/* ── image column ── */}
           <div className="pd-in lg:sticky lg:top-24 flex flex-col gap-3">
-
-            {/* main image */}
             <div className="rounded-3xl overflow-hidden shadow-xl aspect-square relative"
               style={{ backgroundColor: C.muted }}>
-              <Image src={activeImg || product.imagen} alt={product.nombre} fill
+              <Image src={getImageSrc(activeImg || product.imagen)} alt={product.nombre} fill
                 className="object-cover transition-opacity duration-300" />
               {product.destacado && (
                 <div className="absolute top-5 left-5 rounded-full px-3 py-1.5
@@ -102,7 +111,6 @@ export default function ProductDetailsPage() {
               )}
             </div>
 
-            {/* thumbnails */}
             {gallery && (
               <div className="flex gap-2">
                 {gallery.map((img, i) => (
@@ -113,7 +121,7 @@ export default function ProductDetailsPage() {
                       outlineOffset: 2,
                       backgroundColor: C.muted,
                     }}>
-                    <Image src={img} alt={`${product.nombre} ${i + 1}`} fill
+                    <Image src={getImageSrc(img)} alt={`${product.nombre} ${i + 1}`} fill
                       className="object-cover" />
                   </button>
                 ))}
@@ -136,7 +144,7 @@ export default function ProductDetailsPage() {
             </p>
 
             {/* variantes */}
-            {product.variantes.length > 1 && (
+            {product.variantes?.length > 1 && (
               <div className="pd-in mb-6">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.22em] mb-3"
                   style={{ color: C.green }}>Presentación</p>
@@ -157,14 +165,14 @@ export default function ProductDetailsPage() {
             )}
 
             {/* variedades */}
-            {product.variedades.length > 0 && (
+            {(product.variedades?.length ?? 0) > 0 && (
               <div className="pd-in mb-8">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.22em] mb-3"
                   style={{ color: C.green }}>
                   Variedad · {selectedVty}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {product.variedades.map(v => (
+                  {product.variedades!.map(v => (
                     <button key={v} onClick={() => setSelectedVty(v)}
                       className="px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200"
                       style={{
@@ -244,13 +252,13 @@ export default function ProductDetailsPage() {
                              transition-shadow duration-300 hover:shadow-lg">
                   <div className="relative aspect-square overflow-hidden"
                     style={{ backgroundColor: C.muted }}>
-                    <Image src={p.imagen} alt={p.nombre} fill
+                    <Image src={getImageSrc(p.imagen)} alt={p.nombre} fill
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.05]" />
                   </div>
                   <div className="p-4">
                     <p className="text-[10px] uppercase tracking-[0.2em] mb-1 font-semibold"
                       style={{ color: C.green }}>
-                      {catalogoData.categorias.find(c => c.id === p.categoria)?.nombre}
+                      {categorias.find(c => c.id === p.categoria)?.nombre}
                     </p>
                     <h3 className="font-serif font-semibold text-sm leading-snug mb-3"
                       style={{ color: C.dark }}>{p.nombre}</h3>

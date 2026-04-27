@@ -1,23 +1,23 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { C } from './constants';
-import catalogoData from '@/data/productos.json';
+import { getProductosDestacados, getCategorias } from '@/services/firestore';
+import { getImageSrc } from '@/lib/utils';
+import { Producto, Categoria } from '@/types';
 
-type Product = typeof catalogoData.productos[0];
-
-function ProductCard({ product, className = '' }: { product: Product; className?: string }) {
-  const catName = catalogoData.categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
+function ProductCard({ product, categorias, className = '' }: { product: Producto; categorias: Categoria[]; className?: string }) {
+  const catName = categorias.find(c => c.id === product.categoria)?.nombre ?? product.categoria;
 
   return (
     <Link href={`/productos/${product.id}`}
       className={`product-card group flex flex-col overflow-hidden rounded-3xl ${className}`}>
       <div className="flex-1 min-h-0 relative overflow-hidden" style={{ backgroundColor: C.muted }}>
-        <Image src={product.imagen} alt={product.nombre} fill
+        <Image src={getImageSrc(product.imagen)} alt={product.nombre} fill
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]" />
         {product.destacado && (
           <div className="absolute top-4 left-4 rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider"
@@ -43,9 +43,18 @@ function ProductCard({ product, className = '' }: { product: Product; className?
 
 export default function FeaturedProducts() {
   const sectionRef = useRef<HTMLElement>(null);
-  const featured   = catalogoData.productos.filter(p => p.destacado).slice(0, 3);
+  const [featured, setFeatured] = useState<Producto[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   useEffect(() => {
+    Promise.all([getProductosDestacados(), getCategorias()]).then(([prods, cats]) => {
+      setFeatured(prods.slice(0, 3));
+      setCategorias(cats);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (featured.length === 0) return;
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
@@ -61,7 +70,7 @@ export default function FeaturedProducts() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [featured]);
 
   return (
     <section ref={sectionRef} className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: C.bg }}>
@@ -87,7 +96,7 @@ export default function FeaturedProducts() {
         {featured.map(product => (
           <div key={product.id} className="snap-center flex-shrink-0 flex flex-col min-h-0"
             style={{ width: '78vw' }}>
-            <ProductCard product={product} className="h-full" />
+            <ProductCard product={product} categorias={categorias} className="h-full" />
           </div>
         ))}
         <div className="flex-shrink-0 w-6" />
@@ -97,7 +106,7 @@ export default function FeaturedProducts() {
       <div className="products-grid hidden sm:grid grid-cols-3 gap-5 flex-1 min-h-0
                       px-14 lg:px-20 xl:px-24 pb-8 lg:pb-10">
         {featured.map(product => (
-          <ProductCard key={product.id} product={product} className="h-full" />
+          <ProductCard key={product.id} product={product} categorias={categorias} className="h-full" />
         ))}
       </div>
     </section>
