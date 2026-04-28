@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getColores, actualizarColores } from '@/services/firestore';
 import { Colores } from '@/types';
 import { Button } from '@/components/ui/button';
-import { Save, RefreshCw, Check } from 'lucide-react';
+import { Save, RefreshCw, Check, RotateCcw } from 'lucide-react';
 
 /* ─── colour definitions ─────────────────────────────────────────────────── */
 
@@ -96,6 +96,12 @@ export default function ColoresPage() {
             Paleta de color del sitio. Los cambios se reflejan en vivo.
           </p>
         </div>
+        <Button
+          variant="outline" size="sm" className="shrink-0"
+          onClick={() => { setFormData(DEFAULTS); setSaved(false); }}
+        >
+          <RotateCcw className="mr-2 h-4 w-4" />Predeterminados
+        </Button>
         <Button onClick={handleSave} disabled={saving} size="sm" className="shrink-0">
           {saving ? (
             <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />Guardando…</>

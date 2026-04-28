@@ -3,9 +3,11 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { C, TESTIMONIALS } from './constants';
+import { TESTIMONIALS } from './constants';
+import { useSiteData } from '@/context/SiteDataContext';
 
 export default function TestimonialsSection() {
+  const { C } = useSiteData();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -52,7 +54,7 @@ export default function TestimonialsSection() {
               </span>
               <div className="flex gap-0.5">
                 {'★★★★★'.split('').map((s, j) => (
-                  <span key={j} style={{ color: C.gold, fontSize: '0.75rem' }}>{s}</span>
+                  <span key={j} style={{ color: '#C9A87C', fontSize: '0.75rem' }}>{s}</span>
                 ))}
               </div>
             </div>
@@ -87,7 +89,7 @@ export default function TestimonialsSection() {
             style={{ borderColor: 'rgba(0,0,0,0.08)' }}>
             <div className="flex gap-0.5 mb-3">
               {'★★★★★'.split('').map((s, j) => (
-                <span key={j} style={{ color: C.gold, fontSize: '0.75rem' }}>{s}</span>
+                <span key={j} style={{ color: '#C9A87C', fontSize: '0.75rem' }}>{s}</span>
               ))}
             </div>
             <p className="font-serif italic leading-[1.55] text-sm mb-4" style={{ color: C.dark }}>

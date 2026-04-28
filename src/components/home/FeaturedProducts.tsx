@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { C } from './constants';
 import { getProductosDestacados, getCategorias } from '@/services/firestore';
 import { getImageSrc } from '@/lib/utils';
 import { useSiteData } from '@/context/SiteDataContext';

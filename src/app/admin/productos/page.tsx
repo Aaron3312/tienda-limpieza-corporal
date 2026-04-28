@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getProductos, getCategorias, eliminarProducto } from '@/services/firestore';
+import { getProductos, getCategorias, eliminarProducto, actualizarProducto } from '@/services/firestore';
 import { getImageSrc } from '@/lib/utils';
 import { Producto, Categoria } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,7 @@ import {
 import {
   Package, Plus, Pencil, Trash2, Search, Star, ChevronDown, ChevronUp,
 } from 'lucide-react';
+
 
 export default function ProductosPage() {
   const [productos, setProductos]     = useState<Producto[]>([]);
@@ -74,6 +75,17 @@ export default function ProductosPage() {
     if (!prices.length) return '—';
     const min = Math.min(...prices), max = Math.max(...prices);
     return min === max ? `$${min.toFixed(0)}` : `$${min.toFixed(0)}–$${max.toFixed(0)}`;
+  };
+
+  const handleToggleDestacado = async (id: string, current: boolean) => {
+    // Optimistic update
+    setProductos(prev => prev.map(p => p.id === id ? { ...p, destacado: !current } : p));
+    const ok = await actualizarProducto(id, { destacado: !current });
+    if (!ok) {
+      // Revert on failure
+      setProductos(prev => prev.map(p => p.id === id ? { ...p, destacado: current } : p));
+      setError('No se pudo actualizar el destacado.');
+    }
   };
 
   const handleDelete = async () => {
@@ -195,7 +207,13 @@ export default function ProductosPage() {
                     </td>
                     <td className="px-4 py-3 text-gray-700 font-medium">{formatPrecio(p.variantes)}</td>
                     <td className="px-4 py-3 text-center">
-                      {p.destacado && <Star className="h-4 w-4 text-amber-400 fill-amber-400 mx-auto" />}
+                      <button
+                        onClick={() => handleToggleDestacado(p.id, !!p.destacado)}
+                        className="mx-auto block rounded p-1 hover:bg-amber-50 transition-colors"
+                        title={p.destacado ? 'Quitar de destacados' : 'Marcar como destacado'}
+                      >
+                        <Star className={`h-4 w-4 transition-colors ${p.destacado ? 'text-amber-400 fill-amber-400' : 'text-gray-300 hover:text-amber-300'}`} />
+                      </button>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
@@ -231,7 +249,9 @@ export default function ProductosPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-semibold text-sm leading-tight line-clamp-2">{p.nombre}</p>
-                    {p.destacado && <Star className="h-3.5 w-3.5 text-amber-400 fill-amber-400 shrink-0 mt-0.5" />}
+                    <button onClick={() => handleToggleDestacado(p.id, !!p.destacado)} className="shrink-0 mt-0.5 p-0.5 rounded">
+                      <Star className={`h-3.5 w-3.5 transition-colors ${p.destacado ? 'text-amber-400 fill-amber-400' : 'text-gray-300'}`} />
+                    </button>
                   </div>
                   <div className="flex items-center gap-2 mt-1 flex-wrap">
                     <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-800 font-medium">

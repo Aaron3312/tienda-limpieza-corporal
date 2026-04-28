@@ -2,9 +2,10 @@
 
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { C } from './constants';
+import { useSiteData } from '@/context/SiteDataContext';
 
 export default function CustomCursor() {
+  const { C } = useSiteData();
   const ringRef = useRef<HTMLDivElement>(null);
   const dotRef  = useRef<HTMLDivElement>(null);
 
