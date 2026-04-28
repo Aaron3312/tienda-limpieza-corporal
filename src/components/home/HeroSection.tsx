@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { C, MARQUEE } from './constants';
+import { MARQUEE } from './constants';
+import { useSiteData } from '@/context/SiteDataContext';
 
 /* ── animated counter ── */
-function CountStat({ target, label, suffix = '', light = false }: { target: number; label: string; suffix?: string; light?: boolean }) {
+function CountStat({ target, label, suffix = '', light = false, sage, green }: { target: number; label: string; suffix?: string; light?: boolean; sage: string; green: string }) {
   const [val, setVal] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -27,7 +28,7 @@ function CountStat({ target, label, suffix = '', light = false }: { target: numb
   }, [target]);
   return (
     <div ref={ref}>
-      <p className="font-serif text-xl sm:text-2xl font-bold" style={{ color: light ? C.sage : C.green, lineHeight: 1 }}>
+      <p className="font-serif text-xl sm:text-2xl font-bold" style={{ color: light ? sage : green, lineHeight: 1 }}>
         {val}{suffix}
       </p>
       <p className="text-[10px] uppercase tracking-widest mt-1" style={{ color: light ? 'rgba(255,255,255,0.45)' : '#bbb' }}>{label}</p>
@@ -36,6 +37,7 @@ function CountStat({ target, label, suffix = '', light = false }: { target: numb
 }
 
 export default function HeroSection() {
+  const { C, info } = useSiteData();
   const sectionRef    = useRef<HTMLElement>(null);
   const mobileSectionRef = useRef<HTMLElement>(null);
   const imgRef        = useRef<HTMLDivElement>(null);
@@ -117,7 +119,7 @@ export default function HeroSection() {
           {/* sub */}
           <p className="hsub text-sm leading-[1.6] mb-6"
             style={{ color: 'rgba(255,255,255,0.72)' }}>
-            Productos artesanales con ingredientes 100% naturales.
+            {info.eslogan || 'Productos artesanales con ingredientes 100% naturales.'}
           </p>
 
           {/* CTAs */}
@@ -139,9 +141,9 @@ export default function HeroSection() {
           {/* stats */}
           <div className="hsub flex gap-8 pt-5 border-t"
             style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
-            <CountStat target={500} label="Clientas"  suffix="+" light />
-            <CountStat target={50}  label="Productos" suffix="+" light />
-            <CountStat target={8}   label="Años"      suffix="+" light />
+            <CountStat target={500} label="Clientas"  suffix="+" light sage={C.sage} green={C.green} />
+            <CountStat target={50}  label="Productos" suffix="+" light sage={C.sage} green={C.green} />
+            <CountStat target={8}   label="Años"      suffix="+" light sage={C.sage} green={C.green} />
           </div>
         </div>
       </section>
@@ -186,8 +188,7 @@ export default function HeroSection() {
           {/* sub */}
           <p className="hsub text-sm leading-[1.6] mb-5 max-w-[340px]"
             style={{ color: C.body }}>
-            Productos artesanales con ingredientes 100% naturales.
-            Sin compromiso con tu piel ni con el planeta.
+            {info.eslogan || 'Productos artesanales con ingredientes 100% naturales. Sin compromiso con tu piel ni con el planeta.'}
           </p>
 
           {/* CTAs */}
@@ -209,9 +210,9 @@ export default function HeroSection() {
           {/* stats */}
           <div className="hsub flex gap-10 pt-5 border-t"
             style={{ borderColor: 'rgba(0,0,0,0.09)' }}>
-            <CountStat target={500} label="Clientas"  suffix="+" />
-            <CountStat target={50}  label="Productos" suffix="+" />
-            <CountStat target={8}   label="Años"      suffix="+" />
+            <CountStat target={500} label="Clientas"  suffix="+" sage={C.sage} green={C.green} />
+            <CountStat target={50}  label="Productos" suffix="+" sage={C.sage} green={C.green} />
+            <CountStat target={8}   label="Años"      suffix="+" sage={C.sage} green={C.green} />
           </div>
         </div>
 

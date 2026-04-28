@@ -5,9 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { C } from './constants';
+import { useSiteData } from '@/context/SiteDataContext';
 
 export default function BrandStory() {
+  const { C, info } = useSiteData();
   const sectionRef = useRef<HTMLElement>(null);
   const img1Ref    = useRef<HTMLDivElement>(null);
   const img2Ref    = useRef<HTMLDivElement>(null);
@@ -62,13 +63,8 @@ export default function BrandStory() {
             style={{ color: C.dark }}>
             Cosmética de autor<br />con propósito
           </h2>
-          <p className="text-sm sm:text-base leading-relaxed mb-3 sm:mb-4" style={{ color: C.body }}>
-            Solo Para Eva nació de la convicción de que cada mujer merece productos honestos,
-            formulados con esmero y respeto. Cada jabón, crema y exfoliante es creado a mano
-            en pequeños lotes, usando ingredientes que conocemos y en los que confiamos.
-          </p>
           <p className="text-sm sm:text-base leading-relaxed mb-5 sm:mb-8" style={{ color: C.body }}>
-            Porque la belleza real viene de la naturaleza, y cuidarla es cuidarte a ti misma.
+            {info.descripcion || 'Solo Para Eva nació de la convicción de que cada mujer merece productos honestos, formulados con esmero y respeto. Cada jabón, crema y exfoliante es creado a mano en pequeños lotes, usando ingredientes que conocemos y en los que confiamos.'}
           </p>
           <blockquote className="border-l-4 pl-5 sm:pl-6 mb-6 sm:mb-8 font-serif text-sm sm:text-base italic"
             style={{ borderColor: C.sage, color: C.dark }}>

@@ -7,3 +7,4 @@ en http://localhost:3000/admin/colores NO funciona para nada el cambio de colore
 
 en http://localhost:3000/admin/productos arreglar la ux/ui, y tambien que se vea bien en mobile en general todo eso, revisar que se puedan agregar, editar y eliminar productos correctamente, y que los cambios se reflejen en la tienda. 
 
+

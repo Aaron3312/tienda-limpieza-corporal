@@ -3,18 +3,19 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { C } from './constants';
-
-const ITEMS = [
-  { icon: '🌿', title: 'Ingredientes naturales', desc: 'Sin químicos dañinos. Solo lo que la naturaleza nos da.',     bg: C.muted,            dark: false, col: 2, row: 1 },
-  { icon: '🐾', title: 'Sin crueldad animal',    desc: 'Nunca testeamos en animales. Cosmética ética y responsable.', bg: C.sage + '55',      dark: false, col: 1, row: 1 },
-  { icon: '♻️', title: 'Eco-consciente',         desc: 'Empaque sostenible y producción en pequeños lotes.',          bg: '#E8F4D9',          dark: false, col: 1, row: 1 },
-  { icon: '✋', title: 'Hecho a mano',            desc: 'Cada producto es creado artesanalmente con amor y cuidado.',  bg: C.dark,             dark: true,  col: 1, row: 2 },
-  { icon: '💚', title: 'Con propósito',           desc: 'Comprometidas con el bienestar integral de la mujer.',       bg: C.green + '22',     dark: false, col: 1, row: 1 },
-];
+import { useSiteData } from '@/context/SiteDataContext';
 
 export default function BenefitsSection() {
+  const { C } = useSiteData();
   const sectionRef = useRef<HTMLElement>(null);
+
+  const ITEMS = [
+    { icon: '🌿', title: 'Ingredientes naturales', desc: 'Sin químicos dañinos. Solo lo que la naturaleza nos da.',     bg: C.muted,            dark: false, col: 2, row: 1 },
+    { icon: '🐾', title: 'Sin crueldad animal',    desc: 'Nunca testeamos en animales. Cosmética ética y responsable.', bg: C.sage + '55',      dark: false, col: 1, row: 1 },
+    { icon: '♻️', title: 'Eco-consciente',         desc: 'Empaque sostenible y producción en pequeños lotes.',          bg: '#E8F4D9',          dark: false, col: 1, row: 1 },
+    { icon: '✋', title: 'Hecho a mano',            desc: 'Cada producto es creado artesanalmente con amor y cuidado.',  bg: C.dark,             dark: true,  col: 1, row: 2 },
+    { icon: '💚', title: 'Con propósito',           desc: 'Comprometidas con el bienestar integral de la mujer.',       bg: C.green + '22',     dark: false, col: 1, row: 1 },
+  ];
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);

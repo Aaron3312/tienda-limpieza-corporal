@@ -69,7 +69,11 @@ export default function ColoresPage() {
     try {
       setSaving(true);
       setError(null);
-      await actualizarColores(formData);
+      // Strip undefined — Firestore rejects undefined field values
+      const clean = Object.fromEntries(
+        Object.entries(formData).filter(([, v]) => v !== undefined)
+      ) as Colores;
+      await actualizarColores(clean);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err: any) {
