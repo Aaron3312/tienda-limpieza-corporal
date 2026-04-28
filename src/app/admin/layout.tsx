@@ -169,30 +169,30 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
       </div>
 
-      <div className="md:pl-64 flex flex-col flex-1">
-        {/* Barra superior */}
-        <div className="sticky top-0 z-10 bg-white pl-1 pt-1 sm:pl-3 sm:pt-3 md:hidden">
+      <div className="md:pl-64 flex flex-col flex-1 min-w-0">
+        {/* Encabezado combinado (hamburger + título + cuenta) */}
+        <div className="sticky top-0 z-10 flex items-center justify-between bg-white shadow-sm px-3 py-3 md:px-6 md:py-4 gap-2">
+          {/* Hamburger solo en mobile */}
           <button
             type="button"
-            className="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none"
+            className="md:hidden h-9 w-9 flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 shrink-0"
             onClick={() => setSidebarOpen(true)}
           >
             <span className="sr-only">Abrir sidebar</span>
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           </button>
-        </div>
 
-        {/* Encabezado */}
-        <div className="flex justify-between items-center bg-white shadow px-4 py-4 md:px-6 md:py-4">
-          <h1 className="text-xl font-semibold text-gray-900">
+          <h1 className="text-base sm:text-xl font-semibold text-gray-900 truncate flex-1">
             {navigationItems.find(item => pathname?.includes(item.href))?.name || 'Dashboard'}
           </h1>
-          
-          <div className="flex items-center gap-4">
+
+          <div className="flex items-center shrink-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-1">
-                  Mi Cuenta <ChevronDown size={16} />
+                <Button variant="outline" size="sm" className="gap-1 text-xs sm:text-sm">
+                  <span className="hidden sm:inline">Mi Cuenta</span>
+                  <span className="sm:hidden">●</span>
+                  <ChevronDown size={14} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">

@@ -434,26 +434,23 @@ export default function ProductoForm({ productoId, isEditing = false }: Producto
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start">
+      <div className="flex flex-col sm:flex-row gap-3 justify-between items-start">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">
+          <h2 className="text-xl sm:text-3xl font-bold tracking-tight">
             {isEditing ? 'Editar Producto' : 'Nuevo Producto'}
           </h2>
-          <p className="text-muted-foreground">
-            {isEditing 
-              ? 'Actualiza la información del producto existente.' 
-              : 'Crea un nuevo producto para tu tienda.'}
+          <p className="text-sm text-muted-foreground mt-0.5">
+            {isEditing ? 'Actualiza la información del producto.' : 'Crea un nuevo producto para tu tienda.'}
           </p>
         </div>
-        
-        <div className="flex flex-col sm:flex-row gap-2">
-          <Button variant="outline" onClick={handleCancel}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button variant="outline" onClick={handleCancel} className="flex-1 sm:flex-none" size="sm">
+            <ArrowLeft className="mr-1.5 h-4 w-4" />
             Volver
           </Button>
-          <Button onClick={handleSubmit} disabled={loading || uploadingImage}>
-            <Save className="mr-2 h-4 w-4" />
-            {loading ? 'Guardando...' : 'Guardar Producto'}
+          <Button onClick={handleSubmit} disabled={loading || uploadingImage} className="flex-1 sm:flex-none" size="sm">
+            <Save className="mr-1.5 h-4 w-4" />
+            {loading ? 'Guardando…' : uploadingImage ? 'Subiendo…' : 'Guardar'}
           </Button>
         </div>
       </div>
@@ -589,59 +586,62 @@ export default function ProductoForm({ productoId, isEditing = false }: Producto
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nombre</TableHead>
-                  <TableHead>Tamaño</TableHead>
-                  <TableHead>Precio ($MXN)</TableHead>
-                  <TableHead className="w-[100px]">Acciones</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {formData.variantes.map((variante, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      <Input
-                        value={variante.nombre}
-                        onChange={(e) => handleVarianteChange(index, 'nombre', e.target.value)}
-                        placeholder="Ej. Jabón Artesanal 100g"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Input
-                        value={variante.tamano}
-                        onChange={(e) => handleVarianteChange(index, 'tamano', e.target.value)}
-                        placeholder="Ej. 100g"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={variante.precio}
-                        onChange={(e) => handleVarianteChange(index, 'precio', e.target.value)}
-                        placeholder="Ej. 150.00"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleRemoveVariante(index)}
-                        disabled={formData.variantes.length <= 1}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
+            {/* Desktop table */}
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Nombre</TableHead>
+                    <TableHead>Tamaño</TableHead>
+                    <TableHead>Precio ($MXN)</TableHead>
+                    <TableHead className="w-[60px]"></TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            
-            <Button type="button" variant="outline" onClick={handleAddVariante}>
+                </TableHeader>
+                <TableBody>
+                  {formData.variantes.map((variante, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <Input value={variante.nombre} onChange={(e) => handleVarianteChange(index, 'nombre', e.target.value)} placeholder="Ej. Jabón 100g" />
+                      </TableCell>
+                      <TableCell>
+                        <Input value={variante.tamano} onChange={(e) => handleVarianteChange(index, 'tamano', e.target.value)} placeholder="Ej. 100g" />
+                      </TableCell>
+                      <TableCell>
+                        <Input type="number" min="0" step="0.01" value={variante.precio} onChange={(e) => handleVarianteChange(index, 'precio', e.target.value)} placeholder="150" />
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm" onClick={() => handleRemoveVariante(index)} disabled={formData.variantes.length <= 1} className="text-red-500 hover:text-red-700">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile cards */}
+            <div className="md:hidden space-y-3">
+              {formData.variantes.map((variante, index) => (
+                <div key={index} className="border rounded-lg p-3 space-y-2 bg-gray-50">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Variante {index + 1}</span>
+                    <Button variant="ghost" size="sm" onClick={() => handleRemoveVariante(index)} disabled={formData.variantes.length <= 1} className="h-7 w-7 p-0 text-red-500 hover:text-red-700">
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    <Input value={variante.nombre} onChange={(e) => handleVarianteChange(index, 'nombre', e.target.value)} placeholder="Nombre (ej. Jabón 100g)" />
+                    <div className="grid grid-cols-2 gap-2">
+                      <Input value={variante.tamano} onChange={(e) => handleVarianteChange(index, 'tamano', e.target.value)} placeholder="Tamaño (ej. 100g)" />
+                      <Input type="number" min="0" step="0.01" value={variante.precio} onChange={(e) => handleVarianteChange(index, 'precio', e.target.value)} placeholder="Precio $MXN" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <Button type="button" variant="outline" onClick={handleAddVariante} className="w-full sm:w-auto">
               <Plus className="mr-2 h-4 w-4" />
               Añadir Variante
             </Button>

@@ -220,7 +220,7 @@ export default function ConfiguracionPage() {
         </div>
       ) : (
         <Tabs defaultValue="general" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="flex w-full overflow-x-auto scrollbar-hide h-auto flex-nowrap justify-start sm:grid sm:grid-cols-4">
             <TabsTrigger value="general">General</TabsTrigger>
             <TabsTrigger value="valores">Valores</TabsTrigger>
             <TabsTrigger value="contacto">Contacto</TabsTrigger>

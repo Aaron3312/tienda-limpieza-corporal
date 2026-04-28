@@ -191,75 +191,36 @@ export default function Dashboard() {
           </div>
           
           {/* Enlaces rápidos */}
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <CardTitle>Gestionar Productos</CardTitle>
-                <CardDescription>
-                  Administra tu catálogo de productos
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex justify-between">
-                <Button asChild variant="outline">
-                  <Link href="/admin/productos">
-                    <Package className="mr-2 h-4 w-4" />
-                    Ver todos
-                  </Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/admin/productos/nuevo">
-                    <Archive className="mr-2 h-4 w-4" />
-                    Añadir
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Gestionar Categorías</CardTitle>
-                <CardDescription>
-                  Administra las categorías de productos
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex justify-between">
-                <Button asChild variant="outline">
-                  <Link href="/admin/categorias">
-                    <Tag className="mr-2 h-4 w-4" />
-                    Ver todas
-                  </Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/admin/categorias/nueva">
-                    <Archive className="mr-2 h-4 w-4" />
-                    Añadir
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Configuración</CardTitle>
-                <CardDescription>
-                  Ajusta la apariencia y contenido del sitio
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex justify-between">
-                <Button asChild variant="outline">
-                  <Link href="/admin/colores">
-                    <Tag className="mr-2 h-4 w-4" />
-                    Colores
-                  </Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/admin/configuracion">
-                    <Archive className="mr-2 h-4 w-4" />
-                    Info. General
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-3">
+            {[
+              { title: 'Productos', desc: 'Administra tu catálogo', links: [
+                { href: '/admin/productos', label: 'Ver todos', icon: Package, variant: 'outline' as const },
+                { href: '/admin/productos/nuevo', label: 'Nuevo', icon: Archive, variant: 'default' as const },
+              ]},
+              { title: 'Colores', desc: 'Personaliza la paleta', links: [
+                { href: '/admin/colores', label: 'Editar colores', icon: Tag, variant: 'default' as const },
+              ]},
+              { title: 'Configuración', desc: 'Info. del negocio', links: [
+                { href: '/admin/configuracion', label: 'Editar info', icon: Archive, variant: 'default' as const },
+              ]},
+            ].map(({ title, desc, links }) => (
+              <Card key={title}>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">{title}</CardTitle>
+                  <CardDescription className="text-xs">{desc}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex gap-2 flex-wrap">
+                  {links.map(({ href, label, icon: Icon, variant }) => (
+                    <Button key={href} asChild variant={variant} size="sm">
+                      <Link href={href}>
+                        <Icon className="mr-1.5 h-3.5 w-3.5" />
+                        {label}
+                      </Link>
+                    </Button>
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </>
       )}

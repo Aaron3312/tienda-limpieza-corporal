@@ -1,481 +1,276 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getColores, actualizarColores } from '@/services/firestore';
 import { Colores } from '@/types';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Save, RefreshCw } from 'lucide-react';
+import { Save, RefreshCw, Check } from 'lucide-react';
+
+/* ─── colour definitions ─────────────────────────────────────────────────── */
+
+const COLOR_FIELDS: {
+  key: keyof Colores;
+  label: string;
+  desc: string;
+}[] = [
+  { key: 'primario',      label: 'Primario',      desc: 'Botones, nav activo, badges' },
+  { key: 'secundario',    label: 'Secundario',     desc: 'Fondos alternativos, íconos' },
+  { key: 'acento1',       label: 'Acento 1',       desc: 'Tags, highlights, badges' },
+  { key: 'acento2',       label: 'Acento 2',       desc: 'Detalle y decoraciones' },
+  { key: 'fondo',         label: 'Fondo',          desc: 'Color de fondo de la página' },
+  { key: 'pastelVerde',   label: 'Pastel verde',   desc: 'Fondos suaves, secciones claras' },
+  { key: 'pastelLavanda', label: 'Pastel lavanda', desc: 'Fondos de tarjetas, secciones' },
+  { key: 'textoOscuro',   label: 'Texto oscuro',   desc: 'Títulos y texto principal' },
+  { key: 'texto',         label: 'Texto cuerpo',   desc: 'Párrafos y descripciones' },
+  { key: 'textoClaro',    label: 'Texto claro',    desc: 'Texto sobre fondos oscuros' },
+];
+
+const DEFAULTS: Colores = {
+  primario:      '#5C7A3E',
+  secundario:    '#68dad6',
+  acento1:       '#aad585',
+  acento2:       '#cba3d7',
+  textoOscuro:   '#1C2B12',
+  textoClaro:    '#ffffff',
+  fondo:         '#F7F4EF',
+  pastelVerde:   '#EDE8DF',
+  pastelLavanda: '#f2bae0',
+  texto:         '#5A5A5A',
+};
+
+/* ─── helpers ────────────────────────────────────────────────────────────── */
+
+function isValidHex(v: string) {
+  return /^#[0-9A-Fa-f]{6}$/.test(v);
+}
+
+/* ─── page ───────────────────────────────────────────────────────────────── */
 
 export default function ColoresPage() {
-  const [formData, setFormData] = useState<Colores>({
-    primario: '#aad585',
-    secundario: '#68dad6',
-    acento1: '#f2bae0',
-    acento2: '#cba3d7',
-    textoOscuro: '#333333',
-    textoClaro: '#ffffff',
-    fondo: '#f8f9fa'
-  });
-  
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  
-  // Cargar colores actuales
+  const [formData, setFormData] = useState<Colores>(DEFAULTS);
+  const [loading, setLoading]   = useState(true);
+  const [saving, setSaving]     = useState(false);
+  const [saved, setSaved]       = useState(false);
+  const [error, setError]       = useState<string | null>(null);
+
   useEffect(() => {
-    const fetchColores = async () => {
-      try {
-        setLoading(true);
-        const colores = await getColores();
-        
-        if (colores) {
-          setFormData(colores);
-        }
-      } catch (err: any) {
-        console.error('Error al cargar colores:', err);
-        setError('Error al cargar los colores. Por favor, intenta nuevamente.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchColores();
+    getColores()
+      .then(c => { if (c) setFormData({ ...DEFAULTS, ...c }); })
+      .catch(() => setError('Error al cargar los colores.'))
+      .finally(() => setLoading(false));
   }, []);
-  
-  // Manejar cambios en los inputs
-  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-  
-  // Guardar cambios
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+
+  const set = useCallback((key: keyof Colores, value: string) => {
+    setFormData(prev => ({ ...prev, [key]: value }));
+    setSaved(false);
+  }, []);
+
+  const handleSave = async () => {
     try {
       setSaving(true);
       setError(null);
-      setSuccess(null);
-      
       await actualizarColores(formData);
-      setSuccess('Colores actualizados correctamente.');
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
     } catch (err: any) {
-      console.error('Error al guardar colores:', err);
-      setError('Error al guardar los colores: ' + err.message);
+      setError('Error al guardar: ' + err.message);
     } finally {
       setSaving(false);
     }
   };
-  
-  // Vista previa con los colores actuales
-  const ColorPreview = ({ color, name }: { color: string; name: string }) => (
-    <div className="flex items-center space-x-2">
-      <div 
-        className="w-6 h-6 rounded-full border border-gray-300" 
-        style={{ backgroundColor: color }}
-      ></div>
-      <span className="text-sm">{name}</span>
-    </div>
-  );
+
+  const f = formData;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start">
+    <div className="space-y-6 pb-10">
+
+      {/* ── Header ── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Configuración de Colores</h2>
-          <p className="text-muted-foreground">
-            Personaliza la paleta de colores de tu sitio web.
+          <h2 className="text-2xl font-bold tracking-tight">Colores</h2>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Paleta de color del sitio. Los cambios se reflejan en vivo.
           </p>
         </div>
-        
-        <Button onClick={handleSubmit} disabled={saving}>
+        <Button onClick={handleSave} disabled={saving} size="sm" className="shrink-0">
           {saving ? (
-            <>
-              <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-              Guardando...
-            </>
+            <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />Guardando…</>
+          ) : saved ? (
+            <><Check className="mr-2 h-4 w-4" />Guardado</>
           ) : (
-            <>
-              <Save className="mr-2 h-4 w-4" />
-              Guardar Cambios
-            </>
+            <><Save className="mr-2 h-4 w-4" />Guardar cambios</>
           )}
         </Button>
       </div>
-      
-      {/* Mostrar error o éxito */}
+
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-          <span className="block sm:inline">{error}</span>
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+          {error}
         </div>
       )}
-      
-      {success && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
-          <span className="block sm:inline">{success}</span>
-        </div>
-      )}
-      
+
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <div className="flex justify-center py-20">
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Formulario de colores */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Colores Principales</CardTitle>
-                <CardDescription>
-                  Colores base para la identidad visual de tu marca.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="primario" className="flex items-center justify-between">
-                      Color Primario
-                      <ColorPreview color={formData.primario} name="" />
-                    </Label>
-                    <div className="flex">
-                      <Input
-                        id="primario"
-                        name="primario"
-                        type="color"
-                        value={formData.primario}
-                        onChange={handleColorChange}
-                        className="w-12 h-10 p-1"
-                      />
-                      <Input
-                        type="text"
-                        value={formData.primario}
-                        onChange={handleColorChange}
-                        name="primario"
-                        className="ml-2 flex-1"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="secundario" className="flex items-center justify-between">
-                      Color Secundario
-                      <ColorPreview color={formData.secundario} name="" />
-                    </Label>
-                    <div className="flex">
-                      <Input
-                        id="secundario"
-                        name="secundario"
-                        type="color"
-                        value={formData.secundario}
-                        onChange={handleColorChange}
-                        className="w-12 h-10 p-1"
-                      />
-                      <Input
-                        type="text"
-                        value={formData.secundario}
-                        onChange={handleColorChange}
-                        name="secundario"
-                        className="ml-2 flex-1"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Colores de Acento</CardTitle>
-                <CardDescription>
-                  Colores adicionales para llamadas a la acción y destacados.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="acento1" className="flex items-center justify-between">
-                      Acento 1
-                      <ColorPreview color={formData.acento1} name="" />
-                    </Label>
-                    <div className="flex">
-                      <Input
-                        id="acento1"
-                        name="acento1"
-                        type="color"
-                        value={formData.acento1}
-                        onChange={handleColorChange}
-                        className="w-12 h-10 p-1"
-                      />
-                      <Input
-                        type="text"
-                        value={formData.acento1}
-                        onChange={handleColorChange}
-                        name="acento1"
-                        className="ml-2 flex-1"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="acento2" className="flex items-center justify-between">
-                      Acento 2
-                      <ColorPreview color={formData.acento2} name="" />
-                    </Label>
-                    <div className="flex">
-                      <Input
-                        id="acento2"
-                        name="acento2"
-                        type="color"
-                        value={formData.acento2}
-                        onChange={handleColorChange}
-                        className="w-12 h-10 p-1"
-                      />
-                      <Input
-                        type="text"
-                        value={formData.acento2}
-                        onChange={handleColorChange}
-                        name="acento2"
-                        className="ml-2 flex-1"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Colores de Texto y Fondo</CardTitle>
-                <CardDescription>
-                  Colores para el texto y fondos del sitio.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="textoOscuro" className="flex items-center justify-between">
-                      Texto Oscuro
-                      <ColorPreview color={formData.textoOscuro} name="" />
-                    </Label>
-                    <div className="flex">
-                      <Input
-                        id="textoOscuro"
-                        name="textoOscuro"
-                        type="color"
-                        value={formData.textoOscuro}
-                        onChange={handleColorChange}
-                        className="w-12 h-10 p-1"
-                      />
-                      <Input
-                        type="text"
-                        value={formData.textoOscuro}
-                        onChange={handleColorChange}
-                        name="textoOscuro"
-                        className="ml-2 flex-1"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="textoClaro" className="flex items-center justify-between">
-                      Texto Claro
-                      <ColorPreview color={formData.textoClaro} name="" />
-                    </Label>
-                    <div className="flex">
-                      <Input
-                        id="textoClaro"
-                        name="textoClaro"
-                        type="color"
-                        value={formData.textoClaro}
-                        onChange={handleColorChange}
-                        className="w-12 h-10 p-1"
-                      />
-                      <Input
-                        type="text"
-                        value={formData.textoClaro}
-                        onChange={handleColorChange}
-                        name="textoClaro"
-                        className="ml-2 flex-1"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="fondo" className="flex items-center justify-between">
-                      Fondo
-                      <ColorPreview color={formData.fondo} name="" />
-                    </Label>
-                    <div className="flex">
-                      <Input
-                        id="fondo"
-                        name="fondo"
-                        type="color"
-                        value={formData.fondo}
-                        onChange={handleColorChange}
-                        className="w-12 h-10 p-1"
-                      />
-                      <Input
-                        type="text"
-                        value={formData.fondo}
-                        onChange={handleColorChange}
-                        name="fondo"
-                        className="ml-2 flex-1"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-6">
+
+          {/* ── Color grid ── */}
+          <div className="bg-white rounded-xl border p-5">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
+              Paleta
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 gap-4">
+              {COLOR_FIELDS.map(({ key, label, desc }) => {
+                const val = (f[key] as string | undefined) || DEFAULTS[key] || '#000000';
+                const valid = isValidHex(val);
+                return (
+                  <ColorTile
+                    key={key}
+                    label={label}
+                    desc={desc}
+                    value={val}
+                    valid={valid}
+                    onChange={v => set(key, v)}
+                  />
+                );
+              })}
+            </div>
           </div>
-          
-          {/* Vista previa */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Vista Previa</CardTitle>
-                <CardDescription>
-                  Visualización de cómo se verán los colores en tu sitio.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div 
-                  className="p-6 rounded-lg"
-                  style={{ backgroundColor: formData.fondo }}
-                >
-                  <h3 
-                    className="text-xl font-bold mb-2"
-                    style={{ color: formData.textoOscuro }}
-                  >
-                    Ejemplo de Título
-                  </h3>
-                  <p
-                    className="mb-4"
-                    style={{ color: formData.textoOscuro }}
-                  >
-                    Este es un ejemplo de párrafo para mostrar cómo se verá el texto en tu sitio.
-                  </p>
-                  
-                  <div className="flex space-x-2 mb-4">
-                    <button
-                      className="px-4 py-2 rounded-md text-sm font-medium"
-                      style={{ backgroundColor: formData.primario, color: formData.textoClaro }}
-                    >
-                      Botón Primario
-                    </button>
-                    <button
-                      className="px-4 py-2 rounded-md text-sm font-medium"
-                      style={{ backgroundColor: formData.secundario, color: formData.textoClaro }}
-                    >
-                      Botón Secundario
-                    </button>
-                  </div>
-                  
-                  <div className="flex space-x-2">
-                    <button
-                      className="px-4 py-2 rounded-md text-sm font-medium"
-                      style={{ backgroundColor: formData.acento1, color: formData.textoClaro }}
-                    >
-                      Acento 1
-                    </button>
-                    <button
-                      className="px-4 py-2 rounded-md text-sm font-medium"
-                      style={{ backgroundColor: formData.acento2, color: formData.textoClaro }}
-                    >
-                      Acento 2
-                    </button>
-                  </div>
-                  
-                  <div 
-                    className="mt-4 p-4 rounded-md"
-                    style={{ backgroundColor: formData.primario, opacity: 0.1 }}
-                  >
-                    <p
-                      style={{ color: formData.textoOscuro }}
-                    >
-                      Sección con el color primario como fondo (con opacidad).
-                    </p>
-                  </div>
-                  
-                  <div 
-                    className="mt-4 p-4 rounded-md"
-                    style={{ backgroundColor: formData.secundario, opacity: 0.1 }}
-                  >
-                    <p
-                      style={{ color: formData.textoOscuro }}
-                    >
-                      Sección con el color secundario como fondo (con opacidad).
-                    </p>
+
+          {/* ── Live preview ── */}
+          <div className="space-y-4">
+            <div className="bg-white rounded-xl border p-5">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
+                Vista previa
+              </p>
+
+              {/* Simulated page section */}
+              <div className="rounded-xl overflow-hidden border" style={{ backgroundColor: f.fondo }}>
+                {/* Nav bar */}
+                <div className="px-4 py-3 flex items-center justify-between" style={{ backgroundColor: f.primario }}>
+                  <span className="text-sm font-bold" style={{ color: f.textoClaro }}>Solo Para Eva</span>
+                  <div className="flex gap-2">
+                    {[f.acento1, f.acento2].map((c, i) => (
+                      <div key={i} className="w-2 h-2 rounded-full" style={{ backgroundColor: c }} />
+                    ))}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Elementos de la Tienda</CardTitle>
-                <CardDescription>
-                  Cómo se verán los elementos en la tienda.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div 
-                  className="p-6 rounded-lg"
-                  style={{ backgroundColor: formData.fondo }}
-                >
-                  <div className="border rounded-lg shadow-sm overflow-hidden">
-                    <div
-                      className="h-24 bg-gray-200"
-                      style={{ backgroundColor: formData.secundario, opacity: 0.3 }}
-                    ></div>
-                    <div className="p-4">
-                      <h4
-                        className="font-medium"
-                        style={{ color: formData.textoOscuro }}
-                      >
-                        Producto de Ejemplo
-                      </h4>
-                      <p
-                        className="text-sm mt-1"
-                        style={{ color: formData.textoOscuro, opacity: 0.8 }}
-                      >
-                        Descripción corta del producto
+
+                {/* Hero section */}
+                <div className="px-4 py-5" style={{ backgroundColor: f.pastelVerde || f.fondo }}>
+                  <p className="text-xs font-semibold mb-1" style={{ color: f.primario }}>
+                    Bienvenida
+                  </p>
+                  <h3 className="text-base font-bold leading-tight mb-2" style={{ color: f.textoOscuro }}>
+                    Cosméticos Naturales
+                  </h3>
+                  <p className="text-xs mb-3 leading-relaxed" style={{ color: f.texto || f.textoOscuro }}>
+                    Productos elaborados con los mejores ingredientes naturales.
+                  </p>
+                  <div className="flex gap-2 flex-wrap">
+                    <button className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ backgroundColor: f.primario, color: f.textoClaro }}>
+                      Ver productos
+                    </button>
+                    <button className="px-3 py-1.5 rounded-lg text-xs font-semibold border" style={{ borderColor: f.primario, color: f.primario, backgroundColor: 'transparent' }}>
+                      Saber más
+                    </button>
+                  </div>
+                </div>
+
+                {/* Product card row */}
+                <div className="px-4 pb-4 pt-1">
+                  <div className="rounded-xl overflow-hidden border bg-white shadow-sm">
+                    <div className="h-16" style={{ backgroundColor: f.secundario, opacity: 0.35 }} />
+                    <div className="p-3">
+                      <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium mb-1.5" style={{ backgroundColor: f.acento1, color: f.textoOscuro }}>
+                        Hidratación
+                      </span>
+                      <p className="text-xs font-semibold leading-tight" style={{ color: f.textoOscuro }}>
+                        Sérum Vitamina C
                       </p>
-                      <div className="mt-2 flex justify-between items-center">
-                        <span
-                          className="font-bold"
-                          style={{ color: formData.textoOscuro }}
-                        >
-                          $120.00
-                        </span>
-                        <button
-                          className="px-3 py-1 rounded-md text-xs font-medium"
-                          style={{ backgroundColor: formData.acento1, color: formData.textoClaro }}
-                        >
+                      <p className="text-[10px] mt-0.5" style={{ color: f.texto || f.textoOscuro }}>
+                        Ilumina y unifica el tono
+                      </p>
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="text-xs font-bold" style={{ color: f.primario }}>$185</span>
+                        <button className="px-2 py-1 rounded-md text-[10px] font-semibold" style={{ backgroundColor: f.acento2 || f.primario, color: f.textoClaro }}>
                           Agregar
                         </button>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="mt-4">
-                    <button
-                      className="w-full py-2 rounded-md font-medium"
-                      style={{ backgroundColor: formData.primario, color: formData.textoClaro }}
-                    >
-                      Ver todos los productos
-                    </button>
-                  </div>
                 </div>
-              </CardContent>
-            </Card>
+
+                {/* Footer strip */}
+                <div className="px-4 py-2.5 text-[10px]" style={{ backgroundColor: f.textoOscuro, color: f.textoClaro }}>
+                  © 2026 Solo Para Eva · Todos los derechos reservados
+                </div>
+              </div>
+
+              {/* Palette strip */}
+              <div className="mt-4 flex gap-1.5 flex-wrap">
+                {COLOR_FIELDS.map(({ key }) => {
+                  const v = (f[key] as string | undefined) || DEFAULTS[key] || '#000';
+                  return (
+                    <div
+                      key={key}
+                      title={key}
+                      className="w-6 h-6 rounded-full border border-white shadow-sm ring-1 ring-black/10 shrink-0"
+                      style={{ backgroundColor: v }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           </div>
+
         </div>
       )}
+    </div>
+  );
+}
+
+/* ─── ColorTile ──────────────────────────────────────────────────────────── */
+
+function ColorTile({
+  label, desc, value, valid, onChange,
+}: {
+  label: string;
+  desc: string;
+  value: string;
+  valid: boolean;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      {/* Swatch — clicking it opens the hidden color input */}
+      <label className="cursor-pointer group relative block aspect-square rounded-xl border-2 border-transparent hover:border-primary/40 transition-all overflow-hidden shadow-sm"
+        style={{ backgroundColor: valid ? value : '#ccc' }}>
+        <input
+          type="color"
+          value={valid ? value : '#000000'}
+          onChange={e => onChange(e.target.value)}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-xl" />
+      </label>
+
+      {/* Info + hex input */}
+      <div>
+        <p className="text-xs font-semibold text-gray-800 leading-tight">{label}</p>
+        <p className="text-[10px] text-gray-400 leading-tight mb-1">{desc}</p>
+        <input
+          type="text"
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          maxLength={7}
+          className={`w-full text-xs font-mono px-2 py-1 rounded-md border focus:outline-none focus:ring-2 focus:ring-primary/40 ${
+            valid ? 'border-gray-200 bg-gray-50' : 'border-red-300 bg-red-50 text-red-600'
+          }`}
+        />
+      </div>
     </div>
   );
 }
