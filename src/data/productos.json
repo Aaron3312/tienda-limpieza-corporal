@@ -36,13 +36,13 @@
         {
           "id": "jabon-capilar-100g",
           "nombre": "Jabón Capilar (100 g)",
-          "precio": 75.0,
+          "precio": 75,
           "tamano": "100g"
         },
         {
           "id": "jabon-capilar-1k",
           "nombre": "Jabón Capilar (1 Kg)",
-          "precio": 170.0,
+          "precio": 170,
           "tamano": "1kg"
         }
       ],
@@ -63,7 +63,7 @@
         {
           "id": "shampo-solido-100g",
           "nombre": "Shampo Sólido (100 g)",
-          "precio": 95.0,
+          "precio": 95,
           "tamano": "100g"
         }
       ],
@@ -88,7 +88,7 @@
         {
           "id": "jabones-gourmet-100g",
           "nombre": "Jabones Gourmet (100 g)",
-          "precio": 35.0,
+          "precio": 35,
           "tamano": "100g"
         }
       ],
@@ -122,7 +122,7 @@
         {
           "id": "jabones-exfoliantes-100g",
           "nombre": "Jabones Exfoliantes (100 g)",
-          "precio": 40.0,
+          "precio": 40,
           "tamano": "100g"
         }
       ],
@@ -146,13 +146,13 @@
         {
           "id": "crema-manos-35g",
           "nombre": "Crema Sólida para Manos (35 g)",
-          "precio": 25.0,
+          "precio": 25,
           "tamano": "35g"
         },
         {
           "id": "crema-manos-60g",
           "nombre": "Crema Sólida para Manos (60 g)",
-          "precio": 50.0,
+          "precio": 50,
           "tamano": "60g"
         }
       ],
@@ -169,13 +169,13 @@
         {
           "id": "desodorante-50g",
           "nombre": "Desodorante Vegano (50 g)",
-          "precio": 120.0,
+          "precio": 120,
           "tamano": "50g"
         },
         {
           "id": "desodorante-100g",
           "nombre": "Desodorante Vegano (100 g)",
-          "precio": 200.0,
+          "precio": 200,
           "tamano": "100g"
         }
       ],
@@ -195,7 +195,7 @@
         {
           "id": "gel-jengibre-250g",
           "nombre": "Gel con Jengibre (250 g)",
-          "precio": 120.0,
+          "precio": 120,
           "tamano": "250g"
         }
       ],
@@ -212,7 +212,7 @@
         {
           "id": "aceite-hidratante-250ml",
           "nombre": "Aceite Hidratante (250 ml)",
-          "precio": 140.0,
+          "precio": 140,
           "tamano": "250ml"
         }
       ],
@@ -229,7 +229,7 @@
         {
           "id": "exfoliante-cafe-250ml",
           "nombre": "Exfoliante de Café (250 ml)",
-          "precio": 150.0,
+          "precio": 150,
           "tamano": "250ml"
         }
       ],
@@ -246,7 +246,7 @@
         {
           "id": "exfoliante-citricos-250ml",
           "nombre": "Exfoliante de Cítricos (250 ml)",
-          "precio": 120.0,
+          "precio": 120,
           "tamano": "250ml"
         }
       ],
@@ -263,7 +263,7 @@
         {
           "id": "pomadas-50g",
           "nombre": "Pomadas y Bálsamos (50 g)",
-          "precio": 60.0,
+          "precio": 60,
           "tamano": "50g"
         }
       ],
@@ -284,7 +284,7 @@
         {
           "id": "crema-rosas-50g",
           "nombre": "Crema de Rosas (50 g)",
-          "precio": 80.0,
+          "precio": 80,
           "tamano": "50g"
         }
       ],
@@ -301,19 +301,19 @@
         {
           "id": "crema-hidratante-50g",
           "nombre": "Crema Hidratante (50 g)",
-          "precio": 100.0,
+          "precio": 100,
           "tamano": "50g"
         },
         {
           "id": "crema-hidratante-100g",
           "nombre": "Crema Hidratante (100 g)",
-          "precio": 200.0,
+          "precio": 200,
           "tamano": "100g"
         },
         {
           "id": "crema-hidratante-150g",
           "nombre": "Crema Hidratante (150 g)",
-          "precio": 250.0,
+          "precio": 250,
           "tamano": "150g"
         }
       ],
@@ -336,7 +336,7 @@
         {
           "id": "shot-facial-15ml",
           "nombre": "Shot Facial (15 ml)",
-          "precio": 60.0,
+          "precio": 60,
           "tamano": "15ml"
         }
       ],
@@ -358,7 +358,7 @@
         {
           "id": "exfoliante-facial-250g",
           "nombre": "Exfoliante Facial (250 g)",
-          "precio": 120.0,
+          "precio": 120,
           "tamano": "250g"
         }
       ],
@@ -375,7 +375,7 @@
         {
           "id": "balsamo-labios-30g",
           "nombre": "Bálsamo para Labios (30 g)",
-          "precio": 60.0,
+          "precio": 60,
           "tamano": "30g"
         }
       ],
@@ -397,7 +397,7 @@
         {
           "id": "rubor-natural-30g",
           "nombre": "Rubor Natural (30 g)",
-          "precio": 50.0,
+          "precio": 50,
           "tamano": "30g"
         }
       ],
@@ -418,7 +418,7 @@
         {
           "id": "balsamo-pestanas-30g",
           "nombre": "Bálsamo para Pestañas (30 g)",
-          "precio": 60.0,
+          "precio": 60,
           "tamano": "30g"
         }
       ],
@@ -435,7 +435,7 @@
         {
           "id": "bombas-pastillas-unidad",
           "nombre": "Bombas y Pastillas Efervescentes (unidad)",
-          "precio": 10.0,
+          "precio": 10,
           "tamano": "Unidad"
         }
       ],
@@ -452,7 +452,7 @@
         {
           "id": "sales-medicinales-30g",
           "nombre": "Sales Medicinales (30 g)",
-          "precio": 20.0,
+          "precio": 20,
           "tamano": "30g"
         }
       ],
@@ -469,7 +469,7 @@
         {
           "id": "mantequilla-corporal-mango-100g",
           "nombre": "Mantequilla Corporal de Mango (100 g)",
-          "precio": 50.0,
+          "precio": 50,
           "tamano": "100g"
         }
       ],
@@ -486,7 +486,7 @@
         {
           "id": "balsamo-fortalecedor-de-pestanas-30g",
           "nombre": "Bálsamo fortalecedor de pestañas (30 g)",
-          "precio": 60.0,
+          "precio": 60,
           "tamano": "30g"
         }
       ],
@@ -503,7 +503,7 @@
         {
           "id": "cremitas-solidas-hidratantes-100g",
           "nombre": "Cremitas solidas hidratantes (100 g)",
-          "precio": 50.0,
+          "precio": 50,
           "tamano": "100g"
         }
       ],
@@ -520,13 +520,13 @@
         {
           "id": "kit-limpieza-facial-cafe",
           "nombre": "Kit de limpieza facial completo café",
-          "precio": 120.0,
+          "precio": 120,
           "tamano": "Kit café"
         },
         {
           "id": "kit-limpieza-facial-rosa-mosqueta",
           "nombre": "Kit de limpieza facial completo rosa mosqueta",
-          "precio": 120.0,
+          "precio": 120,
           "tamano": "Kit rosa mosqueta"
         }
       ],
@@ -546,7 +546,7 @@
         {
           "id": "kit-limpieza-facial-avena",
           "nombre": "Kit de limpieza facial completo avena",
-          "precio": 120.0,
+          "precio": 120,
           "tamano": "Kit avena"
         }
       ],
@@ -562,7 +562,7 @@
         {
           "id": "kit-bano-completo",
           "nombre": "Kit de baño completo",
-          "precio": 150.0,
+          "precio": 150,
           "tamano": "Kit completo"
         }
       ],
@@ -583,7 +583,7 @@
         {
           "id": "kit-solido-cero-empaque-completo",
           "nombre": "Kit Sólido Cero Empaque completo",
-          "precio": 180.0,
+          "precio": 180,
           "tamano": "Kit completo"
         }
       ],
@@ -607,7 +607,7 @@
         {
           "id": "kit-mango-completo",
           "nombre": "Kit Mango completo",
-          "precio": 150.0,
+          "precio": 150,
           "tamano": "Kit completo"
         }
       ],
@@ -624,7 +624,7 @@
         {
           "id": "sales-efervescentes-50g",
           "nombre": "Sales efervescentes (50 g)",
-          "precio": 45.0,
+          "precio": 45,
           "tamano": "50g"
         }
       ],
@@ -649,38 +649,38 @@
   },
   "informacionNegocio": {
     "nombre": "Solo Para Eva",
-    "eslogan": "Porque Tú eres la fuente de vida, la luz con la que vemos (Salmos 36:9)",
-    "descripcion": "SoloparaEva es una pequeña empresa comprometida con colaborar desde el 2016 con el Bienestar y Salud de las mujeres mediante la oferta de servicios de spa y Cosmética de Autor. Compartir con las mujeres salud espiritual, emocional creando experiencias personalizadas mediante productos de higiene y belleza así como servicios terapéuticos de acuerdo a sus necesidades.",
-    "vision": "Ser una empresa comprometida con sus valores.",
-    "mision": "Colaborar con el bienestar de la mujer.",
+    "eslogan": "Productos artesanales con ingredientes 100% naturales. Sin compromiso con tu piel ni con el planeta.",
+    "descripcion": "Solo Para Eva es una pequeña empresa comprometida desde el 2016 con el bienestar y salud de las mujeres, a través de la cosmética artesanal y los servicios de spa. Compartimos salud espiritual y emocional, creando experiencias personalizadas mediante productos de higiene y belleza.",
+    "vision": "Ser una empresa comprometida con sus valores, con el bienestar integral de la mujer y con el cuidado consciente del planeta.",
+    "mision": "Colaborar con el bienestar espiritual, emocional y físico de la mujer a través de productos artesanales honestos, naturales y con propósito.",
     "valores": [
       {
         "valor": "Amor",
-        "cita": "(1ª Juan 4:8) \"si no amo, no conozco a Dios; porque Dios es amor.\""
+        "cita": "(1ª Juan 4:8) \"Si no amo, no conozco a Dios; porque Dios es amor.\""
       },
       {
         "valor": "Respeto",
-        "cita": "(Mateo 7:12) \"Hacer a los demás todo lo que quiero que me hagan a mi\""
+        "cita": "(Mateo 7:12) \"Hacer a los demás todo lo que quiero que me hagan a mí.\""
       },
       {
         "valor": "Honestidad",
-        "cita": "(Efesios 4:25) \"Dejar de decir mentiras, digamos siempre la verdad a todos\""
+        "cita": "(Efesios 4:25) \"Dejar de decir mentiras, digamos siempre la verdad.\""
       },
       {
         "valor": "Verdad",
-        "cita": "(Juan 8:32)… \"la verdad me hará libre\"."
+        "cita": "(Juan 8:32) \"La verdad me hará libre.\""
       },
       {
         "valor": "Solidaridad",
-        "cita": "(Deuteronomio 15:11) \"Siempre habrá pobres la tierra; por eso mi Dios me ordena que comparta generosamente con ellos y con quienes pasen necesidad\""
+        "cita": "(Deuteronomio 15:11) \"Mi Dios me ordena que comparta generosamente con quienes pasen necesidad.\""
       },
       {
         "valor": "Libertad",
-        "cita": "(2 Corintios 3:17) \"Donde esta mi Dios, ahí hay libertad\""
+        "cita": "(2 Corintios 3:17) \"Donde está mi Dios, ahí hay libertad.\""
       },
       {
         "valor": "Paz",
-        "cita": "(Filipenses 4:6-7) Si hablo con Dios \"experimento su paz, esa paz que supera todo entendimiento y que cuida mi corazón\""
+        "cita": "(Filipenses 4:6-7) \"Experimento su paz, esa paz que supera todo entendimiento.\""
       }
     ],
     "contacto": {
@@ -691,8 +691,8 @@
         "instagram": "https://www.instagram.com/soloparaeva/"
       },
       "horarios": {
-        "lunesViernes": "9:00 AM - 5:00 PM",
-        "sabados": "9:00 AM - 5:00 PM",
+        "lunesViernes": "9:00 AM – 5:00 PM",
+        "sabados": "9:00 AM – 5:00 PM",
         "domingos": "Cerrado"
       }
     }

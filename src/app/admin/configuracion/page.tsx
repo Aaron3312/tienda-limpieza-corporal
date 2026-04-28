@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Save, RefreshCw, Plus, Trash2 } from 'lucide-react';
+import { Save, RefreshCw, Plus, Trash2, RotateCcw } from 'lucide-react';
+import defaultInfo from '@/data/productos.json';
 import {
   Table,
   TableBody,
@@ -186,19 +187,23 @@ export default function ConfiguracionPage() {
           </p>
         </div>
         
-        <Button onClick={handleSubmit} disabled={saving}>
-          {saving ? (
-            <>
-              <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-              Guardando...
-            </>
-          ) : (
-            <>
-              <Save className="mr-2 h-4 w-4" />
-              Guardar Cambios
-            </>
-          )}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setFormData(defaultInfo.informacionNegocio as any)}
+          >
+            <RotateCcw className="mr-2 h-4 w-4" />
+            Cargar predeterminados
+          </Button>
+          <Button onClick={handleSubmit} disabled={saving} size="sm">
+            {saving ? (
+              <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />Guardando...</>
+            ) : (
+              <><Save className="mr-2 h-4 w-4" />Guardar</>
+            )}
+          </Button>
+        </div>
       </div>
       
       {/* Mostrar error o éxito */}
