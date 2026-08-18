@@ -1,257 +1,329 @@
-"use client"
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, Truck, Loader2 } from 'lucide-react';
 import CustomImage from '@/components/CustomImage';
+import { useCart } from '@/context/CartContext';
+import { useSiteData } from '@/context/SiteDataContext';
+import { getProductos } from '@/services/firestore';
+import { ENVIO_GRATIS_DESDE, MAX_POR_LINEA, formatearPrecio } from '@/lib/comercio';
+import type { Producto } from '@/types';
 
-// Define the CartItem type
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+export default function CarritoPage() {
+  const { C } = useSiteData();
+  const { lineas, hidratado, cambiarCantidad, quitar, resolver } = useCart();
 
-export default function CartPage() {
-  // Sample cart items - in a real application, you would get these from localStorage or a state management solution
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [cargando, setCargando] = useState(true);
+  const [pagando, setPagando] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Simulate loading cart items from storage
-    // In a real application, you'd fetch from localStorage or an API
-    setTimeout(() => {
-      setCartItems([
-        {
-          id: 1,
-          name: "Jabón de Lavanda",
-          price: 12.99,
-          quantity: 2,
-          image: "/images/productos/jabon0.jpeg"
-        },
-        {
-          id: 2,
-          name: "Crema Hidratante Natural",
-          price: 24.95,
-          quantity: 1,
-          image: "/images/productos/jabon1.jpeg"
-        },
-        {
-          id: 3,
-          name: "Aceite Esencial de Rosas",
-          price: 18.50,
-          quantity: 1,
-          image: "/images/productos/jabon2.jpeg"
-        }
-      ]);
-      setLoading(false);
-    }, 300);
+    getProductos()
+      .then(setProductos)
+      .catch(() => setError('No pudimos cargar el catálogo. Recarga la página.'))
+      .finally(() => setCargando(false));
   }, []);
 
-  // Calculate totals
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = subtotal > 0 ? 4.99 : 0;
-  const total = subtotal + shipping;
+  const { items, subtotal, envio, total } = useMemo(
+    () => resolver(productos),
+    [resolver, productos],
+  );
 
-  // Handle quantity change
-  const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    
-    setCartItems(cartItems.map(item => 
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    ));
-  };
+  const faltaParaEnvioGratis = Math.max(0, ENVIO_GRATIS_DESDE - subtotal);
+  const hayCompra = items.some((i) => i.disponible);
 
-  // Handle item removal
-  const removeItem = (id: number) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-  };
+  async function irAPagar() {
+    setPagando(true);
+    setError(null);
+    try {
+      // Sólo salen identificadores y cantidades: los precios los pone el servidor.
+      const respuesta = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lineas: lineas.map(({ productoId, varianteId, cantidad }) => ({
+            productoId,
+            varianteId,
+            cantidad,
+          })),
+        }),
+      });
+
+      const datos = await respuesta.json();
+      if (!respuesta.ok) throw new Error(datos?.error ?? 'No se pudo iniciar el pago.');
+      window.location.href = datos.url;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'No se pudo iniciar el pago.');
+      setPagando(false);
+    }
+  }
+
+  const esperando = !hidratado || cargando;
 
   return (
-    <div className="bg-white">
-      {/* Header banner */}
-      <div className="relative bg-indigo-800 h-40">
-        <div className="absolute inset-0">
-          <CustomImage
-            src="/images/productos/lavandaFondo.jpeg"
-            alt="Productos naturales para el cuidado personal"
-            width={1920}
-            height={400}
-            className="w-full h-full object-cover object-center opacity-80"
-          />
-          <div className="absolute inset-0 bg-indigo-700 mix-blend-multiply" />
-        </div>
-        <div className="relative max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex items-center h-full">
-          <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
-            Tu Carrito de Compras
+    <main className="min-h-[60vh] pb-24" style={{ backgroundColor: C.bg }}>
+      <header className="border-b" style={{ borderColor: C.muted }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-28 pb-8">
+          <Link
+            href="/productos"
+            className="inline-flex items-center gap-2 text-sm mb-5 transition-opacity hover:opacity-60"
+            style={{ color: C.body }}
+          >
+            <ArrowLeft size={16} strokeWidth={1.5} />
+            Seguir comprando
+          </Link>
+          <h1
+            className="text-3xl md:text-5xl tracking-tighter leading-none"
+            style={{ color: C.dark }}
+          >
+            Tu carrito
           </h1>
         </div>
-      </div>
+      </header>
 
-      {/* Cart content */}
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="text-indigo-600 text-lg">Cargando tu carrito...</div>
-          </div>
-        ) : cartItems.length === 0 ? (
-          <div className="text-center py-16">
-            <svg
-              className="mx-auto h-12 w-12 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-              />
-            </svg>
-            <h2 className="mt-2 text-lg font-medium text-gray-900">Tu carrito está vacío</h2>
-            <p className="mt-1 text-sm text-gray-500">
-              Aún no has agregado productos a tu carrito.
-            </p>
-            <div className="mt-6">
-              <Link href="/productos" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Explorar productos
-              </Link>
-            </div>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10">
+        {esperando ? (
+          <ListaEsqueleto color={C.muted} />
+        ) : items.length === 0 ? (
+          <CarritoVacio C={C} />
         ) : (
-          <div className="lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start">
-            <div className="lg:col-span-7">
-              <h2 className="text-xl font-medium text-gray-900">Artículos en tu carrito</h2>
-
-              <ul role="list" className="border-t border-b border-gray-200 divide-y divide-gray-200 mt-6">
-                {cartItems.map((product) => (
-                  <li key={product.id} className="flex py-6 sm:py-8">
-                    <div className="flex-shrink-0 relative h-24 w-24 sm:h-32 sm:w-32 rounded-md overflow-hidden border border-gray-200">
-                      <CustomImage
-                        src={product.image}
-                        alt={product.name}
-                        width={150}
-                        height={150}
-                        className="w-full h-full object-center object-cover"
-                      />
-                    </div>
-
-                    <div className="ml-4 flex-1 flex flex-col sm:ml-6">
-                      <div>
-                        <div className="flex justify-between">
-                          <h3 className="text-base font-medium text-gray-900">
-                            <Link href={`/productos/${product.id}`} className="hover:text-indigo-600">
-                              {product.name}
-                            </Link>
-                          </h3>
-                          <p className="ml-4 text-base font-medium text-gray-900">
-                            €{product.price.toFixed(2)}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 flex-1 flex items-end justify-between">
-                        <div className="flex items-center">
-                          <button
-                            type="button"
-                            onClick={() => updateQuantity(product.id, product.quantity - 1)}
-                            className="text-gray-500 hover:text-indigo-600 p-1"
-                          >
-                            <span className="sr-only">Reducir cantidad</span>
-                            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                              <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
-                            </svg>
-                          </button>
-
-                          <span className="text-base font-medium text-gray-700 mx-2">
-                            {product.quantity}
-                          </span>
-
-                          <button
-                            type="button"
-                            onClick={() => updateQuantity(product.id, product.quantity + 1)}
-                            className="text-gray-500 hover:text-indigo-600 p-1"
-                          >
-                            <span className="sr-only">Aumentar cantidad</span>
-                            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                              <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
-                            </svg>
-                          </button>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => removeItem(product.id)}
-                          className="ml-4 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                        >
-                          <span>Eliminar</span>
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Order summary */}
-            <div className="mt-10 lg:mt-0 lg:col-span-5">
-              <div className="bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8">
-                <h2 className="text-lg font-medium text-gray-900">Resumen de tu orden</h2>
-
-                <div className="mt-6 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-600">Subtotal</p>
-                    <p className="text-sm font-medium text-gray-900">€{subtotal.toFixed(2)}</p>
-                  </div>
-
-                  <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                    <p className="text-sm text-gray-600">Envío</p>
-                    <p className="text-sm font-medium text-gray-900">€{shipping.toFixed(2)}</p>
-                  </div>
-
-                  <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                    <p className="text-base font-medium text-gray-900">Total</p>
-                    <p className="text-base font-medium text-gray-900">€{total.toFixed(2)}</p>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <button
-                    type="button"
-                    className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 lg:gap-16 items-start">
+            {/* Líneas */}
+            <ul className="divide-y" style={{ borderColor: C.muted }}>
+              {items.map((item, i) => (
+                <motion.li
+                  key={`${item.productoId}-${item.varianteId}`}
+                  layout
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ type: 'spring', stiffness: 100, damping: 20, delay: i * 0.05 }}
+                  className="grid grid-cols-[88px_1fr] sm:grid-cols-[112px_1fr_auto] gap-5 py-6"
+                  style={{ borderColor: C.muted }}
+                >
+                  <div
+                    className="relative aspect-square overflow-hidden rounded-md"
+                    style={{ backgroundColor: C.muted }}
                   >
-                    Proceder al pago
-                  </button>
-                </div>
+                    {item.imagen ? (
+                      <CustomImage
+                        src={item.imagen}
+                        alt={item.nombre}
+                        width={224}
+                        height={224}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : null}
+                  </div>
 
-                <div className="mt-6 text-sm text-center">
-                  <p className="text-gray-500">
-                    o{' '}
-                    <Link href="/productos" className="text-indigo-600 font-medium hover:text-indigo-500">
-                      Continuar comprando
-                    </Link>
-                  </p>
+                  <div className="min-w-0">
+                    <h2 className="text-lg leading-tight" style={{ color: C.dark }}>
+                      {item.nombre}
+                    </h2>
+                    {item.tamano ? (
+                      <p className="text-sm mt-1" style={{ color: C.body }}>
+                        {item.tamano}
+                      </p>
+                    ) : null}
+
+                    {item.disponible ? (
+                      <p className="text-sm mt-1" style={{ color: C.body }}>
+                        {formatearPrecio(item.precioUnitario)} c/u
+                      </p>
+                    ) : (
+                      <p className="text-sm mt-1 text-red-700">
+                        Este producto ya no está disponible. Quítalo para continuar.
+                      </p>
+                    )}
+
+                    <div className="flex items-center gap-4 mt-4">
+                      <Cantidad
+                        valor={item.cantidad}
+                        onCambio={(n) => cambiarCantidad(item.productoId, item.varianteId, n)}
+                        C={C}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => quitar(item.productoId, item.varianteId)}
+                        className="inline-flex items-center gap-1.5 text-sm transition-all hover:opacity-60 active:scale-[0.98]"
+                        style={{ color: C.body }}
+                        aria-label={`Quitar ${item.nombre} del carrito`}
+                      >
+                        <Trash2 size={15} strokeWidth={1.5} />
+                        Quitar
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    className="col-span-2 sm:col-span-1 text-right text-lg tabular-nums"
+                    style={{ color: C.dark }}
+                  >
+                    {formatearPrecio(item.precioUnitario * item.cantidad)}
+                  </div>
+                </motion.li>
+              ))}
+            </ul>
+
+            {/* Resumen */}
+            <aside className="lg:sticky lg:top-28 rounded-lg p-6" style={{ backgroundColor: C.muted }}>
+              <h2 className="text-xl tracking-tight mb-5" style={{ color: C.dark }}>
+                Resumen
+              </h2>
+
+              <dl className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <dt style={{ color: C.body }}>Subtotal</dt>
+                  <dd className="tabular-nums" style={{ color: C.dark }}>
+                    {formatearPrecio(subtotal)}
+                  </dd>
                 </div>
+                <div className="flex justify-between">
+                  <dt style={{ color: C.body }}>Envío</dt>
+                  <dd className="tabular-nums" style={{ color: C.dark }}>
+                    {envio === 0 ? 'Gratis' : formatearPrecio(envio)}
+                  </dd>
+                </div>
+              </dl>
+
+              {faltaParaEnvioGratis > 0 && hayCompra ? (
+                <p
+                  className="mt-4 flex items-start gap-2 text-sm leading-relaxed"
+                  style={{ color: C.body }}
+                >
+                  <Truck size={16} strokeWidth={1.5} className="mt-0.5 shrink-0" />
+                  Te faltan {formatearPrecio(faltaParaEnvioGratis)} para el envío gratis.
+                </p>
+              ) : null}
+
+              <div
+                className="flex justify-between items-baseline mt-6 pt-5 border-t"
+                style={{ borderColor: C.sage }}
+              >
+                <span style={{ color: C.dark }}>Total</span>
+                <span className="text-2xl tabular-nums tracking-tight" style={{ color: C.dark }}>
+                  {formatearPrecio(total)}
+                </span>
               </div>
 
-              {/* Secure payment notice */}
-              <div className="mt-6 bg-white border border-gray-200 rounded-lg p-4">
-                <div className="flex items-center">
-                  <svg className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                  <p className="ml-2 text-sm text-gray-500">
-                    Pago seguro garantizado. Tus datos están protegidos.
-                  </p>
-                </div>
-              </div>
-            </div>
+              {error ? (
+                <p className="mt-4 text-sm text-red-700 leading-relaxed">{error}</p>
+              ) : null}
+
+              <button
+                type="button"
+                onClick={irAPagar}
+                disabled={!hayCompra || pagando}
+                className="w-full mt-6 py-3.5 rounded-md text-sm tracking-wide transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
+                style={{ backgroundColor: C.green, color: '#FFFFFF' }}
+              >
+                {pagando ? (
+                  <>
+                    <Loader2 size={16} strokeWidth={1.5} className="animate-spin" />
+                    Conectando con Stripe
+                  </>
+                ) : (
+                  'Proceder al pago'
+                )}
+              </button>
+
+              <p className="mt-3 text-xs leading-relaxed" style={{ color: C.body }}>
+                Pago seguro con tarjeta. Los datos de tu tarjeta se procesan en Stripe y nunca pasan
+                por este sitio.
+              </p>
+            </aside>
           </div>
         )}
       </div>
+    </main>
+  );
+}
+
+function Cantidad({
+  valor,
+  onCambio,
+  C,
+}: {
+  valor: number;
+  onCambio: (n: number) => void;
+  C: { dark: string; body: string; sage: string };
+}) {
+  return (
+    <div
+      className="inline-flex items-center rounded-md border"
+      style={{ borderColor: C.sage }}
+    >
+      <button
+        type="button"
+        onClick={() => onCambio(valor - 1)}
+        disabled={valor <= 1}
+        className="px-2.5 py-2 transition-all active:scale-[0.98] disabled:opacity-30"
+        style={{ color: C.dark }}
+        aria-label="Reducir cantidad"
+      >
+        <Minus size={14} strokeWidth={1.5} />
+      </button>
+      <span className="w-9 text-center text-sm tabular-nums" style={{ color: C.dark }}>
+        {valor}
+      </span>
+      <button
+        type="button"
+        onClick={() => onCambio(valor + 1)}
+        disabled={valor >= MAX_POR_LINEA}
+        className="px-2.5 py-2 transition-all active:scale-[0.98] disabled:opacity-30"
+        style={{ color: C.dark }}
+        aria-label="Aumentar cantidad"
+      >
+        <Plus size={14} strokeWidth={1.5} />
+      </button>
+    </div>
+  );
+}
+
+function CarritoVacio({ C }: { C: { dark: string; body: string; green: string; muted: string } }) {
+  return (
+    <div className="py-20 max-w-md">
+      <div
+        className="w-14 h-14 rounded-full grid place-items-center mb-6"
+        style={{ backgroundColor: C.muted }}
+      >
+        <ShoppingBag size={22} strokeWidth={1.5} style={{ color: C.dark }} />
+      </div>
+      <h2 className="text-2xl tracking-tight mb-3" style={{ color: C.dark }}>
+        Tu carrito está vacío
+      </h2>
+      <p className="text-base leading-relaxed mb-8" style={{ color: C.body }}>
+        Todavía no has agregado nada. Nuestros jabones y cremas se hacen en lotes pequeños, a mano.
+      </p>
+      <Link
+        href="/productos"
+        className="inline-block px-7 py-3.5 rounded-md text-sm tracking-wide transition-all active:scale-[0.98]"
+        style={{ backgroundColor: C.green, color: '#FFFFFF' }}
+      >
+        Ver productos
+      </Link>
+    </div>
+  );
+}
+
+function ListaEsqueleto({ color }: { color: string }) {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 lg:gap-16 items-start">
+      <div className="space-y-6">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="grid grid-cols-[88px_1fr] sm:grid-cols-[112px_1fr] gap-5">
+            <div className="aspect-square rounded-md animate-pulse" style={{ backgroundColor: color }} />
+            <div className="space-y-3 py-2">
+              <div className="h-4 w-2/5 rounded animate-pulse" style={{ backgroundColor: color }} />
+              <div className="h-3 w-1/4 rounded animate-pulse" style={{ backgroundColor: color }} />
+              <div className="h-9 w-28 rounded animate-pulse" style={{ backgroundColor: color }} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="h-72 rounded-lg animate-pulse" style={{ backgroundColor: color }} />
     </div>
   );
 }

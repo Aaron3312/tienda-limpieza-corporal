@@ -77,6 +77,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const navigationItems = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: Home },
     { name: 'Productos', href: '/admin/productos', icon: Package },
+    { name: 'Pedidos', href: '/admin/pedidos', icon: ShoppingBag },
     // { name: 'Categorías', href: '/admin/categorias', icon: Tag },
     // { name: 'Tienda', href: '/admin/tienda', icon: ShoppingBag },
     { name: 'Colores', href: '/admin/colores', icon: Palette },

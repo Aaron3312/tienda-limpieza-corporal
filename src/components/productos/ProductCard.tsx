@@ -3,10 +3,26 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Check, ShoppingBag } from 'lucide-react';
 import { Colores, Producto } from '@/types';
 import { getImageSrc } from '@/lib/utils';
+import { useCart } from '@/context/CartContext';
+import { formatearPrecio } from '@/lib/comercio';
 
 export default function ProductCard({ product, index, isVisible, colores }: { product: Producto; index: number; isVisible: boolean; colores: Colores }) {
+  const { agregar } = useCart();
+  const [agregado, setAgregado] = React.useState(false);
+
+  // Con una sola presentación se agrega desde aquí; con varias, hay que
+  // elegir cuál, y eso ocurre en la ficha del producto.
+  const varianteUnica = product?.variantes?.length === 1 ? product.variantes[0] : null;
+
+  React.useEffect(() => {
+    if (!agregado) return;
+    const t = setTimeout(() => setAgregado(false), 1800);
+    return () => clearTimeout(t);
+  }, [agregado]);
+
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     e.currentTarget.src = '/images/shared/placeholder-product.png';
     e.currentTarget.onerror = null;
@@ -16,6 +32,11 @@ export default function ProductCard({ product, index, isVisible, colores }: { pr
   if (!product || !product.variantes || product.variantes.length === 0) {
     return null;
   }
+
+  const precioMinimo = Math.min(...product.variantes.map((v) => Number(v.precio) || 0));
+  const desdeTexto = product.variantes.length > 1
+    ? `Desde ${formatearPrecio(precioMinimo)}`
+    : formatearPrecio(precioMinimo);
 
   return (
     <motion.div 
@@ -105,11 +126,34 @@ export default function ProductCard({ product, index, isVisible, colores }: { pr
           </div>
         )}
         
-        <div className="flex justify-between items-center">
-          <Link href={`/productos/${product.id}`} className="text-sm px-3 py-1 rounded-md font-medium transition-colors hover:opacity-90"
-                style={{ backgroundColor: colores.primario, color: colores.textoOscuro }}>
-            Ver detalles
-          </Link>
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-sm font-medium tabular-nums" style={{ color: colores.texto }}>
+            {desdeTexto}
+          </span>
+
+          {varianteUnica ? (
+            <button
+              type="button"
+              onClick={() => { agregar(product.id, varianteUnica.id); setAgregado(true); }}
+              className="inline-flex items-center gap-1.5 text-sm px-3.5 py-2 rounded-md font-medium transition-all hover:opacity-90 active:scale-[0.98]"
+              style={{ backgroundColor: colores.primario, color: colores.textoClaro }}
+              aria-label={`Agregar ${product.nombre} al carrito`}
+            >
+              {agregado ? (
+                <><Check size={15} strokeWidth={2} /> Agregado</>
+              ) : (
+                <><ShoppingBag size={15} strokeWidth={1.5} /> Agregar</>
+              )}
+            </button>
+          ) : (
+            <Link
+              href={`/productos/${product.id}`}
+              className="text-sm px-3.5 py-2 rounded-md font-medium transition-all hover:opacity-90 active:scale-[0.98]"
+              style={{ backgroundColor: colores.primario, color: colores.textoClaro }}
+            >
+              Elegir presentación
+            </Link>
+          )}
         </div>
       </div>
     </motion.div>

@@ -76,3 +76,70 @@ export interface Variante {
     colores: Colores;
     informacionNegocio: InformacionNegocio;
   }
+// ---------------------------------------------------------------------------
+// Carrito y pedidos
+// ---------------------------------------------------------------------------
+
+/** Línea del carrito: se identifica por producto + variante, nunca sólo por producto. */
+export interface LineaCarrito {
+  productoId: string;
+  varianteId: string;
+  cantidad: number;
+}
+
+/** Línea ya resuelta contra el catálogo, lista para pintarse. */
+export interface LineaCarritoResuelta extends LineaCarrito {
+  nombre: string;
+  tamano: string;
+  precioUnitario: number;
+  imagen: string;
+  disponible: boolean;
+}
+
+/**
+ * Copia congelada de lo comprado. Guarda nombre y precio del momento de la
+ * compra: si el producto cambia de precio después, el pedido histórico no debe
+ * moverse.
+ */
+export interface LineaPedido {
+  productoId: string;
+  varianteId: string;
+  nombre: string;
+  tamano: string;
+  precioUnitario: number;
+  cantidad: number;
+}
+
+export interface DireccionEnvio {
+  calle: string;
+  colonia: string;
+  ciudad: string;
+  estado: string;
+  cp: string;
+  pais: string;
+}
+
+export interface ClientePedido {
+  nombre: string;
+  email: string;
+  telefono: string;
+}
+
+export type EstadoPedido = 'pagado';
+
+export interface Pedido {
+  id: string;
+  stripeSessionId: string;
+  stripePaymentIntentId: string;
+  estado: EstadoPedido;
+  creadoEn: string;
+  cliente: ClientePedido;
+  envio: DireccionEnvio;
+  items: LineaPedido[];
+  subtotal: number;
+  envioCosto: number;
+  total: number;
+  moneda: 'MXN';
+  /** Pedido creado sin Stripe, sólo para la demo. Desaparece con llaves reales. */
+  simulado?: boolean;
+}

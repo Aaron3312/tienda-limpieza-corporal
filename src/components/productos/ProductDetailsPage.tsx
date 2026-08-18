@@ -1,6 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { Check, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { useCart } from '@/context/CartContext';
+import { ENVIO_COSTO, ENVIO_GRATIS_DESDE, MAX_POR_LINEA, formatearPrecio } from '@/lib/comercio';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,6 +29,9 @@ export default function ProductDetailsPage() {
   const [related,     setRelated]     = useState<Producto[]>([]);
   const [activeImg,   setActiveImg]   = useState<string>('');
   const [loading,     setLoading]     = useState(true);
+  const [cantidad,    setCantidad]    = useState(1);
+  const [agregado,    setAgregado]    = useState(false);
+  const { agregar } = useCart();
 
   useEffect(() => {
     const id = params?.productId as string;
@@ -180,22 +186,64 @@ export default function ProductDetailsPage() {
               </div>
             )}
 
-            {/* CTA */}
-            <div className="pd-in flex flex-col sm:flex-row gap-3 mb-10">
-              <a href="https://www.instagram.com/soloparaeva/"
-                target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
-                           font-semibold text-sm text-white transition-all duration-300 hover:-translate-y-px hover:shadow-xl"
-                style={{ backgroundColor: C.dark }}>
-                Pedir por Instagram
-              </a>
-              <a href="https://www.facebook.com/share/18kSRN2JWi/"
-                target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
-                           font-semibold text-sm border-2 transition-all duration-300 hover:-translate-y-px"
-                style={{ borderColor: C.dark, color: C.dark }}>
-                Pedir por Facebook
-              </a>
+            {/* precio + compra */}
+            <div className="pd-in mb-10">
+              <p className="text-3xl tracking-tight tabular-nums mb-6" style={{ color: C.dark }}>
+                {selectedVar ? formatearPrecio(Number(selectedVar.precio) || 0) : null}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="inline-flex items-center rounded-full border self-start"
+                  style={{ borderColor: 'rgba(0,0,0,0.18)' }}>
+                  <button type="button" onClick={() => setCantidad(c => Math.max(1, c - 1))}
+                    disabled={cantidad <= 1}
+                    className="px-4 py-3 transition-all active:scale-[0.98] disabled:opacity-30"
+                    style={{ color: C.dark }} aria-label="Reducir cantidad">
+                    <Minus size={15} strokeWidth={1.5} />
+                  </button>
+                  <span className="w-8 text-center text-sm tabular-nums" style={{ color: C.dark }}>
+                    {cantidad}
+                  </span>
+                  <button type="button" onClick={() => setCantidad(c => Math.min(MAX_POR_LINEA, c + 1))}
+                    disabled={cantidad >= MAX_POR_LINEA}
+                    className="px-4 py-3 transition-all active:scale-[0.98] disabled:opacity-30"
+                    style={{ color: C.dark }} aria-label="Aumentar cantidad">
+                    <Plus size={15} strokeWidth={1.5} />
+                  </button>
+                </div>
+
+                <button type="button"
+                  disabled={!selectedVar}
+                  onClick={() => {
+                    if (!selectedVar || !product) return;
+                    agregar(product.id, selectedVar.id, cantidad);
+                    setAgregado(true);
+                  }}
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full
+                             font-semibold text-sm text-white transition-all duration-300
+                             hover:-translate-y-px hover:shadow-xl active:scale-[0.98] disabled:opacity-40"
+                  style={{ backgroundColor: C.dark }}>
+                  {agregado ? (
+                    <><Check size={16} strokeWidth={2} /> Agregado al carrito</>
+                  ) : (
+                    <><ShoppingBag size={16} strokeWidth={1.5} /> Agregar al carrito</>
+                  )}
+                </button>
+
+                {agregado && (
+                  <Link href="/carrito"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full
+                               font-semibold text-sm border-2 transition-all duration-300 hover:-translate-y-px"
+                    style={{ borderColor: C.dark, color: C.dark }}>
+                    Ver carrito
+                  </Link>
+                )}
+              </div>
+
+              <p className="text-xs mt-4" style={{ color: C.body }}>
+                Envío nacional {formatearPrecio(ENVIO_COSTO)} · gratis en compras desde{' '}
+                {formatearPrecio(ENVIO_GRATIS_DESDE)}
+              </p>
             </div>
 
             {/* detalles + beneficios */}

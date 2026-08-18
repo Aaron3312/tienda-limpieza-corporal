@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 #dd
+# firebase service account (NEVER commit)
+*-firebase-adminsdk-*.json
+serviceAccount*.json

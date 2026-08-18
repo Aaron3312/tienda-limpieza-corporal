@@ -2,6 +2,7 @@
 
 import { AuthProvider } from '@/context/AuthContext';
 import { SiteDataProvider } from '@/context/SiteDataContext';
+import { CartProvider } from '@/context/CartContext';
 import { usePathname } from 'next/navigation';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -12,5 +13,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     return <AuthProvider>{children}</AuthProvider>;
   }
 
-  return <SiteDataProvider>{children}</SiteDataProvider>;
+  return (
+    <SiteDataProvider>
+      <CartProvider>{children}</CartProvider>
+    </SiteDataProvider>
+  );
 }

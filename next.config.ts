@@ -1,14 +1,14 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',             // Exporta tu app como archivos estáticos
+import type { NextConfig } from 'next';
+
+// Este proyecto ya NO se exporta como sitio estático: el checkout con Stripe
+// necesita route handlers (creación de la sesión de pago y webhook), y esos
+// sólo existen con el runtime de servidor de Vercel.
+const nextConfig: NextConfig = {
   images: {
-    unoptimized: true,          // Necesario para exportación estática
+    unoptimized: true,
   },
-  // Usa una variable de entorno para determinar si estamos usando un dominio personalizado
-  basePath: process.env.CUSTOM_DOMAIN === 'true' ? '' : '/tienda-limpieza-corporal',
-  assetPrefix: process.env.CUSTOM_DOMAIN === 'true' ? '' : '/tienda-limpieza-corporal/',
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

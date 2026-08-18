@@ -9,11 +9,13 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
   const pathname = usePathname();
   const isAdmin  = pathname?.startsWith('/admin');
 
+  // El header va dentro de Providers porque el contador del carrito consume
+  // CartContext. Fuera del árbol de proveedores, useCart revienta.
   return (
-    <>
+    <Providers>
       {!isAdmin && <Header />}
-      <Providers>{children}</Providers>
+      {children}
       {!isAdmin && <Footers />}
-    </>
+    </Providers>
   );
 }

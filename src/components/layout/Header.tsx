@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { ShoppingBag } from 'lucide-react';
+import { useCart } from '@/context/CartContext';
 
 const NAV = [
   { href: '/productos', label: 'Productos' },
@@ -21,6 +23,7 @@ const MUTED  = '#5A5A5A';
 export default function Header() {
   const pathname              = usePathname();
   const [open,    setOpen]    = useState(false);
+  const { totalPiezas: piezas, hidratado } = useCart();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -92,6 +95,26 @@ export default function Header() {
 
           {/* Right side */}
           <div className="flex items-center gap-3 flex-shrink-0">
+            {/* Carrito */}
+            <Link
+              href="/carrito"
+              aria-label={piezas > 0 ? `Carrito, ${piezas} artículos` : 'Carrito vacío'}
+              className="relative w-10 h-10 grid place-items-center rounded-full transition-colors duration-200 hover:bg-black/5"
+              style={{ color: DARK }}
+            >
+              <ShoppingBag size={19} strokeWidth={1.5} />
+              {/* El contador sólo aparece tras hidratar: en el HTML del servidor
+                  el carrito siempre está vacío. */}
+              {hidratado && piezas > 0 && (
+                <span
+                  className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 grid place-items-center rounded-full text-[10px] font-semibold text-white tabular-nums"
+                  style={{ backgroundColor: DARK }}
+                >
+                  {piezas > 99 ? '99+' : piezas}
+                </span>
+              )}
+            </Link>
+
             {/* CTA button (desktop) */}
             <Link
               href="/productos"
