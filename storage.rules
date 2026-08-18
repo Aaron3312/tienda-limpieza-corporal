@@ -1,0 +1,37 @@
+rules_version = '2';
+
+// Reglas de Storage — Solo Para Eva
+//
+// Las reglas anteriores caducaron el 18 de junio de 2025 y desde entonces
+// Storage rechazaba todo: por eso la subida de imágenes del panel dejó de
+// funcionar. Estas no caducan.
+//
+// Modelo: las fotos de producto se ven en la tienda pública, así que la
+// lectura es abierta. Subir, reemplazar o borrar exige sesión de administrador.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function esAdmin() {
+      return request.auth != null;
+    }
+
+    function esImagenValida() {
+      return request.resource.size < 5 * 1024 * 1024
+             && request.resource.contentType.matches('image/.*');
+    }
+
+    // Fotos de producto: las sube el panel desde ProductoForm.
+    match /productos/{archivo} {
+      allow read: if true;
+      allow write: if esAdmin() && esImagenValida();
+      allow delete: if esAdmin();
+    }
+
+    // Cualquier otra ruta queda cerrada a escritura.
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write, delete: if false;
+    }
+  }
+}
