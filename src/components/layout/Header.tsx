@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, UserRound } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 
 const NAV = [
   { href: '/productos', label: 'Productos' },
@@ -24,6 +25,7 @@ export default function Header() {
   const pathname              = usePathname();
   const [open,    setOpen]    = useState(false);
   const { totalPiezas: piezas, hidratado } = useCart();
+  const { user, loading: cargandoSesion } = useAuth();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -112,6 +114,29 @@ export default function Header() {
                 >
                   {piezas > 99 ? '99+' : piezas}
                 </span>
+              )}
+            </Link>
+
+            {/* Cuenta: avatar si hay sesión, icono si no. Antes de resolver la
+                sesión se pinta el icono para no saltar. */}
+            <Link
+              href="/cuenta"
+              aria-label={user ? 'Mi cuenta' : 'Entrar a mi cuenta'}
+              className="relative w-10 h-10 grid place-items-center rounded-full transition-colors duration-200 hover:bg-black/5"
+              style={{ color: DARK }}
+            >
+              {!cargandoSesion && user?.photoURL ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={user.photoURL}
+                  alt=""
+                  width={26}
+                  height={26}
+                  referrerPolicy="no-referrer"
+                  className="w-[26px] h-[26px] rounded-full object-cover ring-1 ring-black/10"
+                />
+              ) : (
+                <UserRound size={19} strokeWidth={1.5} />
               )}
             </Link>
 
@@ -223,6 +248,26 @@ export default function Header() {
             );
           })}
         </nav>
+
+        {/* cuenta y carrito en el drawer */}
+        <div className="px-6 pb-2 flex-shrink-0 grid grid-cols-2 gap-3">
+          <Link
+            href="/cuenta"
+            className="flex items-center justify-center gap-2 py-3 rounded-full text-sm font-medium border"
+            style={{ color: DARK, borderColor: BORDER }}
+          >
+            <UserRound size={16} strokeWidth={1.5} />
+            {user ? 'Mi cuenta' : 'Entrar'}
+          </Link>
+          <Link
+            href="/carrito"
+            className="flex items-center justify-center gap-2 py-3 rounded-full text-sm font-medium border"
+            style={{ color: DARK, borderColor: BORDER }}
+          >
+            <ShoppingBag size={16} strokeWidth={1.5} />
+            Carrito{hidratado && piezas > 0 ? ` (${piezas})` : ''}
+          </Link>
+        </div>
 
         {/* drawer CTA */}
         <div className="px-6 pb-10 flex-shrink-0">

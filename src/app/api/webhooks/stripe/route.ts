@@ -78,6 +78,7 @@ export async function POST(request: Request) {
     subtotal: number;
     envioCosto: number;
     total: number;
+    uid?: string | null;
   };
 
   // En la versión actual de la API la dirección de envío vive en
@@ -87,6 +88,7 @@ export async function POST(request: Request) {
   const envio = envioDetalles?.address ?? sesion.customer_details?.address ?? null;
 
   const pedido: Omit<Pedido, 'id'> = {
+    uid: datos.uid ?? null,
     stripeSessionId: sesion.id,
     stripePaymentIntentId:
       typeof sesion.payment_intent === 'string'

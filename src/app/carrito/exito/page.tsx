@@ -6,11 +6,13 @@ import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Check, Mail } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { useSiteData } from '@/context/SiteDataContext';
 
 function Confirmacion() {
   const { C, info } = useSiteData();
   const { vaciar, hidratado } = useCart();
+  const { user } = useAuth();
   const parametros = useSearchParams();
   const simulado = parametros.get('simulado') === '1';
   const [vaciado, setVaciado] = useState(false);
@@ -77,6 +79,15 @@ function Confirmacion() {
           ) : null}
 
           <div className="flex flex-wrap gap-3 mt-10">
+            {user ? (
+              <Link
+                href="/cuenta"
+                className="px-7 py-3.5 rounded-md text-sm tracking-wide transition-all active:scale-[0.98]"
+                style={{ backgroundColor: C.dark, color: '#FFFFFF' }}
+              >
+                Ver mis pedidos
+              </Link>
+            ) : null}
             <Link
               href="/productos"
               className="px-7 py-3.5 rounded-md text-sm tracking-wide transition-all active:scale-[0.98]"

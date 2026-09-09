@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, Truck, Loader2 } from 'lucide-react';
 import CustomImage from '@/components/CustomImage';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 import { useSiteData } from '@/context/SiteDataContext';
 import { getProductos } from '@/services/firestore';
 import { ENVIO_GRATIS_DESDE, MAX_POR_LINEA, formatearPrecio } from '@/lib/comercio';
@@ -14,6 +15,7 @@ import type { Producto } from '@/types';
 export default function CarritoPage() {
   const { C } = useSiteData();
   const { lineas, hidratado, cambiarCantidad, quitar, resolver } = useCart();
+  const { user, loading: cargandoSesion, obtenerToken } = useAuth();
 
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cargando, setCargando] = useState(true);
@@ -40,9 +42,14 @@ export default function CarritoPage() {
     setError(null);
     try {
       // Sólo salen identificadores y cantidades: los precios los pone el servidor.
+      // Con sesión, el pedido queda ligado a la cuenta y aparece en /cuenta.
+      const token = await obtenerToken();
       const respuesta = await fetch('/api/checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           lineas: lineas.map(({ productoId, varianteId, cantidad }) => ({
             productoId,
@@ -233,6 +240,16 @@ export default function CarritoPage() {
                 Pago seguro con tarjeta. Los datos de tu tarjeta se procesan en Stripe y nunca pasan
                 por este sitio.
               </p>
+
+              {!cargandoSesion && !user ? (
+                <p className="mt-4 pt-4 border-t text-xs leading-relaxed" style={{ borderColor: C.sage, color: C.body }}>
+                  ¿Quieres seguir tu pedido después?{' '}
+                  <Link href="/cuenta?volver=/carrito" className="underline underline-offset-2" style={{ color: C.dark }}>
+                    Entra con Google
+                  </Link>{' '}
+                  antes de pagar y quedará en tu cuenta.
+                </p>
+              ) : null}
             </aside>
           </div>
         )}

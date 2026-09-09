@@ -1,6 +1,6 @@
 import 'server-only';
 import { Resend } from 'resend';
-import { formatearPrecio } from './comercio';
+import { formatearPrecio, referenciaPedido } from './comercio';
 import type { Pedido } from '@/types';
 
 // Mientras el dominio no esté verificado en Resend, onboarding@resend.dev sólo
@@ -75,7 +75,7 @@ export async function enviarCorreosDePedido(pedido: Pedido): Promise<void> {
   }
 
   const resend = new Resend(clave);
-  const corto = pedido.id.slice(0, 8).toUpperCase();
+  const corto = referenciaPedido(pedido.id);
 
   const paraDuena = envoltura(`
     <p style="margin:0 0 4px;color:#5A5A5A;font-size:13px;letter-spacing:.05em;text-transform:uppercase">

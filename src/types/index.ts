@@ -125,10 +125,16 @@ export interface ClientePedido {
   telefono: string;
 }
 
-export type EstadoPedido = 'pagado';
+/**
+ * Ciclo de vida de un pedido. Nace en `pagado` (lo pone el webhook) y la
+ * administradora lo va moviendo desde el panel.
+ */
+export type EstadoPedido = 'pagado' | 'preparando' | 'enviado' | 'entregado' | 'cancelado';
 
 export interface Pedido {
   id: string;
+  /** uid de Firebase de la clienta si compró con sesión; null en compras de invitada. */
+  uid: string | null;
   stripeSessionId: string;
   stripePaymentIntentId: string;
   estado: EstadoPedido;
@@ -140,6 +146,11 @@ export interface Pedido {
   envioCosto: number;
   total: number;
   moneda: 'MXN';
+  /** Paquetería y guía, cuando el pedido pasa a `enviado`. */
+  envioPaqueteria?: string;
+  envioGuia?: string;
+  /** Última vez que la administradora tocó el pedido. */
+  actualizadoEn?: string;
   /** Pedido creado sin Stripe, sólo para la demo. Desaparece con llaves reales. */
   simulado?: boolean;
 }

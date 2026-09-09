@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { adminDb, hayCredencialAdmin } from '@/lib/firebaseAdmin';
+import { adminDb, hayCredencialAdmin, verificarSesion } from '@/lib/firebaseAdmin';
 import { MAX_POR_LINEA, MONEDA, calcularEnvio } from '@/lib/comercio';
 import type { LineaPedido, Producto } from '@/types';
 
@@ -39,6 +39,10 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
+
+  // La sesión es opcional: se puede comprar como invitada. Si hay token, el
+  // pedido queda ligado a la cuenta y aparece en /cuenta.
+  const sesionCliente = await verificarSesion(request);
 
   const db = adminDb();
   const items: LineaPedido[] = [];
@@ -106,6 +110,8 @@ export async function POST(request: Request) {
     moneda: MONEDA,
     creadoEn: new Date().toISOString(),
     estado: 'iniciado',
+    uid: sesionCliente?.uid ?? null,
+    email: sesionCliente?.email ?? null,
   });
 
   const origen =
@@ -118,13 +124,14 @@ export async function POST(request: Request) {
   // poder enseñar la demo. Se retira en cuanto existan las llaves de prueba.
   if (!claveStripe) {
     const creado = await db.collection('pedidos').add({
+      uid: sesionCliente?.uid ?? null,
       stripeSessionId: `simulado_${referencia.id}`,
       stripePaymentIntentId: '',
       estado: 'pagado',
       creadoEn: new Date().toISOString(),
       cliente: {
         nombre: 'Pedido de demostración',
-        email: '',
+        email: sesionCliente?.email ?? '',
         telefono: '',
       },
       envio: { calle: '', colonia: '', ciudad: '', estado: '', cp: '', pais: 'MX' },
@@ -174,7 +181,9 @@ export async function POST(request: Request) {
           },
         },
       ],
-      metadata: { checkoutId: referencia.id },
+      // Con sesión, Stripe ya trae el correo puesto y no lo pide de nuevo.
+      ...(sesionCliente?.email ? { customer_email: sesionCliente.email } : {}),
+      metadata: { checkoutId: referencia.id, uid: sesionCliente?.uid ?? '' },
       success_url: `${origen}/carrito/exito?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origen}/carrito?cancelado=1`,
     });

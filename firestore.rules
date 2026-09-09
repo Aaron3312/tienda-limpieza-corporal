@@ -5,10 +5,10 @@ rules_version = '2';
 // Modelo:
 //   - El catálogo (productos, categorías, configuración) es PÚBLICO en lectura:
 //     lo consume el sitio sin sesión. La escritura exige el claim admin (panel /admin).
-//   - Los PEDIDOS son inaccesibles desde el navegador, en lectura y escritura.
-//     Los escribe únicamente el webhook de Stripe mediante el Admin SDK, que
-//     ignora estas reglas por diseño. El panel los lee vía route handler.
-//     Contienen nombre, teléfono y dirección de clientes: dato personal.
+//   - Los PEDIDOS los escribe únicamente el webhook de Stripe mediante el Admin
+//     SDK, que ignora estas reglas por diseño. Cada clienta lee sólo los suyos;
+//     el panel los lee vía route handler. Contienen nombre, teléfono y
+//     dirección de clientes: dato personal.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -37,9 +37,17 @@ service cloud.firestore {
       allow create, update, delete: if esAdmin();
     }
 
-    // Pedidos: cero acceso desde el cliente.
-    // El Admin SDK (webhook de Stripe) no pasa por aquí.
+    // Pedidos: los escribe sólo el Admin SDK (webhook de Stripe), que no pasa
+    // por aquí. Una clienta con sesión puede leer únicamente los suyos
+    // (consulta `where('uid', '==', uid)` desde /cuenta). Las administradoras
+    // los leen por route handler, no directo.
     match /pedidos/{pedidoId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    // Referencias de checkout: sólo servidor.
+    match /checkout_sesiones/{checkoutId} {
       allow read, write: if false;
     }
 
