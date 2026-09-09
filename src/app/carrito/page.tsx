@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, Truck, Loader2 } from 'lucide-react';
 import CustomImage from '@/components/CustomImage';
@@ -12,8 +13,9 @@ import { getProductos } from '@/services/firestore';
 import { ENVIO_GRATIS_DESDE, MAX_POR_LINEA, formatearPrecio } from '@/lib/comercio';
 import type { Producto } from '@/types';
 
-export default function CarritoPage() {
+function Carrito() {
   const { C } = useSiteData();
+  const cancelado = useSearchParams().get('cancelado') === '1';
   const { lineas, hidratado, cambiarCantidad, quitar, resolver } = useCart();
   const { user, loading: cargandoSesion, obtenerToken } = useAuth();
 
@@ -219,6 +221,12 @@ export default function CarritoPage() {
                 <p className="mt-4 text-sm text-red-700 leading-relaxed">{error}</p>
               ) : null}
 
+              {cancelado && !error ? (
+                <p className="mt-4 text-sm leading-relaxed" style={{ color: C.body }}>
+                  No se hizo ningún cargo. Tu carrito sigue aquí por si quieres intentarlo de nuevo.
+                </p>
+              ) : null}
+
               <button
                 type="button"
                 onClick={irAPagar}
@@ -342,5 +350,13 @@ function ListaEsqueleto({ color }: { color: string }) {
       </div>
       <div className="h-72 rounded-lg animate-pulse" style={{ backgroundColor: color }} />
     </div>
+  );
+}
+
+export default function CarritoPage() {
+  return (
+    <Suspense fallback={null}>
+      <Carrito />
+    </Suspense>
   );
 }

@@ -169,6 +169,11 @@ export async function POST(request: Request) {
       })),
       shipping_address_collection: { allowed_countries: ['MX'] },
       phone_number_collection: { enabled: true },
+      // Los códigos se crean en el panel de Stripe (Productos → Cupones); aquí
+      // sólo se habilita la casilla.
+      allow_promotion_codes: true,
+      // Una sesión abandonada caduca sola y no deja referencias colgadas.
+      expires_at: Math.floor(Date.now() / 1000) + 60 * 60,
       shipping_options: [
         {
           shipping_rate_data: {
