@@ -32,43 +32,35 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, loading, logOut } = useAuth();
+  const { user, esAdmin, loading, logOut } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-  
-  // Redirigir si no hay usuario autenticado
+  const esLogin = pathname?.includes('/admin/login') ?? false;
+
+  // Sin sesión, o con sesión pero sin rol admin, se vuelve al login. El login
+  // explica el segundo caso: una clienta con Google no es administradora.
   useEffect(() => {
-    if (!loading && !user && !pathname?.includes('/admin/login')) {
-      router.push('/admin/login');
+    if (!loading && !esLogin && (!user || !esAdmin)) {
+      router.replace('/admin/login');
     }
-  }, [user, loading, router, pathname]);
+  }, [user, esAdmin, loading, router, esLogin]);
 
   const handleLogout = async () => {
     await logOut();
     router.push('/admin/login');
   };
 
-  // Mientras Firebase resuelve la sesión, mostrar spinner
-  if (loading && !pathname?.includes('/admin/login')) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  // Una vez resuelto, si no hay usuario redirigir (el useEffect lo maneja)
-  if (!loading && !user && !pathname?.includes('/admin/login')) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  // Si estamos en la página de login, solo mostrar el contenido
-  if (pathname?.includes('/admin/login')) {
+  if (esLogin) {
     return <>{children}</>;
+  }
+
+  // Mientras Firebase resuelve la sesión (o mientras redirige), esqueleto.
+  if (loading || !user || !esAdmin) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
   // Menú de navegación

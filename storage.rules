@@ -12,8 +12,9 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
+    // Mismo criterio que firestore.rules: custom claim `admin` en el token.
     function esAdmin() {
-      return request.auth != null;
+      return request.auth != null && request.auth.token.admin == true;
     }
 
     function esImagenValida() {

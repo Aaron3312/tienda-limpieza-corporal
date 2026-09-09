@@ -55,3 +55,40 @@ export function adminAuth(): Auth {
 export function hayCredencialAdmin(): boolean {
   return Boolean(process.env.FIREBASE_SERVICE_ACCOUNT || process.env.GOOGLE_APPLICATION_CREDENTIALS);
 }
+
+// ---------------------------------------------------------------------------
+// Autorización en route handlers
+// ---------------------------------------------------------------------------
+
+export interface SesionVerificada {
+  uid: string;
+  email: string | null;
+  admin: boolean;
+}
+
+/**
+ * Lee el `Authorization: Bearer <idToken>` de la petición y lo verifica con
+ * Firebase. Devuelve null si no hay token o no es válido; nunca lanza.
+ */
+export async function verificarSesion(request: Request): Promise<SesionVerificada | null> {
+  const cabecera = request.headers.get('authorization') ?? '';
+  const token = cabecera.startsWith('Bearer ') ? cabecera.slice(7).trim() : '';
+  if (!token) return null;
+
+  try {
+    const decodificado = await adminAuth().verifyIdToken(token);
+    return {
+      uid: decodificado.uid,
+      email: decodificado.email ?? null,
+      admin: decodificado.admin === true,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/** Igual que verificarSesion, pero además exige el custom claim `admin`. */
+export async function verificarAdmin(request: Request): Promise<SesionVerificada | null> {
+  const sesion = await verificarSesion(request);
+  return sesion?.admin ? sesion : null;
+}

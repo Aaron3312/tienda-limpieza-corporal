@@ -1,22 +1,31 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User } from 'firebase/auth';
-import { 
-  loginWithEmail, 
-  logout, 
-  resetPassword, 
-  getCurrentUser, 
-  subscribeToAuthChanges 
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import type { User } from 'firebase/auth';
+import {
+  esAdministrador,
+  loginWithEmail,
+  loginWithGoogle,
+  logout,
+  resetPassword,
+  subscribeToAuthChanges,
 } from '@/services/auth';
 
 interface AuthContextType {
   user: User | null;
+  /** true sólo cuando el token trae el custom claim `admin`. */
+  esAdmin: boolean;
+  /** Mientras Firebase resuelve la sesión inicial. */
   loading: boolean;
+  /** Mientras corre un login / logout disparado por la interfaz. */
+  ocupado: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
+  loginGoogle: () => Promise<void>;
   logOut: () => Promise<void>;
   resetUserPassword: (email: string) => Promise<void>;
+  /** Token fresco para llamar a los route handlers protegidos. */
+  obtenerToken: () => Promise<string | null>;
   clearError: () => void;
 }
 
@@ -30,85 +39,99 @@ export const useAuth = () => {
   return context;
 };
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [esAdmin, setEsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [ocupado, setOcupado] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Verificar si hay un usuario ya autenticado
-    const currentUser = getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-    }
-    
-    // Suscribirse a cambios en el estado de autenticación
-    const unsubscribe = subscribeToAuthChanges((authUser) => {
+    const unsubscribe = subscribeToAuthChanges(async (authUser) => {
       setUser(authUser);
+      // El claim se lee del token, no de Firestore: no cuesta una lectura y no
+      // se puede falsificar desde el navegador.
+      setEsAdmin(await esAdministrador(authUser));
       setLoading(false);
     });
-    
-    // Limpiar suscripción al desmontar
     return () => unsubscribe();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    setLoading(true);
+  const ejecutar = useCallback(async (accion: () => Promise<unknown>) => {
+    setOcupado(true);
     setError(null);
-    
     try {
-      const user = await loginWithEmail(email, password);
-      setUser(user);
-    } catch (err: any) {
-      setError(err.message);
+      await accion();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Ocurrió un error.');
+      throw err;
     } finally {
-      setLoading(false);
+      setOcupado(false);
     }
-  };
+  }, []);
 
-  const logOut = async () => {
-    setLoading(true);
-    
+  const login = useCallback(
+    (email: string, password: string) =>
+      ejecutar(async () => {
+        const u = await loginWithEmail(email, password);
+        setUser(u);
+        setEsAdmin(await esAdministrador(u, true));
+      }),
+    [ejecutar],
+  );
+
+  const loginGoogle = useCallback(
+    () =>
+      ejecutar(async () => {
+        const u = await loginWithGoogle();
+        setUser(u);
+        setEsAdmin(await esAdministrador(u, true));
+      }),
+    [ejecutar],
+  );
+
+  const logOut = useCallback(
+    () =>
+      ejecutar(async () => {
+        await logout();
+        setUser(null);
+        setEsAdmin(false);
+      }),
+    [ejecutar],
+  );
+
+  const resetUserPassword = useCallback(
+    (email: string) => ejecutar(() => resetPassword(email)),
+    [ejecutar],
+  );
+
+  const obtenerToken = useCallback(async () => {
+    if (!user) return null;
     try {
-      await logout();
-      setUser(null);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      return await user.getIdToken();
+    } catch {
+      return null;
     }
-  };
+  }, [user]);
 
-  const resetUserPassword = async (email: string) => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      await resetPassword(email);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const clearError = useCallback(() => setError(null), []);
 
-  const clearError = () => {
-    setError(null);
-  };
-
-  const value = {
-    user,
-    loading,
-    error,
-    login,
-    logOut,
-    resetUserPassword,
-    clearError
-  };
+  const value = useMemo(
+    () => ({
+      user,
+      esAdmin,
+      loading,
+      ocupado,
+      error,
+      login,
+      loginGoogle,
+      logOut,
+      resetUserPassword,
+      obtenerToken,
+      clearError,
+    }),
+    [user, esAdmin, loading, ocupado, error, login, loginGoogle, logOut, resetUserPassword, obtenerToken, clearError],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

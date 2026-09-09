@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { adminAuth, adminDb, hayCredencialAdmin } from '@/lib/firebaseAdmin';
+import { adminDb, hayCredencialAdmin, verificarAdmin } from '@/lib/firebaseAdmin';
 import type { Pedido } from '@/types';
 
 export const runtime = 'nodejs';
@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 /**
  * Los pedidos no se pueden leer desde el navegador (firestore.rules los cierra
  * por completo), así que el panel los pide por aquí: se valida el token de
- * Firebase del administrador y se lee con el Admin SDK.
+ * Firebase del administrador (claim `admin`) y se lee con el Admin SDK.
  */
 export async function GET(request: Request) {
   if (!hayCredencialAdmin()) {
@@ -18,16 +18,11 @@ export async function GET(request: Request) {
     );
   }
 
-  const cabecera = request.headers.get('authorization') ?? '';
-  const token = cabecera.startsWith('Bearer ') ? cabecera.slice(7) : null;
-  if (!token) {
+  // Sólo cuentas con el custom claim `admin`: una clienta con sesión de
+  // Google no debe poder listar pedidos ajenos.
+  const sesion = await verificarAdmin(request);
+  if (!sesion) {
     return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
-  }
-
-  try {
-    await adminAuth().verifyIdToken(token);
-  } catch {
-    return NextResponse.json({ error: 'Sesión inválida o expirada.' }, { status: 401 });
   }
 
   const snapshot = await adminDb()
