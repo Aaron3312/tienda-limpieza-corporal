@@ -6,15 +6,15 @@
 
 | Antes | Ahora |
 |-------|-------|
-| ![Landing antigua](landingSoloEva.png) | ![Hero nuevo](public/screenshots2026/screenshot-hero.png) |
-| ![Productos antiguos](ProductosSoloEva.png) | ![Productos nuevos](public/screenshots2026/Screenshot-productos.png) |
-| ![Nosotros antigua](NosotrosSoloEva.png) | ![Quiénes Somos nuevo](public/screenshots2026/screenshot-quienes-somos.png) |
+| ![Landing antigua](docs/screenshots/antes/landing.png) | ![Hero nuevo](docs/screenshots/2026/hero.png) |
+| ![Productos antiguos](docs/screenshots/antes/productos.png) | ![Productos nuevos](docs/screenshots/2026/productos.png) |
+| ![Nosotros antigua](docs/screenshots/antes/nosotros.png) | ![Quiénes Somos nuevo](docs/screenshots/2026/quienes-somos.png) |
 
 ## Descripción
 
 **Solo Para Eva** es una plataforma de comercio electrónico especializada en productos artesanales para el cuidado personal y la limpieza corporal. Ofrece una amplia gama de productos naturales elaborados con ingredientes de alta calidad, libres de químicos dañinos, respetuosos con la piel y con el medio ambiente.
 
-La aplicación está desarrollada con Next.js 15 y exportada como sitio estático, desplegada en Vercel con dominio personalizado.
+La aplicación está desarrollada con Next.js 15 (App Router) y desplegada en Vercel con dominio personalizado. El checkout se hace con Stripe y los pedidos se guardan en Firestore mediante route handlers de servidor.
 
 ## Características Principales
 
@@ -22,6 +22,8 @@ La aplicación está desarrollada con Next.js 15 y exportada como sitio estátic
 - **Catálogo Completo**: Productos organizados por categorías (Capilares, Corporales, Faciales, SPA, Kits)
 - **Sistema de Filtrado**: Filtros por categoría, precio y características
 - **Carrito de Compras**: Gestión del carrito con persistencia
+- **Checkout con Stripe**: Sesión de pago alojada por Stripe y webhook que confirma el pedido
+- **Correos de Pedido**: Notificaciones con Resend al cliente y a la tienda
 - **Páginas de Detalle**: Información detallada de cada producto con variantes y precios
 - **Productos Relacionados**: Sugerencias basadas en categorías
 
@@ -36,19 +38,19 @@ La aplicación está desarrollada con Next.js 15 y exportada como sitio estátic
 - **Gestión de Productos**: CRUD completo para productos y categorías
 - **Configuración de Colores**: Personalización dinámica del esquema de colores
 - **Dashboard Analytics**: Métricas y estadísticas del negocio
+- **Pedidos**: Listado de pedidos pagados (vía Firebase Admin)
 - **Importación Masiva**: Herramientas para importar datos de productos
 - **Autenticación**: Login seguro con Firebase Auth
 
 ### SEO y Accesibilidad
 - **Sitemap XML**: `/public/sitemap.xml` generado para indexación
 - **Robots.txt**: `/public/robots.txt` configurado para crawlers
-- **Metadata Dinámica**: Archivo `metadata.tsx` centralizado por página
-- **Exportación Estática**: Salida como HTML/CSS/JS puro para máximo rendimiento
+- **Metadata**: Definida en `layout.tsx` y en las páginas dinámicas de producto
 
 ## Tecnologías Utilizadas
 
 ### Frontend
-- **Next.js 15.2.4** - Framework React con exportación estática (`output: 'export'`)
+- **Next.js 15** - App Router con route handlers para checkout, webhook y pedidos
 - **React 19** - Biblioteca de interfaces de usuario
 - **TypeScript 5** - Tipado estático
 - **Tailwind CSS 4** - Framework CSS utilitario
@@ -65,6 +67,9 @@ La aplicación está desarrollada con Next.js 15 y exportada como sitio estátic
 - **Firebase 11.7.3** - Backend as a Service
 - **Firestore** - Base de datos NoSQL en tiempo real
 - **Firebase Auth** - Autenticación de administradores
+- **Firebase Admin** - Escritura de pedidos desde el servidor
+- **Stripe** - Pasarela de pago (Checkout alojado + webhook)
+- **Resend** - Envío de correos transaccionales
 
 ### Herramientas de Desarrollo
 - **ESLint 9** - Linting
@@ -80,6 +85,7 @@ La aplicación está desarrollada con Next.js 15 y exportada como sitio estátic
 - **Node.js** 18.x o superior
 - **npm** o **yarn**
 - Cuenta de **Firebase**
+- Cuenta de **Stripe** (modo prueba sirve) y opcionalmente **Resend**
 
 ## Instalación y Configuración
 
@@ -105,11 +111,25 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
-# Dominio personalizado (omite basePath/assetPrefix si es true)
-CUSTOM_DOMAIN=true
+# Base para URLs absolutas de Stripe (en Vercel, la URL del deploy)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
-NEXT_PUBLIC_SITE_URL=https://soloparaeva.lat
+# Firebase Admin (webhook y panel de pedidos). En local basta la ruta al JSON
+# de la cuenta de servicio; en Vercel usa FIREBASE_SERVICE_ACCOUNT con el JSON.
+GOOGLE_APPLICATION_CREDENTIALS=./ruta-a-service-account.json
+# FIREBASE_SERVICE_ACCOUNT=
+
+# Stripe (sin STRIPE_SECRET_KEY el pago corre en modo simulado)
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...   # lo imprime `stripe listen`
+
+# Resend (sin clave no se envían correos, pero el pedido sí se crea)
+RESEND_API_KEY=
+RESEND_FROM=
+CORREO_NOTIFICACIONES=
 ```
+
+El JSON de la cuenta de servicio está ignorado por git (`*-firebase-adminsdk-*.json`). No lo subas nunca.
 
 ### 4. Ejecutar en Desarrollo
 ```bash
@@ -131,6 +151,10 @@ tienda-limpieza-corporal/
 │   │   │   ├── import/
 │   │   │   ├── login/
 │   │   │   └── productos/
+│   │   ├── api/
+│   │   │   ├── checkout/           # Crea la sesión de Stripe
+│   │   │   ├── webhooks/stripe/    # Confirma el pedido
+│   │   │   └── admin/pedidos/      # Lista pedidos (admin)
 │   │   ├── carrito/
 │   │   ├── contacto/
 │   │   ├── nosotros/
@@ -138,11 +162,9 @@ tienda-limpieza-corporal/
 │   │   │   ├── [productId]/        # Detalle de producto dinámico
 │   │   │   └── categorias/
 │   │   ├── layout.tsx              # Layout raíz
-│   │   ├── metadata.tsx            # Metadata centralizada
 │   │   └── providers.tsx           # Context providers globales
 │   ├── components/
 │   │   ├── admin/
-│   │   ├── contacto/
 │   │   ├── home/                   # Secciones de la página principal
 │   │   │   ├── BenefitsSection.tsx
 │   │   │   ├── BrandStory.tsx
@@ -152,23 +174,21 @@ tienda-limpieza-corporal/
 │   │   │   ├── HeroSection.tsx
 │   │   │   └── TestimonialsSection.tsx
 │   │   ├── layout/                 # Header, Footer, LayoutClient
-│   │   ├── nosotros/
-│   │   ├── productDetails/
 │   │   ├── productos/
-│   │   ├── testimonios/
 │   │   └── ui/                     # Componentes base (shadcn/ui)
 │   ├── context/
 │   ├── data/                       # Datos estáticos JSON
-│   ├── lib/
+│   ├── lib/                        # firebase, firebaseAdmin, comercio, correos
 │   ├── services/                   # Servicios de Firebase
-│   ├── types/
-│   └── utils/
+│   └── types/
 ├── public/
 │   ├── images/
 │   ├── robots.txt
 │   └── sitemap.xml
+├── docs/                           # Screenshots del README y pendientes
+├── firestore.rules
+├── storage.rules
 ├── next.config.ts
-├── tailwind.config.js
 └── tsconfig.json
 ```
 
@@ -176,7 +196,7 @@ tienda-limpieza-corporal/
 
 ```bash
 npm run dev       # Desarrollo con Turbopack
-npm run build     # Build para producción (genera /out)
+npm run build     # Build para producción
 npm start         # Servidor de producción
 npm run lint      # Linting
 ```
@@ -184,13 +204,10 @@ npm run lint      # Linting
 ## Despliegue
 
 ### Vercel (producción)
-El proyecto usa `output: 'export'` en `next.config.ts`, generando una carpeta `/out` con archivos estáticos puros.
+El proyecto necesita el runtime de servidor de Vercel (los route handlers de Stripe no funcionan con exportación estática). Vercel detecta la configuración de Next.js automáticamente; sólo hay que cargar las variables de entorno del paso 3 en el panel del proyecto y registrar la URL `/api/webhooks/stripe` en el dashboard de Stripe.
 
-```bash
-npm run build     # Genera /out
-```
-
-Vercel detecta automáticamente la configuración de Next.js. La variable `CUSTOM_DOMAIN=true` elimina el `basePath` para el dominio personalizado.
+### Reglas de Firestore y Storage
+Las reglas viven en `firestore.rules` y `storage.rules`; se despliegan con `firebase deploy --only firestore:rules,storage`.
 
 ### Configuración de Firebase
 1. Crear proyecto en [Firebase Console](https://console.firebase.google.com/)

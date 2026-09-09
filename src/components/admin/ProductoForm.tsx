@@ -9,7 +9,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -42,8 +41,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Package, Plus, Trash2, Save, ArrowLeft, Image, Upload } from 'lucide-react';
-import Link from 'next/link';
+import { Plus, Trash2, Save, ArrowLeft, Image } from 'lucide-react';
 
 // Importaciones de Firebase
 import { initializeApp, getApps } from 'firebase/app';
@@ -53,10 +51,8 @@ import {
   doc, 
   getDoc, 
   getDocs, 
-  setDoc, 
   addDoc, 
   updateDoc, 
-  deleteDoc, 
   serverTimestamp 
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';

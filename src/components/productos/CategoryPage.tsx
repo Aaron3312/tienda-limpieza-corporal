@@ -2,13 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import HeroSection from '@/components/productos/HeroSection';
-import FilterSortBar from '@/components/productos/FilterSortBar';
 import ProductCard from '@/components/productos/ProductCard';
 import EmptyState from '@/components/productos/EmptyState';
 import BenefitsSection from '@/components/productos/BenefitsSection';
 import TestimonialsSection from '@/components/productos/TestimonialsSection';
 import CallToAction from '@/components/productos/CallToAction';
-import { extractColorsFromPalette } from '@/utils/colorUtils';
 import { getProductosPorCategoria, getCategorias, getColores } from '@/services/firestore';
 import { Categoria, Colores, Producto } from '@/types';
 
@@ -33,12 +31,10 @@ export default function CategoryPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState<Categoria | null>(null);
-  const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [colores, setColores] = useState<Colores>(DEFAULT_COLORES as Colores);
 
   useEffect(() => {
     getColores().then(c => { if (c) setColores(c); });
-    getCategorias().then(cats => setCategorias(cats));
   }, []);
 
   useEffect(() => {
@@ -71,7 +67,7 @@ export default function CategoryPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: colores.fondo }}>
-      <HeroSection colores={colores} categoryTitle={category?.nombre} />
+      <HeroSection colores={colores} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="mb-8">

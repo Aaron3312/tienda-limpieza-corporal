@@ -16,9 +16,7 @@ import {
 import {
   Home,
   Package,
-  Tag,
   Settings,
-  Users,
   LogOut,
   Menu,
   X,

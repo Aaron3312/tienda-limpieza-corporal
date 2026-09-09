@@ -6,7 +6,7 @@ import { getProductos, getCategorias } from '@/services/firestore';
 import { getImageSrc } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Package, Tag, ShoppingBag, TrendingUp, Archive, Eye } from 'lucide-react';
+import { Package, Tag, TrendingUp, Archive, Eye } from 'lucide-react';
 import { Producto, Categoria } from '@/types';
 
 export default function Dashboard() {
@@ -42,13 +42,7 @@ export default function Dashboard() {
   const productosDestacados = productos.filter(producto => producto.destacado).length;
   
   // Obtener productos recientes (últimos 5)
-  const productosRecientes = [...productos]
-    .sort((a, b) => {
-      // En un entorno real, ordenaríamos por fecha de creación
-      // Aquí solo usamos el orden del array como ejemplo
-      return 0;
-    })
-    .slice(0, 5);
+  const productosRecientes = productos.slice(0, 5);
 
   return (
     <div className="space-y-6">

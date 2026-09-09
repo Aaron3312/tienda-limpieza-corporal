@@ -2,7 +2,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Check, ShoppingBag } from 'lucide-react';
 import { Colores, Producto } from '@/types';
 import { getImageSrc } from '@/lib/utils';

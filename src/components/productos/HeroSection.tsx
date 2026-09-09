@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import CustomImage from '@/components/CustomImage';
 import { Colores } from '@/types';
 
-export default function HeroSection({ colores, categoryTitle }: { colores: Colores; categoryTitle?: string }) {
+export default function HeroSection({ colores }: { colores: Colores }) {
   return (
     <div className="relative" style={{ backgroundColor: colores.acento1 }}>
       <div className="absolute inset-0">

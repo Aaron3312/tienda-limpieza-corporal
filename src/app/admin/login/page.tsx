@@ -25,7 +25,7 @@ export default function Login() {
     try {
       await login(email, password);
       router.push('/admin/dashboard');
-    } catch (err) {
+    } catch {
       // El error ya se maneja en el contexto de autenticación
     }
   };
@@ -36,7 +36,7 @@ export default function Login() {
     try {
       await resetUserPassword(resetEmail);
       setResetSuccess(true);
-    } catch (err) {
+    } catch {
       // El error ya se maneja en el contexto de autenticación
     }
   };

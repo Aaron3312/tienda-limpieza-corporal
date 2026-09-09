@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { firestore } from '@/lib/firebase';
-import { collection, doc, setDoc, writeBatch } from 'firebase/firestore';
+import { doc, setDoc, writeBatch } from 'firebase/firestore';
 import catalogoData from '@/data/productos.json';
 import paletaColores from '@/data/paleta-colores.json';
 

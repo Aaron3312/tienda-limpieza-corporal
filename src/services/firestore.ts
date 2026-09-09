@@ -8,13 +8,9 @@ import {
     deleteDoc, 
     query, 
     where,
-    orderBy,
     limit,
     addDoc,
-    serverTimestamp,
-    DocumentReference,
-    DocumentData,
-    Timestamp
+    serverTimestamp
   } from 'firebase/firestore';
   import { firestore } from '@/lib/firebase';
   import { 
