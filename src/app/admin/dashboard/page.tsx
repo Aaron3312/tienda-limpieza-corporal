@@ -1,64 +1,130 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { getProductos, getCategorias } from '@/services/firestore';
-import { getImageSrc } from '@/lib/utils';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/context/AuthContext';
+import { ESTADOS_PEDIDO, formatearPrecio, referenciaPedido } from '@/lib/comercio';
 import { Button } from '@/components/ui/button';
-import { Package, Tag, TrendingUp, Archive, Eye } from 'lucide-react';
-import { Producto, Categoria } from '@/types';
+import { ArrowUpRight, Eye, Package, ShoppingBag } from 'lucide-react';
+import type { Categoria, Pedido, Producto } from '@/types';
+
+const ESTILO_ESTADO: Record<Pedido['estado'], string> = {
+  pagado: 'bg-amber-50 text-amber-800 ring-amber-200',
+  preparando: 'bg-sky-50 text-sky-800 ring-sky-200',
+  enviado: 'bg-violet-50 text-violet-800 ring-violet-200',
+  entregado: 'bg-emerald-50 text-emerald-800 ring-emerald-200',
+  cancelado: 'bg-zinc-100 text-zinc-600 ring-zinc-200',
+};
+
+function inicioDeMes(d = new Date()): Date {
+  return new Date(d.getFullYear(), d.getMonth(), 1);
+}
 
 export default function Dashboard() {
+  const { user, obtenerToken } = useAuth();
   const [productos, setProductos] = useState<Producto[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [pedidos, setPedidos] = useState<Pedido[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Cargar datos al iniciar
   useEffect(() => {
-    const fetchData = async () => {
+    if (!user) return;
+    let cancelado = false;
+    (async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const [productosData, categoriasData] = await Promise.all([
+        const token = await obtenerToken();
+        const [productosData, categoriasData, respuesta] = await Promise.all([
           getProductos(),
-          getCategorias()
+          getCategorias(),
+          fetch('/api/admin/pedidos', { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' }),
         ]);
-        
+        const datos = await respuesta.json();
+        if (cancelado) return;
         setProductos(productosData);
         setCategorias(categoriasData);
-      } catch (err: any) {
-        console.error('Error al cargar datos:', err);
-        setError('Error al cargar datos. Por favor, intenta nuevamente.');
+        if (!respuesta.ok) throw new Error(datos?.error ?? 'No se pudieron cargar los pedidos.');
+        setPedidos(datos.pedidos ?? []);
+      } catch (e) {
+        if (!cancelado) setError(e instanceof Error ? e.message : 'Error al cargar datos.');
       } finally {
-        setLoading(false);
+        if (!cancelado) setLoading(false);
       }
+    })();
+    return () => {
+      cancelado = true;
     };
+  }, [user, obtenerToken]);
 
-    fetchData();
-  }, []);
+  const metricas = useMemo(() => {
+    const lista = (pedidos ?? []).filter((p) => !p.simulado);
+    const validos = lista.filter((p) => p.estado !== 'cancelado');
+    const desde = inicioDeMes();
+    const desdeAnterior = inicioDeMes(new Date(desde.getFullYear(), desde.getMonth() - 1, 1));
 
-  // Contar productos destacados
-  const productosDestacados = productos.filter(producto => producto.destacado).length;
-  
-  // Obtener productos recientes (últimos 5)
-  const productosRecientes = productos.slice(0, 5);
+    const delMes = validos.filter((p) => new Date(p.creadoEn) >= desde);
+    const delMesAnterior = validos.filter((p) => {
+      const f = new Date(p.creadoEn);
+      return f >= desdeAnterior && f < desde;
+    });
+    const suma = (ps: Pedido[]) => ps.reduce((s, p) => s + p.total, 0);
+
+    const porAtender = lista.filter((p) => p.estado === 'pagado' || p.estado === 'preparando').length;
+    const ventasMes = suma(delMes);
+    const ventasMesAnterior = suma(delMesAnterior);
+    const ticket = validos.length ? suma(validos) / validos.length : 0;
+
+    const conteo = new Map<string, { nombre: string; piezas: number; importe: number }>();
+    for (const p of validos) {
+      for (const it of p.items) {
+        const clave = it.productoId;
+        const actual = conteo.get(clave) ?? { nombre: it.nombre, piezas: 0, importe: 0 };
+        actual.piezas += it.cantidad;
+        actual.importe += it.cantidad * it.precioUnitario;
+        conteo.set(clave, actual);
+      }
+    }
+    const masVendidos = [...conteo.entries()]
+      .map(([productoId, v]) => ({ productoId, ...v }))
+      .sort((a, b) => b.piezas - a.piezas)
+      .slice(0, 5);
+
+    return {
+      porAtender,
+      ventasMes,
+      ventasMesAnterior,
+      pedidosMes: delMes.length,
+      ticket,
+      totalPedidos: validos.length,
+      masVendidos,
+      recientes: lista.slice(0, 6),
+    };
+  }, [pedidos]);
+
+  const variacion =
+    metricas.ventasMesAnterior > 0
+      ? ((metricas.ventasMes - metricas.ventasMesAnterior) / metricas.ventasMesAnterior) * 100
+      : null;
+
+  const mesActual = new Date().toLocaleDateString('es-MX', { month: 'long' });
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-6xl space-y-10">
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-          <p className="text-muted-foreground">
-            Bienvenido al panel de administración de Solo Para Eva.
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Resumen</h1>
+          <p className="text-sm text-zinc-500 mt-1">Así va la tienda. Los pedidos de demostración no cuentan.</p>
         </div>
-        
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex gap-2">
           <Button asChild>
-            <Link href="/admin/productos/nuevo">
-              <Package className="mr-2 h-4 w-4" />
-              Nuevo Producto
+            <Link href="/admin/pedidos">
+              <ShoppingBag className="mr-2 h-4 w-4" />
+              Pedidos
+              {metricas.porAtender > 0 ? (
+                <span className="ml-2 rounded-full bg-white/20 px-1.5 text-xs tabular-nums">{metricas.porAtender}</span>
+              ) : null}
             </Link>
           </Button>
           <Button asChild variant="outline">
@@ -69,155 +135,151 @@ export default function Dashboard() {
           </Button>
         </div>
       </div>
-      
-      {/* Mostrar error si existe */}
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-          <span className="block sm:inline">{error}</span>
-        </div>
-      )}
-      
-      {/* Estado de carga */}
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      ) : (
-        <>
-          {/* Tarjetas de estadísticas */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total de Productos
-                </CardTitle>
-                <Package className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{productos.length}</div>
-                <p className="text-xs text-muted-foreground">
-                  Productos activos en el catálogo
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Categorías
-                </CardTitle>
-                <Tag className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{categorias.length}</div>
-                <p className="text-xs text-muted-foreground">
-                  Categorías de productos
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Productos Destacados
-                </CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{productosDestacados}</div>
-                <p className="text-xs text-muted-foreground">
-                  Productos mostrados en la página principal
-                </p>
-              </CardContent>
-            </Card>
+
+      {error ? (
+        <p className="text-sm text-red-700 bg-red-50 border border-red-100 rounded-md px-4 py-3">{error}</p>
+      ) : null}
+
+      <section className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-zinc-200 border-y border-zinc-200">
+        {[
+          {
+            etiqueta: `Ventas de ${mesActual}`,
+            valor: loading ? null : formatearPrecio(metricas.ventasMes),
+            nota:
+              variacion === null
+                ? `${metricas.pedidosMes} ${metricas.pedidosMes === 1 ? 'pedido' : 'pedidos'}`
+                : `${variacion >= 0 ? '+' : ''}${variacion.toFixed(0)}% vs. mes anterior`,
+          },
+          {
+            etiqueta: 'Por atender',
+            valor: loading ? null : String(metricas.porAtender),
+            nota: 'pagados o en preparación',
+            alerta: metricas.porAtender > 0,
+          },
+          {
+            etiqueta: 'Ticket promedio',
+            valor: loading ? null : formatearPrecio(metricas.ticket),
+            nota: `${metricas.totalPedidos} ${metricas.totalPedidos === 1 ? 'pedido' : 'pedidos'} en total`,
+          },
+          {
+            etiqueta: 'Catálogo',
+            valor: loading ? null : String(productos.length),
+            nota: `${categorias.length} categorías · ${productos.filter((p) => p.destacado).length} destacados`,
+          },
+        ].map((m) => (
+          <div key={m.etiqueta} className="px-5 py-5 first:pl-0 lg:first:pl-5">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">{m.etiqueta}</p>
+            {m.valor === null ? (
+              <div className="h-8 w-28 rounded bg-zinc-100 animate-pulse mt-2" />
+            ) : (
+              <p className={`text-2xl font-semibold tabular-nums mt-1.5 ${m.alerta ? 'text-amber-700' : 'text-zinc-900'}`}>
+                {m.valor}
+              </p>
+            )}
+            <p className="text-xs text-zinc-500 mt-1">{m.nota}</p>
           </div>
-          
-          {/* Productos recientes */}
-          <div className="grid gap-4 grid-cols-1">
-            <Card className="col-span-1">
-              <CardHeader>
-                <CardTitle>Productos Recientes</CardTitle>
-                <CardDescription>
-                  Últimos productos en el catálogo
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {productosRecientes.length > 0 ? (
-                  <div className="space-y-4">
-                    {productosRecientes.map((producto) => (
-                      <div key={producto.id} className="flex items-center">
-                        <div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 overflow-hidden">
-                          {producto.imagen ? (
-                            <img 
-                              src={getImageSrc(producto.imagen)}
-                              alt={producto.nombre}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <Package className="h-6 w-6 text-gray-500" />
-                          )}
-                        </div>
-                        <div className="space-y-1">
-                          <p className="text-sm font-medium leading-none">
-                            {producto.nombre}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            {categorias.find(cat => cat.id === producto.categoria)?.nombre || producto.categoria}
-                          </p>
-                        </div>
-                        <div className="ml-auto">
-                          <Link href={`/admin/productos/editar?id=${producto.id}`}>
-                            <Button variant="ghost" size="sm">
-                              Editar
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-center py-4 text-muted-foreground">
-                    No hay productos en el catálogo.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+        ))}
+      </section>
+
+      <div className="grid lg:grid-cols-[1.4fr_1fr] gap-10">
+        <section>
+          <div className="flex items-baseline justify-between mb-3">
+            <h2 className="text-sm font-semibold text-zinc-900">Últimos pedidos</h2>
+            <Link href="/admin/pedidos" className="text-xs text-zinc-500 hover:text-zinc-900 inline-flex items-center gap-1">
+              Ver todos <ArrowUpRight size={12} />
+            </Link>
           </div>
-          
-          {/* Enlaces rápidos */}
-          <div className="grid gap-3 grid-cols-1 sm:grid-cols-3">
-            {[
-              { title: 'Productos', desc: 'Administra tu catálogo', links: [
-                { href: '/admin/productos', label: 'Ver todos', icon: Package, variant: 'outline' as const },
-                { href: '/admin/productos/nuevo', label: 'Nuevo', icon: Archive, variant: 'default' as const },
-              ]},
-              { title: 'Colores', desc: 'Personaliza la paleta', links: [
-                { href: '/admin/colores', label: 'Editar colores', icon: Tag, variant: 'default' as const },
-              ]},
-              { title: 'Configuración', desc: 'Info. del negocio', links: [
-                { href: '/admin/configuracion', label: 'Editar info', icon: Archive, variant: 'default' as const },
-              ]},
-            ].map(({ title, desc, links }) => (
-              <Card key={title}>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">{title}</CardTitle>
-                  <CardDescription className="text-xs">{desc}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex gap-2 flex-wrap">
-                  {links.map(({ href, label, icon: Icon, variant }) => (
-                    <Button key={href} asChild variant={variant} size="sm">
-                      <Link href={href}>
-                        <Icon className="mr-1.5 h-3.5 w-3.5" />
-                        {label}
-                      </Link>
-                    </Button>
-                  ))}
-                </CardContent>
-              </Card>
-            ))}
+          {loading ? (
+            <div className="divide-y divide-zinc-100 border-t border-zinc-200">
+              {[0, 1, 2, 3].map((i) => (
+                <div key={i} className="grid grid-cols-3 gap-4 py-3.5">
+                  <div className="h-4 rounded bg-zinc-100 animate-pulse" />
+                  <div className="h-4 rounded bg-zinc-100 animate-pulse" />
+                  <div className="h-4 rounded bg-zinc-100 animate-pulse" />
+                </div>
+              ))}
+            </div>
+          ) : metricas.recientes.length === 0 ? (
+            <div className="border-t border-zinc-200 py-10 max-w-sm">
+              <div className="w-10 h-10 rounded-full bg-zinc-100 grid place-items-center mb-4">
+                <ShoppingBag size={18} strokeWidth={1.5} className="text-zinc-500" />
+              </div>
+              <p className="text-sm text-zinc-900 font-medium mb-1">Todavía no hay ventas</p>
+              <p className="text-sm text-zinc-500 leading-relaxed">
+                Cuando alguien pague en la tienda, el pedido aparece aquí y en la sección de pedidos.
+              </p>
+            </div>
+          ) : (
+            <ul className="divide-y divide-zinc-100 border-t border-zinc-200">
+              {metricas.recientes.map((p) => (
+                <li key={p.id}>
+                  <Link
+                    href="/admin/pedidos"
+                    className="grid grid-cols-[1fr_auto_auto] sm:grid-cols-[90px_1fr_130px_90px] gap-3 sm:gap-4 py-3.5 items-center text-sm hover:bg-zinc-50/70 transition-colors"
+                  >
+                    <span className="hidden sm:block text-zinc-500 tabular-nums">
+                      {new Date(p.creadoEn).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' })}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-zinc-900 truncate">{p.cliente.nombre || 'Sin nombre'}</span>
+                      <span className="block text-xs text-zinc-400 font-mono">{referenciaPedido(p.id)}</span>
+                    </span>
+                    <span className={`justify-self-start inline-flex text-xs px-2 py-0.5 rounded-full ring-1 ring-inset ${ESTILO_ESTADO[p.estado] ?? ESTILO_ESTADO.pagado}`}>
+                      {ESTADOS_PEDIDO[p.estado]?.etiqueta ?? p.estado}
+                    </span>
+                    <span className="text-zinc-900 tabular-nums text-right">{formatearPrecio(p.total)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section>
+          <div className="flex items-baseline justify-between mb-3">
+            <h2 className="text-sm font-semibold text-zinc-900">Más vendidos</h2>
+            <Link href="/admin/productos" className="text-xs text-zinc-500 hover:text-zinc-900 inline-flex items-center gap-1">
+              Catálogo <ArrowUpRight size={12} />
+            </Link>
           </div>
-        </>
-      )}
+          {loading ? (
+            <div className="divide-y divide-zinc-100 border-t border-zinc-200">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-4 my-4 rounded bg-zinc-100 animate-pulse" />
+              ))}
+            </div>
+          ) : metricas.masVendidos.length === 0 ? (
+            <div className="border-t border-zinc-200 py-10">
+              <div className="w-10 h-10 rounded-full bg-zinc-100 grid place-items-center mb-4">
+                <Package size={18} strokeWidth={1.5} className="text-zinc-500" />
+              </div>
+              <p className="text-sm text-zinc-500 leading-relaxed">Aquí verás qué productos se venden más.</p>
+            </div>
+          ) : (
+            <ol className="divide-y divide-zinc-100 border-t border-zinc-200">
+              {metricas.masVendidos.map((v, i) => {
+                const max = metricas.masVendidos[0].piezas || 1;
+                return (
+                  <li key={v.productoId} className="py-3">
+                    <div className="flex items-baseline justify-between gap-3 text-sm">
+                      <span className="text-zinc-900 truncate">
+                        <span className="text-zinc-400 tabular-nums mr-2">{i + 1}</span>
+                        {v.nombre}
+                      </span>
+                      <span className="text-zinc-500 tabular-nums shrink-0">
+                        {v.piezas} pzas · {formatearPrecio(v.importe)}
+                      </span>
+                    </div>
+                    <div className="h-1 mt-2 rounded-full bg-zinc-100 overflow-hidden">
+                      <div className="h-full bg-zinc-900 rounded-full" style={{ width: `${(v.piezas / max) * 100}%` }} />
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
+        </section>
+      </div>
     </div>
   );
 }
