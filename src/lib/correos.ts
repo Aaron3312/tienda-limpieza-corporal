@@ -129,3 +129,40 @@ export async function enviarCorreosDePedido(pedido: Pedido): Promise<void> {
       : Promise.resolve(null),
   ]);
 }
+
+/** Aviso a la clienta cuando la administradora marca el pedido como enviado. */
+export async function enviarCorreoEnvio(pedido: Pedido): Promise<void> {
+  const clave = process.env.RESEND_API_KEY;
+  if (!clave) {
+    console.warn('[correos] RESEND_API_KEY no configurada; se omite el aviso de envío', pedido.id);
+    return;
+  }
+  if (!pedido.cliente.email) return;
+
+  const resend = new Resend(clave);
+  const corto = referenciaPedido(pedido.id);
+  const guia = pedido.envioGuia
+    ? `<p style="margin:0 0 24px;color:#5A5A5A;font-size:14px;line-height:1.6">
+         ${pedido.envioPaqueteria ? `Paquetería: <strong style="color:#1C2B12">${pedido.envioPaqueteria}</strong><br>` : ''}
+         Número de guía: <strong style="color:#1C2B12;font-family:monospace">${pedido.envioGuia}</strong>
+       </p>`
+    : '';
+
+  await resend.emails.send({
+    from: REMITENTE,
+    to: pedido.cliente.email,
+    subject: `Tu pedido ${corto} va en camino`,
+    html: envoltura(`
+      <p style="margin:0 0 4px;color:#5A5A5A;font-size:13px;letter-spacing:.05em;text-transform:uppercase">
+        Solo Para Eva
+      </p>
+      <h1 style="margin:0 0 16px;color:#1C2B12;font-size:24px;font-weight:600">Tu pedido va en camino</h1>
+      <p style="margin:0 0 16px;color:#5A5A5A;font-size:14px;line-height:1.6">
+        Ya entregamos tu pedido <strong style="color:#1C2B12">${corto}</strong> a la paquetería.
+      </p>
+      ${guia}
+      <table style="width:100%;border-collapse:collapse;font-size:14px">${filasDeItems(pedido)}</table>
+      <h2 style="margin:28px 0 8px;color:#1C2B12;font-size:15px">Dirección de entrega</h2>
+      <p style="margin:0;color:#5A5A5A;font-size:14px;line-height:1.6">${direccion(pedido)}</p>`),
+  });
+}
